@@ -31,10 +31,10 @@ def test_grid_transform_points_at_outer_edge_not_centre():
 def test_half_pixel_widening_is_applied_to_bounds():
     x = np.array([500000.0, 500020.0])
     y = np.array([3500000.0, 3499980.0])
-    bounds = wx.lonlat_bounds_of_native(x, y, 20.0)
+    bounds = wx.lonlat_bounds_of_native(x, y, 20.0, "EPSG:32636")
     from pyproj import Transformer
 
-    inverse = Transformer.from_crs(wx.CRS_NATIVE, wx.CRS_WGS84, always_xy=True)
+    inverse = Transformer.from_crs("EPSG:32636", wx.CRS_WGS84, always_xy=True)
     lon_west, _ = inverse.transform(499990.0, 3499990.0)   # outer west edge of first pixel
     lon_east, _ = inverse.transform(500030.0, 3499990.0)   # outer east edge of last pixel
     assert bounds[0][1] == pytest.approx(lon_west, abs=1e-6)
@@ -44,7 +44,7 @@ def test_half_pixel_widening_is_applied_to_bounds():
 def test_bounds_are_south_west_north_east_ordered():
     x = np.linspace(560000.0, 580000.0, 50)
     y = np.linspace(3500000.0, 3480000.0, 40)
-    (south, west), (north, east) = wx.lonlat_bounds_of_native(x, y, 20.0)
+    (south, west), (north, east) = wx.lonlat_bounds_of_native(x, y, 20.0, "EPSG:32636")
     assert south < north
     assert west < east
 
@@ -54,7 +54,7 @@ def test_reprojection_keeps_a_north_up_rectangle_and_bounds_match_it():
     transform = wx.grid_transform(
         np.linspace(737000.0, 738580.0, 80), np.linspace(3480000.0, 3478800.0, 60), 20.0
     )
-    dst, dst_t = wx.reproject_to_web(values, transform)
+    dst, dst_t = wx.reproject_to_web(values, transform, "EPSG:32636")
     assert dst_t.e < 0 and dst_t.b == 0 and dst_t.d == 0   # north-up, no rotation
     bounds = wx.web_bounds_lonlat(dst_t, *dst.shape)
     (south, west), (north, east) = bounds
@@ -67,7 +67,7 @@ def test_mask_reprojection_stays_boolean_and_nearest():
     mask = np.zeros((40, 40), dtype=bool)
     mask[10:20, 10:20] = True
     transform = wx.grid_transform(np.arange(40) * 20.0 + 560000.0, np.arange(40)[::-1] * 20.0 + 3500000.0, 20.0)
-    dst, _ = wx.reproject_to_web(mask, transform, mask=True)
+    dst, _ = wx.reproject_to_web(mask, transform, "EPSG:32636", mask=True)
     assert dst.dtype == bool
     assert dst.any()
     assert set(np.unique(dst)).issubset({False, True})   # no fractional water
@@ -190,3 +190,56 @@ def test_rgb_decomposition_is_absolute_not_stretched():
     single = wx.rgb_decomposition(np.array([[0.3]]), np.array([[0.03]]), np.array([[False]]))
     crowd = wx.rgb_decomposition(np.array([[0.3, 5.0]]), np.array([[0.03, 0.5]]), np.array([[False, False]]))
     assert tuple(single[0, 0]) == tuple(crowd[0, 0])
+
+
+def test_source_crs_is_respected_not_assumed():
+    # A grid geocoded in UTM 37N over Azraq must land at Azraq (about 36.85 E), never one zone west.
+    x = np.linspace(292430.0, 292430.0 + 19 * 20.0, 20)
+    y = np.linspace(3529030.0, 3529030.0 - 19 * 20.0, 20)
+    values = np.full((20, 20), -12.0, dtype="float32")
+    transform = wx.grid_transform(x, y, 20.0)
+    dst, dst_t = wx.reproject_to_web(values, transform, "EPSG:32637")
+    (south, west), (north, east) = wx.web_bounds_lonlat(dst_t, *dst.shape)
+    assert 36.7 < (west + east) / 2.0 < 37.0
+    assert 31.7 < (south + north) / 2.0 < 32.0
+
+
+def test_one_extent_for_every_layer_pixel_size():
+    x = np.linspace(292430.0, 292430.0 + 99 * 20.0, 100)
+    y = np.linspace(3529030.0, 3529030.0 - 99 * 20.0, 100)
+    transform = wx.grid_transform(x, y, 20.0)
+    extent_t, extent_w, extent_h = wx.web_grid(transform, "EPSG:32637", 100, 100)
+    g60_t, g60_w, g60_h = wx.web_grid(transform, "EPSG:32637", 100, 100, target_res=60.0)
+    g20_t, g20_w, g20_h = wx.web_grid(transform, "EPSG:32637", 100, 100, target_res=20.0)
+    assert wx.web_bounds_lonlat(extent_t, extent_h, extent_w) == wx.web_bounds_lonlat(g60_t, g60_h, g60_w)
+    assert wx.web_bounds_lonlat(extent_t, extent_h, extent_w) == wx.web_bounds_lonlat(g20_t, g20_h, g20_w)
+    assert 10.0 < abs(g20_t.a) < 20.0 * 1.2
+
+
+def test_every_built_place_is_georeferenced_and_layers_share_bounds():
+    from venus.config import REPO_ROOT, load_study_area
+    from pyproj import Geod
+    from shapely import wkt as shapely_wkt
+    from shapely.geometry import Point
+    from shapely.ops import nearest_points
+
+    manifests = sorted((REPO_ROOT / "web").glob("data/*/manifest.json"))
+    if not manifests:
+        pytest.skip("no built places")
+    geod = Geod(ellps="WGS84")
+    failures = []
+    for path in manifests:
+        manifest = json.loads(path.read_text(encoding="utf-8"))
+        area = load_study_area(path.parent.name)
+        bbox = shapely_wkt.loads(area.wkt)
+        (south, west), (north, east) = manifest["bounds"]
+        point = Point((west + east) / 2.0, (south + north) / 2.0)
+        if not bbox.contains(point):
+            nearest = nearest_points(bbox, point)[0]
+            km = geod.inv(nearest.x, nearest.y, point.x, point.y)[2] / 1000.0
+            if km > 5.0:
+                failures.append(f"{path.parent.name} centre {km:.1f} km outside AOI")
+        shared = {json.dumps(layer["bounds"]) for layer in manifest["layers"]}
+        if len(shared) > 1:
+            failures.append(f"{path.parent.name} has {len(shared)} distinct bounds")
+    assert not failures, failures

@@ -25,9 +25,11 @@ import numpy as np
 from affine import Affine
 from PIL import Image
 
-CRS_NATIVE = "EPSG:32636"
 CRS_WEB = "EPSG:3857"
 CRS_WGS84 = "EPSG:4326"
+# There is deliberately no CRS_NATIVE constant: every NISAR frame is geocoded in the UTM zone that
+# suits that frame, and a zone is not something we may assume. The source CRS is always read from the
+# cached subset's recorded projection (``epsg`` / ``crs_wkt`` in its JSON sidecar).
 
 # Change ramp, colour-blind safe: blue (less echo later) -> light -> orange (more echo later).
 CHANGE_STOPS = [
@@ -115,7 +117,7 @@ def grid_transform(x: np.ndarray, y: np.ndarray, pixel_m: float) -> Affine:
 def reproject_to_web(
     array: np.ndarray,
     src_transform: Affine,
-    src_crs: str = CRS_NATIVE,
+    src_crs: str,
     mask: bool = False,
     nearest: bool = False,
 ) -> tuple[np.ndarray, Affine]:
@@ -125,15 +127,56 @@ def reproject_to_web(
     neighbour: blending a colour channel across the edge of valid data would invent colours no sensor
     measured, and interpolating a mask would invent water fractions that cannot exist.
     """
-    from rasterio.crs import CRS
-    from rasterio.warp import Resampling, calculate_default_transform, reproject as warp
-
     rows, cols = array.shape
+    dst_transform, width, height = web_grid(src_transform, src_crs, rows, cols)
+    return reproject_to_grid(array, src_transform, src_crs, dst_transform, height, width,
+                             mask=mask, nearest=nearest)
+
+
+def web_grid(
+    src_transform: Affine,
+    src_crs: str,
+    rows: int,
+    cols: int,
+    target_res: float | None = None,
+) -> tuple[Affine, int, int]:
+    """The canonical EPSG:3857 extent of a native grid, optionally re-gridded to ``target_res`` metres.
+
+    Keeping one extent per place is what makes every layer of that place share identical bounds in the
+    manifest, so the swipe and the compare view line up exactly. Every layer keeps its own pixel size.
+    """
+    from rasterio.crs import CRS
+    from rasterio.warp import calculate_default_transform
+
     dst_crs = CRS.from_string(CRS_WEB)
     dst_transform, width, height = calculate_default_transform(
-        CRS.from_string(src_crs), dst_crs, cols, rows,
-        *_outer_bounds(src_transform, rows, cols),
+        CRS.from_string(src_crs), dst_crs, cols, rows, *_outer_bounds(src_transform, rows, cols),
     )
+    if target_res is None:
+        return dst_transform, width, height
+    left, top = dst_transform.c, dst_transform.f
+    right = left + width * dst_transform.a
+    bottom = top + height * dst_transform.e
+    out_w = max(1, round((right - left) / target_res))
+    out_h = max(1, round((top - bottom) / target_res))
+    return Affine((right - left) / out_w, 0.0, left, 0.0, (bottom - top) / out_h, top), out_w, out_h
+
+
+def reproject_to_grid(
+    array: np.ndarray,
+    src_transform: Affine,
+    src_crs: str,
+    dst_transform: Affine,
+    height: int,
+    width: int,
+    mask: bool = False,
+    nearest: bool = False,
+) -> tuple[np.ndarray, Affine]:
+    """Resample a grid onto an explicit EPSG:3857 grid. The source CRS is never assumed."""
+    from rasterio.crs import CRS
+    from rasterio.warp import Resampling, reproject as warp
+
+    dst_crs = CRS.from_string(CRS_WEB)
     if mask:
         source = np.asarray(array, dtype="uint8")
         destination = np.zeros((height, width), dtype="uint8")
@@ -177,14 +220,14 @@ def web_bounds_lonlat(transform: Affine, height: int, width: int) -> list[list[f
     return [[round(lats[0], 6), round(lons[0], 6)], [round(lats[1], 6), round(lons[1], 6)]]
 
 
-def lonlat_bounds_of_native(x: np.ndarray, y: np.ndarray, pixel_m: float) -> list[list[float]]:
+def lonlat_bounds_of_native(x: np.ndarray, y: np.ndarray, pixel_m: float, src_crs: str) -> list[list[float]]:
     """Native-grid bounds in lon/lat, widened by half a pixel. Used for the sanity check."""
     from pyproj import Transformer
 
     half = pixel_m / 2.0
     xs = [float(x[0]) - half, float(x[-1]) + half]
     ys = [float(y[-1]) - half, float(y[0]) + half]
-    inverse = Transformer.from_crs(CRS_NATIVE, CRS_WGS84, always_xy=True)
+    inverse = Transformer.from_crs(src_crs, CRS_WGS84, always_xy=True)
     lons, lats = inverse.transform([xs[0], xs[1], xs[1], xs[0]], [ys[0], ys[0], ys[1], ys[1]])
     return [[round(min(lats), 6), round(min(lons), 6)], [round(max(lats), 6), round(max(lons), 6)]]
 

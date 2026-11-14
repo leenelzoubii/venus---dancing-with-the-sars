@@ -80,20 +80,28 @@ def resolve_epsg(xs: np.ndarray, ys: np.ndarray, bounds) -> int | None:
     """Which UTM zone does this product's grid live in?
 
     NISAR geocodes each frame into a UTM zone chosen for that frame, not for our AOI: the Dead Sea
-    frame is 32636 while a Wadi Rum frame is a neighbouring zone. GDAL will not expose the product's
-    scalar ``projection`` dataset, so the zone is found by testing the candidates and keeping the one
-    whose transformed AOI actually overlaps the product's own coordinate range. If none fits, the
-    caller stops rather than guessing.
+    frame is 32636 while a Wadi Rum frame is 32637. GDAL will not expose the product's scalar
+    ``projection`` dataset, so the zone is found from the data itself: transform the AOI centre into
+    each candidate zone and keep the zone that puts it nearest the centre of the product's own x/y
+    arrays. A wrong zone is about 570 km away, the right one within the frame, so the test is
+    decisive; if even the closest zone is far outside the frame the caller stops rather than guessing.
     """
-    west, south, east, north = bounds
+    from shapely.geometry import box
+
+    centre = box(*bounds).centroid
+    frame_x = (float(xs.min()) + float(xs.max())) / 2.0
+    frame_y = (float(ys.min()) + float(ys.max())) / 2.0
+    best: tuple[float, int] | None = None
     for zone in (36, 37, 35, 38):
         epsg = 32600 + zone
         transformer = Transformer.from_crs(CRS.from_epsg(4326), CRS.from_epsg(epsg), always_xy=True)
-        minx, miny = transformer.transform(west, south)
-        maxx, maxy = transformer.transform(east, north)
-        if minx < xs.max() and maxx > xs.min() and miny < ys.max() and maxy > ys.min():
-            return epsg
-    return None
+        px, py = transformer.transform(centre.x, centre.y)
+        distance = float(np.hypot(px - frame_x, py - frame_y))
+        if best is None or distance < best[0]:
+            best = (distance, epsg)
+    if best is None or best[0] > 400_000.0:
+        return None
+    return best[1]
 
 
 def fetch_one(row, area, outdir: Path, pols: list[str]) -> None:
@@ -166,6 +174,7 @@ def fetch_one(row, area, outdir: Path, pols: list[str]) -> None:
         "aoi_wkt": area.wkt,
         "crs_wkt": CRS.from_epsg(epsg).to_wkt(),
         "epsg": epsg,
+        "epsg_source": "grid_fit (AOI centre nearest product x/y centre; grid coordinates, not an assumed zone)",
         "rows": [row0, row1],
         "cols": [col0, col1],
         "x": xs[col0:col1].tolist(),

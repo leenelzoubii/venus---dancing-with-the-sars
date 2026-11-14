@@ -68,16 +68,23 @@ def main() -> int:
         + (f": missing {', '.join(missing_refs)}" if missing_refs else "")
     )
 
-    manifest_path = DATA / "manifest.json"
-    if manifest_path.exists():
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        missing_layers = [layer["file"] for layer in manifest["layers"] if not (DATA / layer["file"]).exists()]
+    manifest_paths = sorted(DATA.glob("*/manifest.json"))
+    if manifest_paths:
+        missing_layers = []
+        total = 0
+        for manifest_path in manifest_paths:
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            for layer in manifest["layers"]:
+                total += 1
+                for key in ("file", "preview"):
+                    if not (manifest_path.parent / layer[key]).exists():
+                        missing_layers.append(f"{manifest_path.parent.name}/{layer[key]}")
         (failures if missing_layers else passes).append(
-            f"every manifest layer file exists ({len(manifest['layers'])} checked)"
+            f"every manifest layer and preview file exists ({total} checked)"
             + (f": missing {', '.join(missing_layers[:5])}" if missing_layers else "")
         )
     else:
-        failures.append("web/data/manifest.json is missing")
+        failures.append("no web/data/<place>/manifest.json files are present")
 
     for stem, key in DATA_WRAPPERS:
         path = DATA / f"{stem}.js"
