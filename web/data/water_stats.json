@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-14T09:11:22Z",
+ "generated_utc": "2026-11-14T10:12:54Z",
  "primary_method": "B",
  "primary_polarization": "HV",
  "primary_verdict": "11 of 36 date pairs change by more than the detection limit (2.51 km2) with a robust sign; largest 2026-06-24 to 2026-08-11: +5.59 km2. Hypothesis only, not confirmed change.",
@@ -1332,6 +1332,12 @@
      "high_km2": 179.07,
      "km2_per_0.1db": 1.3
     }
+   },
+   "hh_comparison": {
+    "threshold_db": -10.22,
+    "area_km2": 137.15,
+    "low_km2": 129.73,
+    "high_km2": 154.94
    }
   },
   {
@@ -1365,6 +1371,12 @@
      "high_km2": 178.25,
      "km2_per_0.1db": 1.34
     }
+   },
+   "hh_comparison": {
+    "threshold_db": -10.12,
+    "area_km2": 137.81,
+    "low_km2": 129.82,
+    "high_km2": 156.66
    }
   },
   {
@@ -1398,6 +1410,12 @@
      "high_km2": 175.37,
      "km2_per_0.1db": 1.29
     }
+   },
+   "hh_comparison": {
+    "threshold_db": -10.37,
+    "area_km2": 137.15,
+    "low_km2": 129.91,
+    "high_km2": 153.58
    }
   },
   {
@@ -1431,6 +1449,12 @@
      "high_km2": 169.82,
      "km2_per_0.1db": 1.32
     }
+   },
+   "hh_comparison": {
+    "threshold_db": -10.77,
+    "area_km2": 136.43,
+    "low_km2": 130.35,
+    "high_km2": 149.81
    }
   },
   {
@@ -1464,6 +1488,12 @@
      "high_km2": 171.97,
      "km2_per_0.1db": 1.18
     }
+   },
+   "hh_comparison": {
+    "threshold_db": -10.32,
+    "area_km2": 136.81,
+    "low_km2": 129.62,
+    "high_km2": 153.19
    }
   },
   {
@@ -1497,6 +1527,12 @@
      "high_km2": 174.21,
      "km2_per_0.1db": 1.3
     }
+   },
+   "hh_comparison": {
+    "threshold_db": -10.32,
+    "area_km2": 135.99,
+    "low_km2": 129.13,
+    "high_km2": 152.55
    }
   },
   {
@@ -1530,6 +1566,12 @@
      "high_km2": 169.82,
      "km2_per_0.1db": 1.28
     }
+   },
+   "hh_comparison": {
+    "threshold_db": -10.82,
+    "area_km2": 134.66,
+    "low_km2": 129.14,
+    "high_km2": 147.25
    }
   },
   {
@@ -1563,6 +1605,12 @@
      "high_km2": 174.21,
      "km2_per_0.1db": 1.3
     }
+   },
+   "hh_comparison": {
+    "threshold_db": -10.22,
+    "area_km2": 137.56,
+    "low_km2": 129.85,
+    "high_km2": 155.13
    }
   },
   {
@@ -1596,6 +1644,12 @@
      "high_km2": 179.2,
      "km2_per_0.1db": 1.38
     }
+   },
+   "hh_comparison": {
+    "threshold_db": -10.42,
+    "area_km2": 135.48,
+    "low_km2": 128.87,
+    "high_km2": 151.2
    }
   }
  ],

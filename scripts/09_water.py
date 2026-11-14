@@ -61,6 +61,7 @@ def main() -> int:
         raise SystemExit("Run scripts/08_offsets.py first: offsets must be explicit, never implicit.")
     offsets = json.loads(offsets_path.read_text(encoding="utf-8"))
     hv_offsets = {row["date"]: float(row["offset_dB"]) for row in offsets["offsets"] if row["pol"] == POL}
+    hh_offsets = {row["date"]: float(row["offset_dB"]) for row in offsets["offsets"] if row["pol"] == "HH"}
 
     print(f"AOI {area.name}: {len(scenes)} dates, polarization {POL}, 20 m pixels (400 m2)")
     print(f"Offset correction: explicit, from offsets.json (land median, reference {offsets['reference_date']})")
@@ -80,6 +81,19 @@ def main() -> int:
 
     # ---- Method B and C and D: per date -------------------------------------------------------
     results = {"A": {}, "B": {}, "C": {}, "D": {}}
+    # HH is kept for comparison only: per-image Otsu on HH (the earlier method), so the app can show
+    # why HH is unreliable for water. The HV land-cut rule does not transfer to HH.
+    hh_results = {}
+    for scene in scenes:
+        hh_db = change.speckle_filter(change.power_to_db(scene.power("HH")), *SPECKLE)
+        hh_db = hh_db - float(hh_offsets.get(scene.date, 0.0))
+        hh_thr = change.otsu_threshold(hh_db)
+        if np.isfinite(hh_thr):
+            hh_area, low, high = water.area_band(hh_db, hh_thr, half_width_db=BAND_DB, pixel_size_m=20.0)
+            hh_results[scene.date] = {"threshold_db": round(float(hh_thr), 2), "area_km2": round(hh_area, 2),
+                                      "low_km2": round(low, 2), "high_km2": round(high, 2)}
+        else:
+            hh_results[scene.date] = {"threshold_db": None, "area_km2": None, "low_km2": None, "high_km2": None}
     rng = np.random.default_rng(42)
     for scene in scenes:
         day = scene.date
@@ -247,6 +261,7 @@ def main() -> int:
             {
                 "date": d,
                 "methods": {key: results[key][d] for key in results},
+                "hh_comparison": hh_results[d],
             }
             for d in dates
         ],

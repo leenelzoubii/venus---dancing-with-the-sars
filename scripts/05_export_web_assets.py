@@ -63,6 +63,7 @@ def main() -> int:
     ap.add_argument("--patch-log", type=Path, default=None,
                     help="CSV with Leyan's human columns to merge into patches (optional).")
     ap.add_argument("--outdir", type=Path, default=WEB_DATA)
+    ap.add_argument("--patches-tag", default="", help="Use patches<TAG>.geojson, e.g. _sensitive (labelled in the output).")
     args = ap.parse_args()
 
     area = load_study_area(args.aoi, args.aoi_wkt)
@@ -249,7 +250,7 @@ def main() -> int:
         "crid": meta.get("crid"),
     }
 
-    patches_out = export_patches(DOCS, INTERIM, args.patch_log)
+    patches_out = export_patches(DOCS, INTERIM, args.patch_log, args.patches_tag, float(area.patches.get("threshold_db", 3.0)))
 
     manifest = {
         "generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -320,22 +321,87 @@ def write_pair(outdir: Path, stem: str, key: str, payload) -> None:
     wx.write_js(outdir / f"{stem}.js", key, payload)
 
 
-def export_patches(docs: Path, interim: Path, patch_log: Path | None) -> dict:
-    geo_path = interim / "patches.geojson"
+ALLOWED_VALUES = {
+    "confidence": {"", "low", "medium", "high"},
+    "use_in_pitch": {"", "yes", "no"},
+}
+BEHAVIOUR_HINTS = {"", "gradual", "step", "flicker"}
+
+
+def validate_patch_log(path: Path) -> tuple[list[str], list[str]]:
+    """Check the analyst's CSV before trusting any cell of it. Returns (errors, warnings).
+
+    Rules are enforced rather than guessed: a wrong confidence word is reported, never coerced.
+    ``behaviour`` is free text on purpose (Leyan may write a phrase), so an unexpected word is a
+    warning, not an error.
+    """
+    errors: list[str] = []
+    warnings: list[str] = []
+    try:
+        raw = path.read_bytes()
+        raw.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        return [f"{path.name} is not valid UTF-8: {exc}"], warnings
+
+    with open(path, encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        missing = [c for c in ["patch_id", *HUMAN_COLUMNS] if c not in (reader.fieldnames or [])]
+        if missing:
+            return [f"{path.name} is missing columns: {', '.join(missing)}"], warnings
+        seen = set()
+        for number, row in enumerate(reader, start=2):
+            pid = (row.get("patch_id") or "").strip()
+            if not pid:
+                errors.append(f"row {number}: empty patch_id")
+                continue
+            if pid in seen:
+                errors.append(f"row {number}: duplicate patch_id {pid}")
+            seen.add(pid)
+            for column, allowed in ALLOWED_VALUES.items():
+                value = (row.get(column) or "").strip().lower()
+                if value not in allowed:
+                    errors.append(f"row {number} ({pid}): {column}={value!r} not one of {sorted(allowed)}")
+            behaviour = (row.get("behaviour") or "").strip().lower()
+            if behaviour and behaviour not in BEHAVIOUR_HINTS:
+                warnings.append(f"row {number} ({pid}): behaviour={behaviour!r} is unusual (expected gradual/step/flicker)")
+            if (row.get("hypothesis") or "").strip() and not (row.get("confidence") or "").strip():
+                warnings.append(f"row {number} ({pid}): hypothesis given without a confidence word")
+    return errors, warnings
+
+
+def export_patches(docs: Path, interim: Path, patch_log: Path | None, tag: str = "", threshold_db: float = 3.0) -> dict:
+    geo_path = interim / f"patches{tag}.geojson"
     if not geo_path.exists():
         raise SystemExit("Run scripts/04b_find_patches.py first.")
     geojson = json.loads(geo_path.read_text(encoding="utf-8"))
     rounded = wx.round_geojson(geojson, decimals=6)
 
-    human = {}
+    human: dict[str, dict[str, str]] = {}
+    log_status = {"merged": False, "errors": [], "warnings": [], "filled_rows": 0}
     if patch_log is not None:
         if not patch_log.exists():
             raise SystemExit(f"--patch-log not found: {patch_log}")
+        errors, warnings = validate_patch_log(patch_log)
+        log_status["errors"] = errors
+        log_status["warnings"] = warnings
+        if errors:
+            print(f"\nPATCH LOG ERRORS in {patch_log.name} - refusing to merge that file:")
+            for message in errors:
+                print(f"  ERROR {message}")
+            raise SystemExit("Fix the patch log and re-run. Nothing was guessed.")
+        for message in warnings:
+            print(f"  WARNING {message}")
         with open(patch_log, encoding="utf-8", newline="") as handle:
             for row in csv.DictReader(handle):
-                human[row["patch_id"]] = {c: row.get(c, "") for c in HUMAN_COLUMNS}
+                values = {c: (row.get(c) or "").strip() for c in HUMAN_COLUMNS}
+                human[row["patch_id"].strip()] = values
+                if any(values.values()):
+                    log_status["filled_rows"] += 1
+        log_status["merged"] = True
+        print(f"Patch log merged: {log_status['filled_rows']} row(s) carry human input "
+              f"out of {len(human)} listed.")
 
-    series_path = interim / "patch_timeseries.csv"
+    series_path = interim / f"patch_timeseries{tag}.csv"
     series: dict[str, list] = {}
     if series_path.exists():
         with open(series_path, encoding="utf-8", newline="") as handle:
@@ -348,10 +414,15 @@ def export_patches(docs: Path, interim: Path, patch_log: Path | None) -> dict:
         props["timeseries"] = series.get(pid, [])
         for column in HUMAN_COLUMNS:
             props[column] = human.get(pid, {}).get(column, "")
+        # "yes" is the only value that features a patch; anything else stays out of the spotlight.
+        props["use_in_pitch"] = "yes" if props["use_in_pitch"].strip().lower() == "yes" else ""
     return {
         "generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "patch_log_merged": bool(patch_log),
-        "detection_rule": "see scripts/04b_find_patches.py and config/study_area.yaml patches:",
+        "patch_log_merged": log_status["merged"],
+        "patch_log_status": log_status,
+        "featured": [f["properties"]["id"] for f in rounded["features"] if f["properties"]["use_in_pitch"] == "yes"],
+        "threshold_db": threshold_db,
+        "detection_rule": "configured rule (config/study_area.yaml patches:)" if not tag else "SENSITIVITY RUN " + tag + " - not the configured rule",
         "count": len(rounded["features"]),
         "geojson": rounded,
     }

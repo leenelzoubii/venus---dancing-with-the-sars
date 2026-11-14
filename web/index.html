@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Team Venus: Seeing the Dead Sea through the clouds</title>
   <meta name="description" content="NISAR L-band radar change over the Dead Sea east shore, Jordan. PROVISIONAL data.">
-  <!-- Progressive enhancement only: the app is fully usable with the system fonts below. -->
+  <!-- Progressive enhancement only: everything works with the system fonts below, offline. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap">
@@ -25,13 +25,25 @@
 
   <main class="layout" id="main">
 
-    <!-- Map first in the DOM, so on narrow screens it comes first; grid placement handles wide screens. -->
     <section class="map-region" aria-labelledby="map-heading">
       <h2 id="map-heading" class="visually-hidden" data-i18n="map_label">Map of the Dead Sea east shore showing NISAR radar layers</h2>
       <div id="map" class="map" role="region" aria-labelledby="map-heading" tabindex="0"></div>
+
+      <!-- Swipe divider: a focusable slider over the map. Pointer, touch and arrow keys all move it. -->
+      <div id="swipe-divider" class="swipe-divider" role="slider" tabindex="0" hidden
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50%"
+           data-i18n-label="swipe_divider" aria-label="Swipe divider position">
+        <span class="swipe-grip" aria-hidden="true"></span>
+      </div>
+      <p id="swipe-tag-left" class="date-tag date-tag-left" hidden></p>
+      <p id="swipe-tag-right" class="date-tag date-tag-right" hidden></p>
+
       <p id="basemap-notice" class="notice" role="status" hidden></p>
+      <p id="layer-note" class="notice layer-note" role="status" hidden></p>
+      <p id="outage-note" class="notice outage-note" role="status" hidden data-i18n="outage_note">Instrument outage.</p>
+
       <div id="debug-panel" class="debug-panel" hidden>
-        <p class="debug-title" data-i18n="debug_on">Debug mode is on: bounds, crosshair and opacity controls are shown.</p>
+        <p class="debug-title" data-i18n="debug_on">Debug mode is on.</p>
         <label class="debug-row">
           <span data-i18n="debug_opacity">Overlay opacity</span>
           <input id="debug-opacity" type="range" min="0" max="100" step="5" value="85">
@@ -49,37 +61,28 @@
     </section>
 
     <section class="controls" aria-labelledby="controls-heading">
-      <h2 id="controls-heading" class="section-title" data-i18n="controls_label">Layer and date controls</h2>
+      <h2 id="controls-heading" class="section-title" data-i18n="controls_label">Layer, date and comparison controls</h2>
 
       <fieldset class="field">
         <legend class="field-label" data-i18n="layer_group">Layer</legend>
         <div class="choice-group">
-          <label class="choice">
-            <input type="radio" name="layer" value="backscatter" checked>
-            <span data-i18n="layer_backscatter">Radar backscatter</span>
-          </label>
-          <label class="choice">
-            <input type="radio" name="layer" value="change">
-            <span data-i18n="layer_change">Change map</span>
-          </label>
-          <label class="choice">
-            <input type="radio" name="layer" value="water">
-            <span data-i18n="layer_water">Water mask (HV)</span>
-          </label>
+          <label class="choice"><input type="radio" name="layer" value="backscatter" checked><span data-i18n="layer_backscatter">Radar backscatter</span></label>
+          <label class="choice"><input type="radio" name="layer" value="change"><span data-i18n="layer_change">Change map</span></label>
+          <label class="choice"><input type="radio" name="layer" value="water"><span data-i18n="layer_water">Water mask (HV)</span></label>
         </div>
+        <label class="choice choice-check" id="band-toggle-wrap" hidden>
+          <input type="checkbox" id="band-toggle"><span data-i18n="band_toggle">Show detection limit (amber band)</span>
+        </label>
+        <label class="choice choice-check">
+          <input type="checkbox" id="patches-toggle"><span data-i18n="patches_toggle">Show candidate patches</span>
+        </label>
       </fieldset>
 
       <fieldset class="field">
         <legend class="field-label" data-i18n="pol_group">Polarization</legend>
         <div class="seg">
-          <label class="choice">
-            <input type="radio" name="pol" value="HV" checked>
-            <span data-i18n="pol_hv">HV</span>
-          </label>
-          <label class="choice">
-            <input type="radio" name="pol" value="HH">
-            <span data-i18n="pol_hh">HH</span>
-          </label>
+          <label class="choice"><input type="radio" name="pol" value="HV" checked><span data-i18n="pol_hv">HV</span></label>
+          <label class="choice"><input type="radio" name="pol" value="HH"><span data-i18n="pol_hh">HH</span></label>
         </div>
         <p class="hint" id="pol-hint"></p>
       </fieldset>
@@ -87,11 +90,39 @@
       <div class="field">
         <label class="field-label" for="date-select" data-i18n="date_label">Acquisition date</label>
         <select id="date-select" class="select"></select>
+        <label class="field-label" for="time-range" data-i18n="time_label">Step through the series</label>
+        <input type="range" id="time-range" class="range" min="0" max="0" step="1" value="0">
+        <ol id="time-ticks" class="time-ticks" aria-hidden="true"></ol>
+        <div class="play-row">
+          <button type="button" id="play-btn" class="btn" aria-pressed="false" data-i18n="play">Play</button>
+          <label class="choice choice-check"><input type="checkbox" id="loop-toggle"><span data-i18n="loop_label">Loop</span></label>
+        </div>
+        <p class="hint" id="play-hint" data-i18n="play_hint"></p>
       </div>
+
+      <fieldset class="field">
+        <legend class="field-label" data-i18n="swipe_toggle">Compare two states (swipe)</legend>
+        <label class="choice choice-check">
+          <input type="checkbox" id="swipe-toggle"><span data-i18n="swipe_toggle">Compare two states (swipe)</span>
+        </label>
+        <p class="hint" id="swipe-hint" data-i18n="swipe_hint" hidden></p>
+        <div id="swipe-controls" class="swipe-controls" hidden>
+          <label class="field-label" for="left-date" data-i18n="swipe_left_label">Left (before): date</label>
+          <select id="left-date" class="select"></select>
+          <label class="field-label" for="left-layer" data-i18n="swipe_left_layer">Left (before): layer</label>
+          <select id="left-layer" class="select">
+            <option value="backscatter">Radar backscatter</option>
+            <option value="change">Change map</option>
+            <option value="water">Water mask (HV)</option>
+          </select>
+          <label class="field-label" for="swipe-range" data-i18n="swipe_divider">Swipe divider position</label>
+          <input type="range" id="swipe-range" class="range" min="0" max="100" step="1" value="50">
+        </div>
+      </fieldset>
     </section>
 
     <aside class="panel" aria-labelledby="panel-heading">
-      <h2 id="panel-heading" class="visually-hidden" data-i18n="panel_label">Legend, layer information and limitations</h2>
+      <h2 id="panel-heading" class="visually-hidden" data-i18n="panel_label">Legend, charts, explanations and limits</h2>
 
       <section class="card" aria-labelledby="legend-heading">
         <h3 id="legend-heading" class="card-title" data-i18n="legend_title">Legend</h3>
@@ -99,30 +130,68 @@
         <div id="legend-bar" class="legend-bar" role="img" aria-label=""></div>
         <div id="legend-ticks" class="legend-ticks"></div>
         <p id="legend-caption" class="legend-caption"></p>
-        <p id="layer-note" class="note" role="status" hidden></p>
+        <p id="legend-extra" class="legend-caption"></p>
       </section>
 
       <details class="card" open>
         <summary data-i18n="info_title">Layer information</summary>
-        <p class="muted" data-i18n="info_intro">Everything below is read from the data manifest for the layer you are viewing.</p>
+        <p class="muted" data-i18n="info_intro">Everything below is read from the data manifest.</p>
         <dl id="layer-info" class="info-list"></dl>
         <h4 class="sub-title" data-i18n="info_steps">Processing steps</h4>
         <ol id="layer-steps" class="steps"></ol>
       </details>
 
+      <details class="card" id="patch-panel">
+        <summary data-i18n="patches_toggle">Candidate patches</summary>
+        <h4 class="sub-title" data-i18n="featured_title">Featured patches</h4>
+        <ul id="featured-list" class="featured-list"></ul>
+        <div id="patch-body"><p class="muted" data-i18n="patch_none_selected">Click a numbered patch on the map.</p></div>
+      </details>
+
+      <details class="card" id="area-panel" open>
+        <summary data-i18n="chart_area_title">Water area per date</summary>
+        <div id="area-chart" class="chart-wrap"></div>
+        <p id="area-axis-note" class="muted"></p>
+        <p id="area-legend" class="muted"></p>
+        <p id="detection-text" class="verdict" data-i18n="detection_fallback">The summary appears once the statistics load.</p>
+        <details class="card-inner">
+          <summary data-i18n="chart_table_caption">Values behind the chart</summary>
+          <table class="data-table" id="area-table">
+            <caption data-i18n="chart_table_caption">Water area values behind the chart</caption>
+            <thead><tr><th scope="col" data-i18n="chart_th_date">Date</th><th scope="col" data-i18n="chart_th_hv">HV km2 (low to high)</th><th scope="col" data-i18n="chart_th_hh">HH km2 (not reliable)</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </details>
+      </details>
+
+      <details class="card" id="offset-panel">
+        <summary data-i18n="offset_title">Scene offset between dates</summary>
+        <div id="offset-chart" class="chart-wrap"></div>
+        <p class="muted" id="offset-legend"></p>
+        <p data-i18n="offset_text">The offset is the land median of each date minus the reference date.</p>
+        <p class="muted" id="offset-mad"></p>
+      </details>
+
+      <details class="card">
+        <summary data-i18n="accordion_title">Radar in one minute</summary>
+        <ul class="explainer">
+          <li data-i18n="accordion_water_dark"></li>
+          <li data-i18n="accordion_rough_bright"></li>
+          <li data-i18n="accordion_hv"></li>
+          <li data-i18n="accordion_hh"></li>
+          <li data-i18n="accordion_pol"></li>
+          <li data-i18n="accordion_venus"></li>
+        </ul>
+      </details>
+
       <details class="card">
         <summary data-i18n="whatis_title">What am I looking at?</summary>
-        <p data-i18n="whatis_body">This is radar, not a photograph.</p>
+        <p data-i18n="whatis_body"></p>
       </details>
 
       <details class="card">
-        <summary data-i18n="detection_title">How sure are these numbers?</summary>
-        <p id="detection-text" data-i18n="detection_body_fallback">The detection summary will appear here once the water statistics are loaded.</p>
-      </details>
-
-      <details class="card">
-        <summary data-i18n="limits_title">Limitations, stated plainly</summary>
-        <p data-i18n="limits_body">Only one satellite track is used.</p>
+        <summary data-i18n="limits_title">Honest limits</summary>
+        <p data-i18n="limits_body"></p>
       </details>
     </aside>
 
@@ -130,21 +199,36 @@
 
   <section class="story-strip" aria-labelledby="story-heading">
     <h2 id="story-heading" class="section-title" data-i18n="story_title">Story mode</h2>
-    <p data-i18n="story_placeholder">Guided story steps arrive in the next build.</p>
+    <p id="story-intro" class="story-intro" data-i18n="story_intro">Six steps through what NISAR shows.</p>
+    <div class="story-idle" id="story-idle">
+      <button type="button" class="btn" id="story-start" data-i18n="story_start">Start the story</button>
+      <p class="muted story-hint" data-i18n="story_exit_hint">Press Escape to leave the story at any time.</p>
+    </div>
+    <div id="story-run" hidden>
+      <p id="story-progress" class="story-progress" aria-live="polite"></p>
+      <div class="story-nav">
+        <button type="button" class="btn btn-quiet" id="story-prev" data-i18n="story_prev">Previous</button>
+        <button type="button" class="btn btn-quiet" id="story-exit" data-i18n="story_exit">Exit story</button>
+        <button type="button" class="btn" id="story-next" data-i18n="story_next">Next</button>
+      </div>
+      <h3 id="story-step-title" class="story-step-title"></h3>
+      <p id="story-step-body" class="story-step-body"></p>
+      <ol id="story-dots" class="story-dots" aria-hidden="true"></ol>
+    </div>
   </section>
 
   <footer class="site-footer">
     <p id="footer-credit" class="credit"></p>
     <p data-i18n="footer_licence">Code licence: see the LICENSE file in the repository.</p>
     <p data-i18n="footer_nonendorsement">NASA does not endorse any non-U.S. Government entity or this project.</p>
-    <p class="credit" id="footer-basemap"></p>
+    <p class="credit" data-i18n="basemap_attribution">Basemap attribution.</p>
   </footer>
 
   <noscript>
     <p class="notice">This page needs JavaScript to draw the map.</p>
   </noscript>
 
-  <!-- Classic scripts only, in dependency order. No modules, no fetch(): this works from file://. -->
+  <!-- Classic scripts only, in dependency order. No modules, no fetch(): works from file://. -->
   <script src="js/strings.js"></script>
   <script src="data/manifest.js"></script>
   <script src="data/water_stats.js"></script>
@@ -152,6 +236,7 @@
   <script src="data/patches.js"></script>
   <script src="data/license_and_attribution.js"></script>
   <script src="vendor/leaflet/leaflet.js"></script>
+  <script src="js/charts.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/app.js"></script>
 </body>

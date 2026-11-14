@@ -352,3 +352,235 @@ details[open] > summary::before { content: "-"; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
+
+/* ================================================================== Hour 4 additions */
+
+/* ---------- buttons and range inputs (44 px touch targets) ---------- */
+
+.btn {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.45rem 1rem;
+  border: 1px solid var(--gold);
+  border-radius: var(--radius);
+  background: #1a2f55;
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn:hover { background: #22396a; }
+.btn[aria-pressed="true"] { background: var(--gold); color: #0B1B3A; }
+.btn-quiet { border-color: var(--border); background: transparent; margin-top: 0.6rem; }
+
+.range {
+  width: 100%;
+  min-height: 44px;
+  accent-color: var(--gold);
+  background: transparent;
+}
+
+.play-row { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+.play-row .choice { flex: 0 0 auto; }
+
+.choice-check { min-height: 44px; }
+
+.time-ticks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.66rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  gap: 2px;
+}
+.time-ticks li { flex: 1 1 0; text-align: center; min-width: 0; overflow: hidden; text-overflow: clip; }
+.time-ticks li.after-gap { border-left: 2px solid var(--gold); padding-left: 2px; }
+
+.swipe-controls { display: flex; flex-direction: column; gap: 0.45rem; margin-top: 0.5rem; }
+
+/* ---------- swipe divider and date tags ---------- */
+
+.swipe-divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 44px;
+  transform: translateX(-50%);
+  cursor: ew-resize;
+  touch-action: none;
+  z-index: 750;
+  display: flex;
+  justify-content: center;
+}
+.swipe-divider[hidden] { display: none; }
+.swipe-divider::before {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0; left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+}
+.swipe-grip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 36px;
+  height: 36px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--gold);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+.swipe-divider:focus-visible { outline: 3px solid var(--gold); outline-offset: 0; }
+
+.date-tag {
+  position: absolute;
+  bottom: 2.4rem;
+  z-index: 760;
+  margin: 0;
+  padding: 0.3rem 0.55rem;
+  background: rgba(7, 19, 43, 0.92);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 0.78rem;
+  max-width: 46%;
+  pointer-events: none;
+}
+.date-tag[hidden] { display: none; }
+.date-tag-left { left: 0.6rem; }
+.date-tag-right { right: 0.6rem; text-align: right; }
+
+/* ---------- notices stacked over the map ---------- */
+
+.layer-note { bottom: 2.4rem; left: 0.6rem; max-width: min(460px, 86%); }
+.outage-note { top: 0.6rem; left: 50%; transform: translateX(-50%); max-width: min(520px, 90%); text-align: center; border-color: var(--gold); }
+
+/* ---------- legend extras ---------- */
+
+.legend-extra-text { margin: 0; font-size: 0.8rem; color: var(--muted); }
+
+/* ---------- charts ---------- */
+
+.chart-wrap { width: 100%; margin: 0.5rem 0; }
+.chart { display: block; width: 100%; height: auto; }
+.chart-tick { fill: var(--muted); font-size: 11px; font-family: var(--font-body); }
+.chart-shade-label { fill: var(--muted); font-size: 11px; font-family: var(--font-body); }
+.verdict { color: var(--text) !important; font-size: 0.85rem; border-left: 3px solid var(--gold); padding-left: 0.6rem; }
+
+.data-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; margin-top: 0.4rem; }
+.data-table caption { text-align: left; color: var(--muted); padding-bottom: 0.3rem; }
+.data-table th, .data-table td { border-bottom: 1px solid var(--border); padding: 0.3rem 0.25rem; text-align: left; color: var(--text); }
+.data-table th { color: var(--muted); font-weight: 600; }
+
+.card-inner { background: var(--panel); border: 1px dashed var(--border); border-radius: 8px; padding: 0.4rem 0.6rem; margin-top: 0.6rem; }
+
+.explainer { margin: 0.4rem 0 0; padding-left: 1.1rem; font-size: 0.85rem; color: var(--text); }
+.explainer li { margin-bottom: 0.5rem; }
+
+/* ---------- patch markers ---------- */
+
+.patch-icon span {
+  display: inline-block;
+  min-width: 32px;
+  text-align: center;
+  padding: 1px 5px;
+  border-radius: 999px;
+  background: #0B1B3A;
+  border: 2px solid var(--gold);
+  color: var(--gold);
+  font-family: var(--font-head);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+}
+.patch-icon:focus-visible span { outline: 3px solid #fff; outline-offset: 2px; }
+.leaflet-marker-icon.patch-icon { background: transparent; border: 0; }
+
+/* ---------- small screens: keep sliders and map usable by touch ---------- */
+
+@media (max-width: 600px) {
+  .title { font-size: 0.95rem; }
+  .map { height: 52vh; min-height: 320px; }
+  .time-ticks { font-size: 0.56rem; }
+  .date-tag { font-size: 0.7rem; }
+}
+
+/* ================================================================== Hour 5: story, featured, loading */
+
+.story-strip { min-height: 96px; }
+.story-intro { margin: 0.35rem 0 0.6rem; color: var(--muted); font-size: 0.88rem; }
+.story-idle { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.story-hint { margin: 0; font-size: 0.78rem; }
+
+.story-progress {
+  margin: 0.35rem 0 0.4rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.story-nav { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+.story-nav .btn { min-height: 40px; }
+.story-nav .btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+.story-step-title { font-size: 1.05rem; margin: 0.2rem 0 0.3rem; }
+.story-step-body { margin: 0 0 0.6rem; max-width: 70ch; color: var(--text); }
+
+.story-dots { display: flex; gap: 0.35rem; list-style: none; margin: 0; padding: 0; }
+.story-dots li {
+  width: 22px; height: 4px; border-radius: 2px;
+  background: var(--border);
+}
+.story-dots li.active { background: var(--gold); }
+
+.featured-list { list-style: none; margin: 0.3rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; }
+.featured-btn { text-align: left; width: 100%; }
+
+/* ---------- first-load indicator ---------- */
+
+#map.is-loading::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 42px; height: 42px;
+  margin: -21px 0 0 -21px;
+  border-radius: 50%;
+  border: 3px solid rgba(226, 184, 98, 0.25);
+  border-top-color: var(--gold);
+  animation: venus-spin 0.9s linear infinite;
+  z-index: 900;
+  pointer-events: none;
+}
+@keyframes venus-spin { to { transform: rotate(360deg); } }
+.loading-text {
+  position: absolute;
+  left: 50%; top: calc(50% + 32px);
+  transform: translateX(-50%);
+  z-index: 900;
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+  background: rgba(7, 19, 43, 0.9);
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+}
+@media (prefers-reduced-motion: reduce) {
+  #map.is-loading::after { animation: none; border-top-color: var(--gold); }
+}
+
+/* ---------- logical properties so an RTL locale mirrors correctly ---------- */
+
+.date-tag-left { inset-inline-start: 0.6rem; inset-inline-end: auto; }
+.date-tag-right { inset-inline-start: auto; inset-inline-end: 0.6rem; }
+.layer-note { inset-inline-start: 0.6rem; }
+.controls { border-inline-end: 1px solid var(--border); }
+.panel { border-inline-start: 1px solid var(--border); }
+.info-list dt { text-align: start; }
+.verdict { border-inline-start: 3px solid var(--gold); padding-inline-start: 0.6rem; padding-left: 0; }
