@@ -1,0 +1,47 @@
+# Team Venus — study areas and data filters
+# Every script takes --aoi <name> (or --aoi-wkt "POLYGON((...))" for a one-off fallback).
+# Coordinates are WGS84 (EPSG:4326), longitude latitude order, as in ASF Vertex.
+
+active_aoi: dead_sea_east          # the AOI used by default (tonight's Gate 1)
+
+aois:
+  - name: dead_sea_east
+    title: "Dead Sea — Jordanian east shore"
+    story: >
+      The east shore between Suweimeh and Ghor Haditha, just north of the Lisan peninsula.
+      Two stories in one frame: shoreline retreat as the lake level falls, and the sinkhole belt
+      on the Ghor Haditha plain. 100% Jordanian shore, inside the 12-day descending stack.
+    # ~11 x 24 km -> about 550 x 1200 pixels at 20 m GCOV spacing.
+    wkt: "POLYGON((35.500 31.340, 35.600 31.340, 35.600 31.560, 35.500 31.560, 35.500 31.340))"
+
+  # --- Candidate additions: uncomment/promote once the team decides -------------
+  # - name: dead_sea_ponds
+  #   title: "Dead Sea — south evaporation ponds (Safi)"
+  #   story: "Industrial potash ponds; very strong backscatter contrast between water and salt crust."
+  #   wkt: "POLYGON((35.440 31.070, 35.560 31.070, 35.560 31.260, 35.440 31.260, 35.440 31.070))"
+
+  # - name: azraq_wetland
+  #   title: "Azraq wetland"
+  #   story: "Ramsar wetland shrunk by groundwater abstraction; small features vs 20 m pixels."
+  #   wkt: "POLYGON((36.780 31.790, 36.870 31.790, 36.870 31.880, 36.780 31.880, 36.780 31.790))"
+
+# --- Search filters (verified against the NISAR Data User Guide, Nov 2026) -------
+search:
+  dataset: NISAR            # asf_search dataset keyword
+  processing_level: GCOV    # L2 geocoded polarimetric covariance (backscatter)
+  data_maturity: PROVISIONAL  # PROVISIONAL | VALIDATED | BETA  (never mix within one series)
+  start: "2026-06-17"       # first day of PROVISIONAL forward processing
+  end: null                 # null = today
+  # Preferred geometry, verified to give 9 PROVISIONAL dates over the Dead Sea:
+  track: 151                # relative orbit
+  frame: 73
+  flight_direction: DESCENDING
+
+# --- Processing parameters ------------------------------------------------------
+processing:
+  polarization: HH          # primary analysis layer; HV kept for comparison
+  comparison_polarizations: [HH, HV]
+  db: "10*log10(power)"     # GCOV diagonal terms are gamma-0 POWER, not amplitude
+  speckle_filter: median    # median | boxcar | lee  (document the choice and size)
+  speckle_window: 5         # pixels
+  clip_percentiles: [2, 98] # display stretch

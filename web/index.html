@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Team Venus — Seeing the Dead Sea through the clouds</title>
+    <style>
+      :root { color-scheme: dark; }
+      html, body { margin: 0; height: 100%; }
+      body {
+        display: grid; place-items: center;
+        background: #08090f radial-gradient(60% 60% at 50% 30%, #17203a 0%, #08090f 70%);
+        color: #e8ecf5;
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      }
+      main { max-width: 42rem; padding: 2rem; text-align: center; }
+      h1 { font-size: clamp(1.5rem, 4vw, 2.4rem); font-weight: 600; letter-spacing: 0.01em; margin: 0 0 0.75rem; }
+      p { line-height: 1.6; color: #b9c2d6; margin: 0 0 1rem; }
+      .status {
+        display: inline-block; margin-top: 1rem; padding: 0.4rem 0.8rem;
+        border: 1px solid #33405e; border-radius: 999px;
+        font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8fa3c9;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Seeing the Dead Sea through the clouds</h1>
+      <p>
+        Radar sees what light cannot. This app will show the Jordanian shore of the Dead Sea as NISAR
+        saw it every twelve days through the 2026 science phase.
+      </p>
+      <p>
+        The map, the before/after swipe and the change layer are built from pre-computed static layers, so
+        this page needs no server and no network.
+      </p>
+      <span class="status">Placeholder — map lands after Gate 1</span>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+# Team Venus - NASA Space Apps 2026 - "Dancing with the SARs"
+# Python 3.12. Install with:  .venv\Scripts\python -m pip install -r requirements.txt
+# After a successful install, regenerate the exact lock file with:
+#   .venv\Scripts\python -m pip freeze > requirements.lock.txt
+# The lock file is what makes the build reproducible; this file states intent.
+
+# --- NISAR / NASA data access -------------------------------------------------
+asf_search>=8.0            # ASF DAAC search + download (NISAR support evolves fast)
+earthaccess>=0.14          # Earthdata Login + Earthdata Cloud / S3 access
+fsspec>=2024.6             # remote file systems (byte-range streaming)
+aiohttp>=3.9               # async HTTP used for EDL-authenticated streaming
+h5netcdf>=1.3              # netCDF4-flavoured access to NISAR HDF5 over fsspec
+requests>=2.31
+
+# --- HDF5 / raster / array ----------------------------------------------------
+h5py>=3.11                 # read NISAR .h5 structure directly
+netCDF4>=1.6               # NISAR encodes CRS with CF/netCDF conventions
+numpy>=1.26
+scipy>=1.12
+xarray>=2024.6
+rioxarray>=0.15
+rasterio>=1.3.10           # bundles GDAL -> /vsicurl/ windowed reads of NISAR .h5
+scikit-image>=0.23
+
+# --- vector / geometry --------------------------------------------------------
+pandas>=2.2
+geopandas>=0.14
+shapely>=2.0
+pyproj>=3.6
+
+# --- plotting / export --------------------------------------------------------
+matplotlib>=3.8
+pillow>=10.3
+pyyaml>=6.0
+tqdm>=4.66
+
+# --- exploration / notebooks --------------------------------------------------
+jupyterlab>=4.1
+ipykernel>=6.29
+folium>=0.16
