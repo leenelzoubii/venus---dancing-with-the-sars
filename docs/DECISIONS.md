@@ -482,3 +482,28 @@ no water series.
 ## 2026-11-14 - Not pushed
 
 Committed locally only. The standing rule requires the exact phrase `PUSH APPROVED` in the message that asks for a push.
+
+## 2026-11-14 late - Imagery, CRS and basemaps
+
+**CRS root cause.** `webexport.py` hard-coded EPSG:32636, but NISAR geocodes each frame in the zone
+chosen for that frame: Azraq and Wadi Rum are 37N. Every layer of those places was therefore drawn
+exactly 6 degrees (one zone) west. The source CRS is now always the cached subset's recorded
+projection (`epsg`/`crs_wkt`), never a constant; `03b` picks the zone from the product's own x/y
+coordinates rather than from an assumed zone. G0 in the validator fails the build if an overlay
+centre is more than 5 km outside its AOI.
+
+**Two chains.** The 60 m multilook + median analysis chain is untouched and still produces every
+number. A new display chain (`src/venus/display.py`) uses native 20 m power, one NaN-safe bilinear
+warp to EPSG:3857 at about 10-12 m, and pooled 2-98 % dB limits; the RGB recipe itself is unchanged.
+
+**One crop rectangle per place.** The AOI bbox (+5 % margin when it is already valid) is trimmed on
+whichever side is least valid until at least 99.5 % of the rectangle is valid, and every layer of
+the place uses that rectangle, so swipe and compare align and there are no transparent corners.
+
+**Basemaps.** Default dark = Esri World Dark Gray Canvas with the Esri reference (label) layer in a
+dedicated pane above the radar; optional Esri World Imagery with the Esri place-label overlay (all
+three endpoints verified 200 on 2026-11-15). The brief's first choice, CARTO dark_nolabels, now
+returns tiles stamped "API KEY REQUIRED" without an account, so it is not used. WebP encoding uses
+method 4, not 6: method 6 took 87 s per layer and method 4 stays far inside budget. Wadi Rum's
+display resolution uses the documented 1.5x-native fallback (17.2 m) to keep its layers under
+700 KB; every other place is at 2x native (11.7 m).

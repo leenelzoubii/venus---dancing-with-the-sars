@@ -64,14 +64,15 @@ VALIDATED products (CRID P05036) were **not** mixed into any series. The validat
 layer carries another CRID.
 
 Data credit: NISAR data courtesy of NASA/JPL-Caltech and ISRO, distributed by the Alaska Satellite
-Facility (ASF DAAC) and NASA Earthdata. Basemap: Esri World Imagery, displayed only, never cached or
-redistributed. NASA does not endorse any non-U.S. Government entity or this project.
+Facility (ASF DAAC) and NASA Earthdata. Basemaps: CARTO dark (OpenStreetMap contributors, CARTO) and
+Esri World Imagery with Esri place labels, displayed only, never cached or redistributed. NASA does not
+endorse any non-U.S. Government entity or this project.
 
 ## How it works
 
 ```
 Find  ->  Fetch a slice  ->  Clean  ->  Compare dates  ->  Visualise  ->  Share
-search      stream only       dB +      offset removal      static PNGs    GitHub
+search      stream only       dB +      offset removal      static WebP    GitHub
 the archive the AOI window    multilook  + difference        + JSON/JS      Pages
 ```
 
@@ -79,6 +80,16 @@ Two stages, on purpose. The pipeline runs offline in Python and writes small sta
 reads only those assets, so the demo cannot fail because of network, authentication or a processing bug.
 Fetches use GDAL `/vsicurl/` streaming with merged byte ranges: about 20 seconds per date here, against
 about 300 seconds for plain range reads, because the cost was round trips rather than megabytes.
+
+Two imaging chains now share one crop rectangle per place. The **analysis chain** keeps the 60 m
+multilook and median filter that the statistics were computed on. The **display chain** takes the native
+20 m GCOV power, reprojects it once to Web Mercator at about 10-12 m with a NaN-safe bilinear warp on
+linear power, clips each band at a dB range pooled over every date of the place, and only then applies the
+false-colour recipe. Before this change the 60 m image was reprojected with nearest neighbour and stretched
+15 times on screen, which is what made it blocky and stair-stepped; and two frames (Azraq and Wadi Rum)
+were geocoded in UTM 37N while the exporter assumed 36N, placing them exactly one zone (6 degrees) west.
+The source CRS is now always read from the cached subset's recorded projection, and the validator fails
+the build if an overlay centre is more than 5 km outside its AOI.
 
 ## How to run
 
