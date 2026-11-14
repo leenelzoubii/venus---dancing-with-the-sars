@@ -146,3 +146,17 @@ Verified from the cached windows, not from documentation:
   (jumpy). MAD 0.15-0.23 dB, so the offsets themselves are known to about +/-0.2 dB.
 - Water area, method B, nine dates: 137.8 to 139.8 km2, sd 0.77, band +/-22.7 km2. The change is
   smaller than the uncertainty.
+
+---
+
+## Basemap terms (checked 2026-11-14, Hour 3)
+
+- Service: Esri World Imagery, `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}`.
+- Verified from the service metadata (`services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer?f=pjson`):
+  copyright text "Source: Esri, Vantor, Earthstar Geographics, and the GIS User Community"; `exportTilesAllowed: false`;
+  terms of use at `goto.arcgisonline.com/maps/World_Imagery`.
+- I could not read the full terms page in this session. Before any public or commercial use, the team must read it
+  and confirm that a public hackathon demo is covered. **Open item for Leen.**
+- How the app complies with what I could verify: attribution is shown on screen; tiles are displayed only, never
+  cached, exported or redistributed; a plain fallback is shown when tiles fail.
+- Alternative if the terms are not acceptable: OpenStreetMap tiles (ODbL, attribution required).

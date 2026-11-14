@@ -1,4 +1,4 @@
-# Team Venus — Seeing the Dead Sea through the clouds
+﻿# Team Venus — Seeing the Dead Sea through the clouds
 
 > Venus, the planet of light and love, turns against the current of the other planets, and burns
 > brightest in the dark night sky. Named for a goddess, it is the light we steer by.
@@ -170,6 +170,27 @@ file:// and on GitHub Pages without a server. Wiring the web app to them is the 
 Any script that touches data accepts `--aoi <name>` (a key in `config/study_area.yaml`) or
 `--aoi-wkt "POLYGON((...))"` for a one-off area, so trying a new location never requires code changes.
 
+## Open the web app
+
+The app is plain HTML, CSS and JavaScript. There is no build step, no backend and no API key.
+
+- **Double-click** `web\index.html`. Everything the radar layers need is loaded from `web\data\*.js`
+  with ordinary `<script>` tags, so it works from `file://`.
+- **Or serve the folder** (needed only if you want the same URL that GitHub Pages uses):
+  `.\.venv\Scripts\python -m http.server 8000 --directory web`, then open `http://localhost:8000/index.html`.
+- Add `?debug=1` to the URL to show overlay bounds, a crosshair and an opacity slider.
+
+**How the data wrappers work.** Every data file is written twice by `scripts/05_export_web_assets.py`:
+`web/data/<name>.json` for people and tools, and `web/data/<name>.js` for the app. The `.js` file does
+`window.VENUS["<name>"] = {...};`, so the page reads the same content without `fetch()`. The validator
+(`scripts/06_validate_web_assets.py`) checks that the two copies match exactly.
+
+**Paths.** Layer images are listed in the manifest relative to `web/data/` (for example
+`layers/backscatter_HV_2026-10-10.png`); the app prefixes `data/`.
+
+**Basemap.** The basemap is Esri World Imagery, loaded over the network and displayed only (tiles are
+never cached or exported). If tiles cannot load, the page says "Basemap unavailable offline; radar layers
+still work." Leaflet 1.9.4 is vendored in `web/vendor/leaflet/` with its licence file.
 ## Study area
 
 `dead_sea_east` — the Jordanian east shore between Suweimeh and Ghor Haditha, just north of the Lisan

@@ -1,4 +1,4 @@
-# Decisions log
+﻿# Decisions log
 
 One entry per meaningful choice: **date — decision — reason — alternatives considered**.
 Newest at the top. If a decision is reversed, add a new entry rather than editing history.
@@ -275,3 +275,47 @@ app to web/data is Hour 3.
 
 **Reason.** The brief named it exactly, and the names are distinct. Renumbering later is cheap; a
 mismatch with the brief is not.
+
+---
+
+## 2026-11-14 - Web app v0: plain HTML/JS, classic scripts, data via window.VENUS, Leaflet 1.9.4 vendored
+
+**Decision.** The app is static HTML, CSS and vanilla JavaScript split into index.html, css/app.css,
+js/strings.js (all text), js/ui.js (panels and controls) and js/app.js (map and layers). Data are read from
+the web/data/*.js wrappers (window.VENUS), never fetch(). Leaflet 1.9.4 is vendored in web/vendor/leaflet/.
+
+**Reason.** Double-click (file://) must work, and GitHub Pages serves the same files under a sub-path. Classic
+scripts and relative paths satisfy both. Leaflet is the simplest mapping library that supports image overlays
+in Web Mercator.
+
+**Alternatives.** A framework (rejected: build step); fetch() of JSON (rejected: fails on file://).
+
+## 2026-11-14 - Overlay rules: manifest bounds only, fade in after load, drop stale loads
+
+**Decision.** Each radar image is an L.imageOverlay placed at the manifest bounds; the app never recomputes
+bounds. A new image fades in only after it has loaded, a load that is no longer wanted is discarded, and only
+the visible image and its two neighbours are requested.
+
+**Reason.** Keeps alignment exact, avoids empty flashes, prevents a stale date from appearing after a fast step,
+and keeps page weight low (about 0.3 MB on first load; 3.7 MB of layers exist, but a view fetches at most about
+0.42 MB: the visible change image plus its two neighbours, 3 x 140 KB).
+
+## 2026-11-14 - Alignment check: numbers, and one explained discrepancy
+
+**Decision.** Alignment is judged by comparing the eastern water edge in the 20 m water layer with the dark edge in
+the 60 m backscatter layer, both converted to lon/lat, and by a visual check at the middle row.
+
+**Result (2026-10-10).** North (lat 31.540): 40 m apart. South (lat 31.361): 0 m. Middle (lat 31.450): 361 m apart.
+The visual check at the middle row shows the apparent shoreline point sits on an inland dark patch that is not
+lake. So the middle difference is a false-positive blob in the water mask, not a bounds error.
+
+**Open.** About 7 to 8 percent of mapped water pixels sit outside the largest water body (06-24: 6.9 percent;
+10-10: 7.9 percent). Hypothesis: dark terrain or radar shadow on slopes. Next step: an elevation or lake-polygon
+constraint, decided with Leen. Not yet in the stats files, so it is not shown in the app.
+
+## 2026-11-14 - Esri World Imagery as the basemap, pending the team's terms check
+
+**Decision.** Use Esri World Imagery for the satellite basemap, displayed only, with on-screen attribution and an
+offline fallback. Recorded in docs/DATA_SOURCES.md. Team must confirm the full terms before public launch.
+
+**Alternative.** OpenStreetMap tiles.
