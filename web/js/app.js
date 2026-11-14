@@ -20,6 +20,13 @@
 
   // Esri World Imagery (terms: docs/DATA_SOURCES.md). Displayed only, never cached or exported.
   var BASEMAP_URL = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
+  var ESRI_LABELS_URL = "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}";
+  // Dark basemap: Esri World Dark Gray Canvas. CARTO's dark tiles were the brief's first choice, but
+  // on 2026-11-15 every tile came back stamped "API KEY REQUIRED", so they are not usable without an
+  // account. The Esri dark canvas and its reference (label) layer need no key: both verified HTTP 200
+  // (image/jpeg and image/png) on 2026-11-15.
+  var DARK_URL = "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}";
+  var DARK_LABELS_URL = "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}";
   var OPACITY = { rgb: 1, backscatter: 0.92, change: 0.9, water: 1, band: 1 };
   var PLAY_TOTAL_MS = 12000;           // the whole series plays in about 12 seconds
 
@@ -27,12 +34,22 @@
     index: 0, layer: "backscatter", pol: "HV",
     place: "dead_sea_east", swipe: false, leftIndex: 0, leftLayer: "backscatter", split: 50,
     band: false, patches: false,
-    playing: false, loop: false
+    playing: false, loop: false,
+    basemap: "dark", labels: true, aoiFrame: true, dim: true
   };
   var map = null, bounds = null, overlays = null, patchLayer = null, selectedPatch = null;
-  var slots = { main: { overlay: null, wanted: null }, left: { overlay: null, wanted: null }, band: { overlay: null, wanted: null } };
+  var slots = {
+    main: { overlay: null, preview: null, pending: null, wanted: null, timer: null },
+    left: { overlay: null, preview: null, pending: null, wanted: null, timer: null },
+    band: { overlay: null, preview: null, pending: null, wanted: null, timer: null }
+  };
   var playTimer = null;
   var debugOpacity = null;
+  var baseLayers = { dark: null, satellite: null };
+  var labelLayers = { dark: null, satellite: null };
+  var aoiLayer = null;
+  var locator = null;
+  var preload = { generation: 0, queue: [], active: 0 };
 
   /* ---------------------------------------------------------------- lookup */
 
@@ -72,8 +89,9 @@
   }
 
   // Manifest paths are relative to web/data/, so the page prefixes the data folder.
-  function imageUrl(def) {
+  function imageUrl(def, preview) {
     var placeName = (M && M.place && M.place.name) || "dead_sea_east";
+    if (preview && def.preview) return "data/" + placeName + "/" + def.preview;
     return "data/" + placeName + "/" + def.file;
   }
 
@@ -83,85 +101,210 @@
 
   /* ------------------------------------------------------------------ map */
 
+  function placeInfo() {
+    var place = placeByName((M && M.place && M.place.name) || state.place);
+    return place || { bounds: M.bounds, title: (M.place && M.place.title) || state.place };
+  }
+
+  function aoiBounds() {
+    return L.latLngBounds(placeInfo().bounds);
+  }
+
+  // Deep-zoom limit from the real display pixel size. Past it the browser would only stretch pixels.
+  function maxZoomForManifest() {
+    var px = M.layers[0] && M.layers[0].px_size_m_3857 ? M.layers[0].px_size_m_3857 : 12;
+    return Math.max(11, Math.floor(Math.log2(156543.03 / px)) + 1);
+  }
+
   function initMap() {
     bounds = L.latLngBounds(M.bounds); // [[south, west], [north, east]] from the manifest
+    var maxZoom = maxZoomForManifest();
+    var aoi = aoiBounds();
+    var limit = L.latLngBounds(
+      [aoi.getSouth() - 0.75, aoi.getWest() - 0.75],
+      [aoi.getNorth() + 0.75, aoi.getEast() + 0.75]
+    );
     map = L.map("map", {
-      minZoom: 10,
-      maxZoom: 16,
+      minZoom: 8,
+      maxZoom: maxZoom,
       zoomSnap: 0.25,
-      maxBounds: bounds.pad(0.5),
-      maxBoundsViscosity: 0.8
+      maxBounds: limit,
+      maxBoundsViscosity: 0.7,
+      zoomControl: true
     });
-    // Panes make the stacking explicit: left, after and band images, then patches on top.
-    [["radarLeft", 401], ["radarMain", 402], ["radarBand", 403], ["venusPatches", 450]].forEach(function (p) {
+    // Panes make the stacking explicit: radar images, then patches, then the label layer on top.
+    [["radarLeft", 401], ["radarMain", 402], ["radarBand", 403], ["venusPatches", 450], ["labels", 650]].forEach(function (p) {
       map.createPane(p[0]);
       map.getPane(p[0]).style.zIndex = String(p[1]);
     });
-    map.fitBounds(bounds, { padding: [12, 12] });
-    L.control.scale({ metric: true, imperial: false }).addTo(map);
+    map.getPane("labels").style.pointerEvents = "none";
+    map.fitBounds(aoi, { padding: [24, 24] });
+    L.control.scale({ metric: true, imperial: false, position: "bottomleft" }).addTo(map);
     overlays = L.layerGroup().addTo(map);
     map.on("move zoom resize moveend", applyClip);
+    map.on("mousemove", showCoords);
+    map.on("moveend", function () { showCoords({ latlng: map.getCenter() }); });
+    console.info("maxZoom from display pixel size:", maxZoom, "px", M.layers[0] && M.layers[0].px_size_m_3857);
     if (DEBUG) window.VENUS_MAP = map; // debug only
   }
 
-  function initBasemap() {
-    var reported = false;
-    var basemap = L.tileLayer(BASEMAP_URL, { attribution: UI.t("basemap_attribution"), maxZoom: 17 });
-    basemap.on("tileerror", function () {
-      if (!reported) {
-        reported = true;
-        UI.showNotice(UI.t("basemap_unavailable"));
-      }
+  function showCoords(event) {
+    var el = document.getElementById("cursor-readout");
+    if (!el || !event || !event.latlng) return;
+    var lat = event.latlng.lat;
+    var lon = event.latlng.lng;
+    el.textContent = Math.abs(lat).toFixed(4) + (lat >= 0 ? " N  " : " S  ") +
+      Math.abs(lon).toFixed(4) + (lon >= 0 ? " E" : " W");
+  }
+
+  function makeBase(kind) {
+    if (kind === "satellite") {
+      return L.tileLayer(BASEMAP_URL, { attribution: UI.t("basemap_attribution"), maxZoom: 19 });
+    }
+    return L.tileLayer(DARK_URL, {
+      attribution: UI.t("basemap_attribution_carto"),
+      maxZoom: 19
     });
-    basemap.on("tileload", function () {
-      if (reported) {
-        reported = false;
-        UI.hideNotice();
-      }
+  }
+
+  function makeLabels(kind) {
+    if (kind === "satellite") {
+      return L.tileLayer(ESRI_LABELS_URL, { pane: "labels", maxZoom: 19, opacity: 1 });
+    }
+    return L.tileLayer(DARK_LABELS_URL, { pane: "labels", maxZoom: 19, opacity: 1, attribution: UI.t("basemap_attribution_carto") });
+  }
+
+  function initBasemap() {
+    baseLayers.dark = makeBase("dark");
+    baseLayers.satellite = makeBase("satellite");
+    labelLayers.dark = makeLabels("dark");
+    labelLayers.satellite = makeLabels("satellite");
+
+    var reported = false;
+    Object.keys(baseLayers).forEach(function (kind) {
+      baseLayers[kind].on("tileerror", function () {
+        if (!reported) {
+          reported = true;
+          UI.showNotice(UI.t("basemap_unavailable"));
+        }
+      });
+      baseLayers[kind].on("tileload", function () {
+        if (reported) {
+          reported = false;
+          UI.hideNotice();
+        }
+      });
     });
     if (navigator.onLine === false) UI.showNotice(UI.t("basemap_unavailable"));
-    basemap.addTo(map);
+    applyBasemap();
+  }
+
+  function radarVisible() {
+    return !!(slots.main.overlay || slots.main.preview);
+  }
+
+  function applyBasemap() {
+    if (!map) return;
+    Object.keys(baseLayers).forEach(function (kind) {
+      if (kind === state.basemap && !map.hasLayer(baseLayers[kind])) baseLayers[kind].addTo(map);
+      if (kind !== state.basemap && map.hasLayer(baseLayers[kind])) map.removeLayer(baseLayers[kind]);
+    });
+    Object.keys(labelLayers).forEach(function (kind) {
+      var wanted = state.labels && kind === state.basemap;
+      if (wanted && !map.hasLayer(labelLayers[kind])) labelLayers[kind].addTo(map);
+      if (!wanted && map.hasLayer(labelLayers[kind])) map.removeLayer(labelLayers[kind]);
+    });
+    document.body.classList.toggle("basemap-satellite", state.basemap === "satellite");
+    document.body.classList.toggle("radar-visible", radarVisible());
+    document.body.classList.toggle("radar-dimmed", state.dim);
   }
 
   /* -------------------------------------------------------------- overlays */
 
-  // A slot holds one overlay. A new image replaces the old one only after it has loaded, and only
-  // one load may be in flight per slot, so rapid changes (story steps, fast stepping) cannot pile up.
+  // A slot holds one overlay. The tiny preview appears first; the full image replaces it only after
+  // it has loaded. One load may be in flight per slot, a 20 s timeout triggers one retry, and a
+  // failure is always visible - a spinner must never outlive its request.
+  function removeLayerQuietly(layer) {
+    if (layer && overlays.hasLayer(layer)) overlays.removeLayer(layer);
+  }
+
+  function showLoadFailure(def) {
+    UI.setLayerNote(UI.t("layer_failed", { name: def.label }));
+    var note = document.getElementById("layer-note");
+    if (!note) return;
+    var button = document.createElement("button");
+    button.type = "button";
+    button.className = "btn btn-quiet retry-btn";
+    button.textContent = UI.t("retry_layer");
+    button.addEventListener("click", function () { render(); });
+    note.appendChild(button);
+  }
+
   function setSlot(name, def, pane) {
     var slot = slots[name];
     var id = def ? def.id : null;
     slot.wanted = id;
-    if (slot.pending) {
-      overlays.removeLayer(slot.pending);
-      slot.pending = null;
-    }
+    if (slot.timer) { clearTimeout(slot.timer); slot.timer = null; }
+    removeLayerQuietly(slot.pending);
+    removeLayerQuietly(slot.preview);
+    slot.pending = null;
+    slot.preview = null;
     if (!def) {
-      if (slot.overlay) { overlays.removeLayer(slot.overlay); slot.overlay = null; }
+      removeLayerQuietly(slot.overlay);
+      slot.overlay = null;
+      applyBasemap();
       return;
     }
     if (slot.overlay && slot.overlay.options.venusId === id) { applyClip(); return; }
 
+    if (def.preview) {
+      slot.preview = L.imageOverlay(imageUrl(def, true), L.latLngBounds(def.bounds), {
+        opacity: opacityFor(def), pane: pane, className: "radar-preview", interactive: false
+      });
+      overlays.addLayer(slot.preview);
+    }
+    loadAttempt(slot, def, pane, 0);
+    applyBasemap();
+  }
+
+  function loadAttempt(slot, def, pane, attempt) {
+    var id = def.id;
     var next = L.imageOverlay(imageUrl(def), L.latLngBounds(def.bounds), {
       opacity: 0, interactive: false, alt: def.label, pane: pane, className: "radar-layer"
     });
     next.options.venusId = id;
     slot.pending = next;
-    next.on("load", function () {
+    var settled = false;
+
+    function finish(ok) {
+      if (settled) return;
+      settled = true;
+      if (slot.timer) { clearTimeout(slot.timer); slot.timer = null; }
       if (slot.pending === next) slot.pending = null;
-      if (slot.wanted !== id) { overlays.removeLayer(next); return; }
-      next.setOpacity(opacityFor(def));
-      if (slot.overlay && slot.overlay !== next) overlays.removeLayer(slot.overlay);
-      slot.overlay = next;
-      applyClip();
-    });
-    next.on("error", function () {
-      if (slot.pending === next) slot.pending = null;
-      overlays.removeLayer(next);
-      UI.setLayerNote(UI.t("error_layer", { name: def.label }));
-      document.getElementById("map").classList.remove("is-loading");
-      var stale = document.querySelector("#map .loading-text");
-      if (stale) stale.parentNode.removeChild(stale);
-    });
+      removeLayerQuietly(next);
+      if (slot.wanted !== id) return;
+      if (ok) {
+        if (slot.overlay && slot.overlay !== next) removeLayerQuietly(slot.overlay);
+        // Re-add the loaded image (finish() may run after a timeout removed it).
+        if (!overlays.hasLayer(next)) overlays.addLayer(next);
+        next.setOpacity(opacityFor(def));
+        slot.overlay = next;
+        removeLayerQuietly(slot.preview);
+        slot.preview = null;
+        applyClip();
+        applyBasemap();
+      } else if (attempt === 0) {
+        loadAttempt(slot, def, pane, 1);
+      } else {
+        removeLayerQuietly(slot.preview);
+        slot.preview = null;
+        showLoadFailure(def);
+      }
+    }
+
+    next.on("load", function () { finish(true); });
+    next.on("error", function () { finish(false); });
+    slot.timer = setTimeout(function () { finish(false); }, 20000);
     overlays.addLayer(next);
   }
 
@@ -186,26 +329,47 @@
     img.style.clipPath = side === "left" ? "inset(0 " + (100 - p) + "% 0 0)" : "inset(0 0 0 " + p + "%)";
   }
 
-  // Fetch every date of the current layer and polarization into the browser cache, so stepping through
-  // the series has little or no delay. Images are small (tens of KB each); this is a few MB at most.
-  var preloaded = {};
-  function preloadSeries() {
-    M.dates.forEach(function (date, index) {
-      var def = resolve(state.layer, state.pol, index).def;
-      if (!def || preloaded[def.id]) return;
-      preloaded[def.id] = true;
-      new Image().src = imageUrl(def);
-    });
+  // Idle preloading: current date first, then its neighbours, then the rest, at most two requests at
+  // a time. Any place or layer change bumps the generation and the pending queue is dropped.
+  function idle(fn) {
+    if (window.requestIdleCallback) window.requestIdleCallback(fn, { timeout: 1200 });
+    else setTimeout(fn, 80);
   }
 
-  // Ask the browser to fetch the neighbouring frames so stepping is smooth.
-  function preloadNeighbours() {
-    [-1, 1].forEach(function (step) {
-      var index = state.index + step;
-      if (index < 0 || index >= M.dates.length) return;
-      var def = resolve(state.layer, state.pol, index).def;
-      if (def) new Image().src = imageUrl(def);
+  function pumpPreload() {
+    var generation = preload.generation;
+    while (preload.active < 2 && preload.queue.length) {
+      var url = preload.queue.shift();
+      preload.active += 1;
+      (function (target) {
+        var img = new Image();
+        var done = function () {
+          preload.active -= 1;
+          if (generation === preload.generation) idle(pumpPreload);
+        };
+        img.onload = img.onerror = done;
+        img.src = target;
+      })(url);
+    }
+  }
+
+  function queuePreload(urls) {
+    preload.generation += 1;
+    preload.queue = urls.slice();
+    idle(pumpPreload);
+  }
+
+  function preloadSeries() {
+    var defs = M.dates.map(function (_, index) { return { index: index, def: resolve(state.layer, state.pol, index).def }; })
+      .filter(function (item) { return item.def; });
+    defs.sort(function (a, b) {
+      return Math.abs(a.index - state.index) - Math.abs(b.index - state.index);
     });
+    queuePreload(defs.map(function (item) { return imageUrl(item.def); }));
+  }
+
+  function preloadNeighbours() {
+    preloadSeries();
   }
 
   /* ------------------------------------------------------------ swipe */
@@ -248,6 +412,115 @@
       event.preventDefault();
     });
   }
+
+  /* -------------------------------------------------------- place card */
+
+  function renderPlaceCard() {
+    var place = placeInfo();
+    var aoi = aoiBounds();
+    var centre = aoi.getCenter();
+    var name = document.getElementById("place-name");
+    var country = document.getElementById("place-country");
+    var story = document.getElementById("place-story");
+    var meta = document.getElementById("place-meta");
+    if (name) name.textContent = (M.place && M.place.title) || place.title || state.place;
+    if (country) country.textContent = UI.t("place_country");
+    if (story) story.textContent = (M.study_area && M.study_area.story) || place.story || "";
+    if (meta) {
+      meta.textContent = centre.lat.toFixed(3) + " N  " + centre.lng.toFixed(3) + " E  |  " +
+        UI.fmtDate(M.dates[0]) + " to " + UI.fmtDate(M.dates[M.dates.length - 1]) + "  |  " +
+        M.polarizations.join(" + ");
+    }
+  }
+
+  function initAoiFrame() {
+    aoiLayer = L.rectangle(aoiBounds(), {
+      color: "#E2B862", weight: 1.25, dashArray: "5 5", fill: false, interactive: false
+    });
+    aoiLayer.bindTooltip(UI.t("aoi_label"), { sticky: true, direction: "center" });
+    if (state.aoiFrame) aoiLayer.addTo(map);
+  }
+
+  function setAoiFrame(show) {
+    state.aoiFrame = show;
+    if (!aoiLayer) return;
+    if (show && !map.hasLayer(aoiLayer)) aoiLayer.addTo(map);
+    if (!show && map.hasLayer(aoiLayer)) map.removeLayer(aoiLayer);
+  }
+
+  function initLocator() {
+    var element = document.getElementById("locator-map");
+    if (!element || typeof L === "undefined") return;
+    locator = L.map(element, {
+      zoomControl: false, attributionControl: false, dragging: false, scrollWheelZoom: false,
+      doubleClickZoom: false, boxZoom: false, keyboard: false, touchZoom: false
+    }).setView([31.35, 36.2], 6);
+    L.tileLayer(DARK_URL, { maxZoom: 19 }).addTo(locator);
+    var places = (V.places && V.places.places) || [];
+    places.filter(function (place) { return place.processed; }).forEach(function (place) {
+      var bounds = L.latLngBounds(place.bounds);
+      var c = bounds.getCenter();
+      var active = state.place === place.name;
+      var marker = L.marker(c, {
+        keyboard: true,
+        title: place.title,
+        alt: place.title,
+        icon: L.divIcon({
+          className: "locator-dot" + (active ? " is-active" : ""),
+          html: "<span></span>",
+          iconSize: [14, 14],
+          iconAnchor: [7, 7]
+        })
+      }).addTo(locator);
+      marker.on("click", function () { selectPlace(place.name); });
+    });
+    setTimeout(function () { locator.invalidateSize(); }, 250);
+  }
+
+  /* -------------------------------------------------------- map controls */
+
+  function initMapControls() {
+    var select = document.getElementById("basemap-select");
+    if (select) {
+      select.value = state.basemap;
+      select.addEventListener("change", function () {
+        state.basemap = select.value;
+        applyBasemap();
+      });
+    }
+    var labels = document.getElementById("labels-toggle");
+    if (labels) labels.addEventListener("change", function () {
+      state.labels = labels.checked;
+      applyBasemap();
+    });
+    var frame = document.getElementById("aoi-toggle");
+    if (frame) frame.addEventListener("change", function () { setAoiFrame(frame.checked); });
+    var dim = document.getElementById("dim-toggle");
+    if (dim) dim.addEventListener("change", function () {
+      state.dim = dim.checked;
+      applyBasemap();
+    });
+    var collapse = document.getElementById("panel-toggle");
+    if (collapse) collapse.addEventListener("click", function () {
+      var controls = document.querySelector(".controls");
+      var collapsed = controls.classList.toggle("is-collapsed");
+      collapse.setAttribute("aria-expanded", String(!collapsed));
+    });
+    var openControls = document.getElementById("open-controls");
+    if (openControls) openControls.addEventListener("click", function () {
+      document.querySelector(".controls").classList.remove("is-collapsed");
+    });
+    var openPanel = document.getElementById("open-panel");
+    if (openPanel) openPanel.addEventListener("click", function () {
+      document.querySelector(".panel").classList.toggle("is-collapsed");
+    });
+    if (window.matchMedia("(max-width: 1100px)").matches) {
+      document.querySelector(".controls").classList.add("is-collapsed");
+      document.querySelector(".panel").classList.add("is-collapsed");
+    }
+  }
+
+  /* ----------------------------------------------------------- patches */
 
   /* ----------------------------------------------------------- patches */
 
@@ -526,17 +799,27 @@
       var def = resolve(state.layer, state.pol, i).def;
       if (def) urls.push(imageUrl(def));
     });
-    var remaining = urls.length;
     UI.setLayerNote(UI.t("preloading"));
+    var remaining = urls.length;
     if (!remaining) { UI.setLayerNote(""); beginTimer(); return; }
-    urls.forEach(function (url) {
-      var img = new Image();
-      img.onload = img.onerror = function () {
-        remaining -= 1;
-        if (remaining === 0) { UI.setLayerNote(""); beginTimer(); }
-      };
-      img.src = url;
-    });
+    var active = 0;
+    var next = function () {
+      while (active < 2 && urls.length) {
+        active += 1;
+        (function (url) {
+          var img = new Image();
+          var done = function () {
+            active -= 1;
+            remaining -= 1;
+            if (remaining === 0) { UI.setLayerNote(""); beginTimer(); }
+            else next();
+          };
+          img.onload = img.onerror = done;
+          img.src = url;
+        })(urls.shift());
+      }
+    };
+    next();
   }
 
   function beginTimer() {
@@ -734,8 +1017,22 @@
     var startPlace = placeByName(M.study_area.name);
     if (startPlace) { state.place = startPlace.name; UI.setPlaceStatus(startPlace); UI.setPlaceSelection(startPlace.name); }
 
+    // Move the date controls and the legend into their floating homes before the map is drawn.
+    var timebar = document.getElementById("timebar");
+    var dateField = document.getElementById("date-field");
+    if (timebar && dateField) timebar.appendChild(dateField);
+    var legendHome = document.getElementById("legend-inset");
+    var legendCard = document.getElementById("legend-card");
+    if (legendHome && legendCard) legendHome.appendChild(legendCard);
+
     initMap();
     initBasemap();
+    renderPlaceCard();
+    initAoiFrame();
+    initLocator();
+    initMapControls();
+    var pixelNote = document.getElementById("legend-pixel-note");
+    if (pixelNote) pixelNote.textContent = UI.t("pixel_note");
     initPatches();
     initSwipe();
     initStory();

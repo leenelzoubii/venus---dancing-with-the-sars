@@ -10,13 +10,19 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap">
   <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
-  <link rel="stylesheet" href="css/app.css?v=20261114c">
+  <link rel="stylesheet" href="css/app.css?v=20261115a">
 </head>
 <body>
   <a class="skip-link" href="#map">Skip to the map</a>
 
   <header class="site-header">
     <div class="brand">
+      <svg class="venus-mark" viewBox="0 0 32 32" width="28" height="28" aria-hidden="true" focusable="false">
+        <circle cx="16" cy="16" r="10.5" fill="none" stroke="#E2B862" stroke-width="1" opacity=".55"/>
+        <ellipse cx="16" cy="16" rx="14.5" ry="5.5" fill="none" stroke="#E2B862" stroke-width=".8"
+                 opacity=".5" transform="rotate(-24 16 16)"/>
+        <circle cx="16" cy="16" r="3.2" fill="#E2B862"/>
+      </svg>
       <span class="mark" data-i18n="app_mark">Team Venus</span>
       <h1 class="title" data-i18n="app_title">Seeing the Dead Sea through the clouds</h1>
     </div>
@@ -28,6 +34,27 @@
     <section class="map-region" aria-labelledby="map-heading">
       <h2 id="map-heading" class="visually-hidden" data-i18n="map_label">Map of the Dead Sea east shore showing NISAR radar layers</h2>
       <div id="map" class="map" role="region" aria-labelledby="map-heading" tabindex="0"></div>
+
+      <section class="place-card" aria-labelledby="place-name">
+        <p class="place-kicker" data-i18n="place_card_kicker">Study area</p>
+        <h2 id="place-name" class="place-name"></h2>
+        <p id="place-country" class="place-country"></p>
+        <p id="place-story" class="place-story"></p>
+        <p id="place-meta" class="place-meta"></p>
+      </section>
+
+      <p id="cursor-readout" class="cursor-readout" aria-live="off"></p>
+
+      <button type="button" id="open-controls" class="floating-btn" aria-controls="controls-body">Controls</button>
+      <button type="button" id="open-panel" class="floating-btn floating-btn-right" aria-controls="panel-heading">Panel</button>
+
+      <div id="legend-inset" class="legend-inset"></div>
+      <div id="timebar" class="timebar"></div>
+
+      <div class="locator" id="locator">
+        <div id="locator-map" class="locator-map" role="img"
+             data-i18n-label="locator_label" aria-label="Locator map of processed places in Jordan"></div>
+      </div>
 
       <!-- Swipe divider: a focusable slider over the map. Pointer, touch and arrow keys all move it. -->
       <div id="swipe-divider" class="swipe-divider" role="slider" tabindex="0" hidden
@@ -62,12 +89,28 @@
 
     <section class="controls" aria-labelledby="controls-heading">
       <h2 id="controls-heading" class="section-title" data-i18n="controls_label">Layer, date and comparison controls</h2>
+      <button type="button" id="panel-toggle" class="panel-toggle" aria-expanded="true"
+              aria-controls="controls-body" data-i18n-label="panel_toggle" aria-label="Show or hide the controls">
+        <span aria-hidden="true"></span>
+      </button>
+      <div id="controls-body" class="controls-body">
 
       <fieldset class="field">
         <legend class="field-label" data-i18n="place_group">Place</legend>
         <label class="visually-hidden" for="place-select" data-i18n="place_group">Place</label>
         <select id="place-select" class="select"></select>
         <p class="hint" id="place-status" role="status"></p>
+      </fieldset>
+
+      <fieldset class="field">
+        <legend class="field-label" data-i18n="basemap_group">Basemap</legend>
+        <select id="basemap-select" class="select" data-i18n-label="basemap_group" aria-label="Basemap">
+          <option value="dark">Dark, with labels</option>
+          <option value="satellite">Satellite</option>
+        </select>
+        <label class="choice choice-check"><input type="checkbox" id="labels-toggle" checked><span data-i18n="labels_toggle">Place labels</span></label>
+        <label class="choice choice-check"><input type="checkbox" id="dim-toggle" checked><span data-i18n="dim_toggle">Dim satellite under the radar</span></label>
+        <label class="choice choice-check"><input type="checkbox" id="aoi-toggle" checked><span data-i18n="aoi_toggle">NISAR analysis area</span></label>
       </fieldset>
 
       <fieldset class="field">
@@ -95,9 +138,9 @@
         <p class="hint" id="pol-hint"></p>
       </fieldset>
 
-      <div class="field">
+      <div class="field" id="date-field">
         <label class="field-label" for="date-select" data-i18n="date_label">Acquisition date</label>
-        <select id="date-select" class="select"></select>
+        <select id="date-select" class="select" aria-label="Acquisition date"></select>
         <label class="field-label" for="time-range" data-i18n="time_label">Step through the series</label>
         <input type="range" id="time-range" class="range" min="0" max="0" step="1" value="0">
         <ol id="time-ticks" class="time-ticks" aria-hidden="true"></ol>
@@ -116,9 +159,9 @@
         <p class="hint" id="swipe-hint" data-i18n="swipe_hint" hidden></p>
         <div id="swipe-controls" class="swipe-controls" hidden>
           <label class="field-label" for="left-date" data-i18n="swipe_left_label">Left (before): date</label>
-          <select id="left-date" class="select"></select>
+          <select id="left-date" class="select" aria-label="Left (before) date"></select>
           <label class="field-label" for="left-layer" data-i18n="swipe_left_layer">Left (before): layer</label>
-          <select id="left-layer" class="select">
+          <select id="left-layer" class="select" aria-label="Left (before) layer">
             <option value="rgb">False colour (HH, HV)</option>
             <option value="backscatter">Radar backscatter</option>
             <option value="change">Change map</option>
@@ -128,31 +171,33 @@
           <input type="range" id="swipe-range" class="range" min="0" max="100" step="1" value="50">
         </div>
       </fieldset>
+      </div>
     </section>
 
     <aside class="panel" aria-labelledby="panel-heading">
       <h2 id="panel-heading" class="visually-hidden" data-i18n="panel_label">Legend, charts, explanations and limits</h2>
 
-      <section class="card" aria-labelledby="legend-heading">
+      <section class="card" id="legend-card" aria-labelledby="legend-heading">
         <h3 id="legend-heading" class="card-title" data-i18n="legend_title">Legend</h3>
         <p id="legend-text" class="legend-text"></p>
         <div id="legend-bar" class="legend-bar" role="img" aria-label=""></div>
         <div id="legend-ticks" class="legend-ticks"></div>
         <p id="legend-caption" class="legend-caption"></p>
         <p id="legend-extra" class="legend-caption"></p>
+        <p id="legend-pixel-note" class="legend-caption legend-pixel-note"></p>
       </section>
 
       <details class="card" open>
         <summary data-i18n="info_title">Layer information</summary>
         <p class="muted" data-i18n="info_intro">Everything below is read from the data manifest.</p>
         <dl id="layer-info" class="info-list"></dl>
-        <h4 class="sub-title" data-i18n="info_steps">Processing steps</h4>
+        <h3 class="sub-title" data-i18n="info_steps">Processing steps</h3>
         <ol id="layer-steps" class="steps"></ol>
       </details>
 
       <details class="card" id="patch-panel">
         <summary data-i18n="patches_toggle">Candidate patches</summary>
-        <h4 class="sub-title" data-i18n="featured_title">Featured patches</h4>
+        <h3 class="sub-title" data-i18n="featured_title">Featured patches</h3>
         <ul id="featured-list" class="featured-list"></ul>
         <div id="patch-body"><p class="muted" data-i18n="patch_none_selected">Click a numbered patch on the map.</p></div>
       </details>
@@ -238,13 +283,13 @@
   </noscript>
 
   <!-- Classic scripts only, in dependency order. No modules, no fetch(): works from file://. -->
-  <script src="js/strings.js?v=20261114c"></script>
+  <script src="js/strings.js?v=20261115a"></script>
   <script src="data/patches.js"></script>
   <script src="data/places.js"></script>
   <script src="data/license_and_attribution.js"></script>
   <script src="vendor/leaflet/leaflet.js"></script>
-  <script src="js/charts.js?v=20261114c"></script>
-  <script src="js/ui.js?v=20261114c"></script>
-  <script src="js/app.js?v=20261114c"></script>
+  <script src="js/charts.js?v=20261115a"></script>
+  <script src="js/ui.js?v=20261115a"></script>
+  <script src="js/app.js?v=20261115a"></script>
 </body>
 </html>

@@ -248,6 +248,9 @@ window.VENUS_UI = (function () {
         bar.style.display = "none";
         text.textContent = t("legend_rgb");
         caption.textContent = t("legend_rgb_caption");
+        if (def.vmin !== undefined && def.vmax !== undefined) {
+          caption.textContent += " " + t("legend_limits", { min: fmt(def.vmin), max: fmt(def.vmax) });
+        }
         more.textContent = t("legend_rgb_help");
       } else {
         bar.className = "legend-bar legend-water";
