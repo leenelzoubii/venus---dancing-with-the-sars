@@ -212,3 +212,66 @@ averaging set was partially focused or invalid, and 255 outside the radar acquis
 **Reason.** Verified from the mask dataset's own ``description`` attribute in the archive, not from
 memory. On this AOI 99.996 percent of pixels are mask == 1, i.e. valid subswath-1 data, which matches
 the measured NaN fraction of 0.004 percent.
+
+---
+
+## 2026-11-14 - Primary water method B; change-detection limit kept separate from the area band
+
+**Decision.** Method B (two-step: drop HV above -15 dB, then Otsu) is primary. The +/-1.5 dB band is the
+absolute area uncertainty for one date. The change-detection limit is a different quantity: the area
+equivalent of the offset uncertainty (offset MAD plus land-definition sensitivity, times the measured
+km2 per dB). A date-to-date change counts only if its sign is robust across thresholds -0.5 to +0.5 dB
+AND its median difference exceeds that limit.
+
+**Result (method B).** Offset uncertainty 0.27 dB, which is 2.51 km2. 11 of 36 date pairs clear the
+limit with a robust sign; the largest is 2026-06-24 to 2026-08-11 at +5.59 km2. Every such pair is a
+hypothesis until checked against imagery and the mission record.
+
+**Reason.** The +/-1.5 dB band says nothing about whether two dates differ. Using it as the change limit
+would hide real differences; using the offset alone would ignore the threshold. Both checks are needed.
+
+**Alternatives.** Use the area band as the change limit (rejected: too wide, 22.7 km2); report a trend
+only (rejected: a trend fit does not give a limit).
+
+---
+
+## 2026-11-14 - Candidate patches: persistence rule, 60 m, water and low-look exclusion
+
+**Decision.** A patch is a connected blob (8-connectivity) of pixels whose |delta| versus the reference
+exceeds 3 dB on at least 2 consecutive dates, at 60 m, at least 20 px, outside water (method B union) and
+below the 10th percentile of numberOfLooks (6.15 at 60 m).
+
+**Result.** 0 patches at the configured rule. 1 dB gives 3 patches at 10 px. Sensitivity is in the
+04b output. The 3 sensitive candidates are logged in docs/patch_log_sensitive.csv for Leyan.
+
+**Reason.** Speckle is uncorrelated between dates, so persistence is the cheapest protection. We report
+the zero honestly rather than lowering the threshold to make a nicer map.
+
+---
+
+## 2026-11-14 - Web export: EPSG:3857 layers, fixed scales, .json and .js twins
+
+**Decision.** Every raster is reprojected from EPSG:32636 to EPSG:3857 with rasterio.warp (bilinear for dB,
+nearest for masks). Bounds are the Web Mercator rectangle converted back to lon/lat corners; the native
+grid is widened by half a pixel first. Backscatter and change are displayed at 60 m; water and the
+detection-limit band at 20 m. Data files are written twice, as .json for humans and as a .js that
+assigns to window.VENUS for file:// use.
+
+**Reason.** Leaflet stretches an image linearly across its bounds in Web Mercator space, so a rectangle in
+EPSG:3857 is the only way the overlay is geometrically exact. A geometry check on the 2026-10-10 water
+layer gives 140.2 km2 against 139.8 km2 in the stats file (0.3 percent, nearest-neighbour resampling).
+
+**Alternatives.** Keep UTM and let Leaflet approximate (rejected: visible shift at the edges); serve JSON
+over fetch (rejected: fails on file://).
+
+**Open.** The old web/assets folder from Gate 1 is still present and still loaded by app.js. Migrating the
+app to web/data is Hour 3.
+
+---
+
+## 2026-11-14 - Validator named 06_validate_web_assets.py despite the existing 06_qc_table.py
+
+**Decision.** Keep the name requested in the brief, although two scripts now share the 06 prefix.
+
+**Reason.** The brief named it exactly, and the names are distinct. Renumbering later is cheap; a
+mismatch with the brief is not.

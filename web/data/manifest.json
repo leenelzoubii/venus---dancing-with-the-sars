@@ -1,0 +1,2097 @@
+{
+ "generated_utc": "2026-11-14T09:11:22Z",
+ "study_area": {
+  "name": "dead_sea_east",
+  "title": "Dead Sea \u2014 Jordanian east shore",
+  "wkt": "POLYGON((35.500 31.340, 35.600 31.340, 35.600 31.560, 35.500 31.560, 35.500 31.340))",
+  "story": "The east shore between Suweimeh and Ghor Haditha, just north of the Lisan peninsula. Two stories in one frame: shoreline retreat as the lake level falls, and the sinkhole belt on the Ghor Haditha plain. 100% Jordanian shore, inside the 12-day descending stack."
+ },
+ "product": "NISAR L2 GCOV",
+ "crid": "P05023",
+ "maturity": "PROVISIONAL",
+ "track": 151,
+ "frame": 73,
+ "direction": "DESCENDING",
+ "native_crs": "EPSG:32636",
+ "display_crs": "EPSG:3857",
+ "reference_date": "2026-06-24",
+ "dates": [
+  "2026-06-24",
+  "2026-07-06",
+  "2026-07-18",
+  "2026-08-11",
+  "2026-08-23",
+  "2026-09-04",
+  "2026-09-16",
+  "2026-09-28",
+  "2026-10-10"
+ ],
+ "polarizations": [
+  "HH",
+  "HV"
+ ],
+ "primary_water": {
+  "method": "B",
+  "polarization": "HV"
+ },
+ "scales": {
+  "backscatter_db": {
+   "HH": [
+    -14.015837669372559,
+    -4.898438234329224
+   ],
+   "HV": [
+    -21.25912857055664,
+    -12.773591041564941
+   ]
+  },
+  "change_db_symmetric": {
+   "HH": 1.57,
+   "HV": 1.42
+  }
+ },
+ "layers": [
+  {
+   "file": "layers/backscatter_HH_2026-06-24.png",
+   "crid": "P05023",
+   "id": "backscatter_HH_2026-06-24",
+   "kind": "backscatter",
+   "label": "Backscatter HH 2026-06-24",
+   "polarization": "HH",
+   "date": "2026-06-24",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -14.015837669372559,
+   "vmax": -4.898438234329224,
+   "colormap": "grey: black = low dB, white = high dB; NaN transparent",
+   "description": "Gamma-0 backscatter, HH, on 2026-06-24. Dark = smooth (water), bright = rough.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/backscatter_HV_2026-06-24.png",
+   "crid": "P05023",
+   "id": "backscatter_HV_2026-06-24",
+   "kind": "backscatter",
+   "label": "Backscatter HV 2026-06-24",
+   "polarization": "HV",
+   "date": "2026-06-24",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -21.25912857055664,
+   "vmax": -12.773591041564941,
+   "colormap": "grey: black = low dB, white = high dB; NaN transparent",
+   "description": "Gamma-0 backscatter, HV, on 2026-06-24. Dark = smooth (water), bright = rough.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/backscatter_HH_2026-07-06.png",
+   "crid": "P05023",
+   "id": "backscatter_HH_2026-07-06",
+   "kind": "backscatter",
+   "label": "Backscatter HH 2026-07-06",
+   "polarization": "HH",
+   "date": "2026-07-06",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -14.015837669372559,
+   "vmax": -4.898438234329224,
+   "colormap": "grey: black = low dB, white = high dB; NaN transparent",
+   "description": "Gamma-0 backscatter, HH, on 2026-07-06. Dark = smooth (water), bright = rough.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/backscatter_HV_2026-07-06.png",
+   "crid": "P05023",
+   "id": "backscatter_HV_2026-07-06",
+   "kind": "backscatter",
+   "label": "Backscatter HV 2026-07-06",
+   "polarization": "HV",
+   "date": "2026-07-06",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -21.25912857055664,
+   "vmax": -12.773591041564941,
+   "colormap": "grey: black = low dB, white = high dB; NaN transparent",
+   "description": "Gamma-0 backscatter, HV, on 2026-07-06. Dark = smooth (water), bright = rough.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/backscatter_HH_2026-07-18.png",
+   "crid": "P05023",
+   "id": "backscatter_HH_2026-07-18",
+   "kind": "backscatter",
+   "label": "Backscatter HH 2026-07-18",
+   "polarization": "HH",
+   "date": "2026-07-18",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -14.015837669372559,
+   "vmax": -4.898438234329224,
+   "colormap": "grey: black = low dB, white = high dB; NaN transparent",
+   "description": "Gamma-0 backscatter, HH, on 2026-07-18. Dark = smooth (water), bright = rough.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/backscatter_HV_2026-07-18.png",
+   "crid": "P05023",
+   "id": "backscatter_HV_2026-07-18",
+   "kind": "backscatter",
+   "label": "Backscatter HV 2026-07-18",
+   "polarization": "HV",
+   "date": "2026-07-18",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -21.25912857055664,
+   "vmax": -12.773591041564941,
+   "colormap": "grey: black = low dB, white = high dB; NaN transparent",
+   "description": "Gamma-0 backscatter, HV, on 2026-07-18. Dark = smooth (water), bright = rough.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/backscatter_HH_2026-08-11.png",
+   "crid": "P05023",
+   "id": "backscatter_HH_2026-08-11",
+   "kind": "backscatter",
+   "label": "Backscatter HH 2026-08-11",
+   "polarization": "HH",
+   "date": "2026-08-11",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -14.015837669372559,
+   "vmax": -4.898438234329224,
+   "colormap": "grey: black = low dB, white = high dB; NaN transparent",
+   "description": "Gamma-0 backscatter, HH, on 2026-08-11. Dark = smooth (water), bright = rough.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/backscatter_HV_2026-08-11.png",
+   "crid": "P05023",
+   "id": "backscatter_HV_2026-08-11",
+   "kind": "backscatter",
+   "label": "Backscatter HV 2026-08-11",
+   "polarization": "HV",
+   "date": "2026-08-11",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -21.25912857055664,
+   "vmax": -12.773591041564941,
+   "colormap": "grey: black = low dB, white = high dB; NaN transparent",
+   "description": "Gamma-0 backscatter, HV, on 2026-08-11. Dark = smooth (water), bright = rough.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/backscatter_HH_2026-08-23.png",
+   "crid": "P05023",
+   "id": "backscatter_HH_2026-08-23",
+   "kind": "backscatter",
+   "label": "Backscatter HH 2026-08-23",
+   "polarization": "HH",
+   "date": "2026-08-23",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -14.015837669372559,
+   "vmax": -4.898438234329224,
+   "colormap": "grey: black = low dB, white = high dB; NaN transparent",
+   "description": "Gamma-0 backscatter, HH, on 2026-08-23. Dark = smooth (water), bright = rough.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/backscatter_HV_2026-08-23.png",
+   "crid": "P05023",
+   "id": "backscatter_HV_2026-08-23",
+   "kind": "backscatter",
+   "label": "Backscatter HV 2026-08-23",
+   "polarization": "HV",
+   "date": "2026-08-23",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -21.25912857055664,
+   "vmax": -12.773591041564941,
+   "colormap": "grey: black = low dB, white = high dB; NaN transparent",
+   "description": "Gamma-0 backscatter, HV, on 2026-08-23. Dark = smooth (water), bright = rough.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/backscatter_HH_2026-09-04.png",
+   "crid": "P05023",
+   "id": "backscatter_HH_2026-09-04",
+   "kind": "backscatter",
+   "label": "Backscatter HH 2026-09-04",
+   "polarization": "HH",
+   "date": "2026-09-04",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -14.015837669372559,
+   "vmax": -4.898438234329224,
+   "colormap": "grey: black = low dB, white = high dB; NaN transparent",
+   "description": "Gamma-0 backscatter, HH, on 2026-09-04. Dark = smooth (water), bright = rough.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/backscatter_HV_2026-09-04.png",
+   "crid": "P05023",
+   "id": "backscatter_HV_2026-09-04",
+   "kind": "backscatter",
+   "label": "Backscatter HV 2026-09-04",
+   "polarization": "HV",
+   "date": "2026-09-04",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -21.25912857055664,
+   "vmax": -12.773591041564941,
+   "colormap": "grey: black = low dB, white = high dB; NaN transparent",
+   "description": "Gamma-0 backscatter, HV, on 2026-09-04. Dark = smooth (water), bright = rough.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/backscatter_HH_2026-09-16.png",
+   "crid": "P05023",
+   "id": "backscatter_HH_2026-09-16",
+   "kind": "backscatter",
+   "label": "Backscatter HH 2026-09-16",
+   "polarization": "HH",
+   "date": "2026-09-16",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -14.015837669372559,
+   "vmax": -4.898438234329224,
+   "colormap": "grey: black = low dB, white = high dB; NaN transparent",
+   "description": "Gamma-0 backscatter, HH, on 2026-09-16. Dark = smooth (water), bright = rough.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/backscatter_HV_2026-09-16.png",
+   "crid": "P05023",
+   "id": "backscatter_HV_2026-09-16",
+   "kind": "backscatter",
+   "label": "Backscatter HV 2026-09-16",
+   "polarization": "HV",
+   "date": "2026-09-16",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -21.25912857055664,
+   "vmax": -12.773591041564941,
+   "colormap": "grey: black = low dB, white = high dB; NaN transparent",
+   "description": "Gamma-0 backscatter, HV, on 2026-09-16. Dark = smooth (water), bright = rough.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/backscatter_HH_2026-09-28.png",
+   "crid": "P05023",
+   "id": "backscatter_HH_2026-09-28",
+   "kind": "backscatter",
+   "label": "Backscatter HH 2026-09-28",
+   "polarization": "HH",
+   "date": "2026-09-28",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -14.015837669372559,
+   "vmax": -4.898438234329224,
+   "colormap": "grey: black = low dB, white = high dB; NaN transparent",
+   "description": "Gamma-0 backscatter, HH, on 2026-09-28. Dark = smooth (water), bright = rough.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/backscatter_HV_2026-09-28.png",
+   "crid": "P05023",
+   "id": "backscatter_HV_2026-09-28",
+   "kind": "backscatter",
+   "label": "Backscatter HV 2026-09-28",
+   "polarization": "HV",
+   "date": "2026-09-28",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -21.25912857055664,
+   "vmax": -12.773591041564941,
+   "colormap": "grey: black = low dB, white = high dB; NaN transparent",
+   "description": "Gamma-0 backscatter, HV, on 2026-09-28. Dark = smooth (water), bright = rough.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/backscatter_HH_2026-10-10.png",
+   "crid": "P05023",
+   "id": "backscatter_HH_2026-10-10",
+   "kind": "backscatter",
+   "label": "Backscatter HH 2026-10-10",
+   "polarization": "HH",
+   "date": "2026-10-10",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -14.015837669372559,
+   "vmax": -4.898438234329224,
+   "colormap": "grey: black = low dB, white = high dB; NaN transparent",
+   "description": "Gamma-0 backscatter, HH, on 2026-10-10. Dark = smooth (water), bright = rough.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/backscatter_HV_2026-10-10.png",
+   "crid": "P05023",
+   "id": "backscatter_HV_2026-10-10",
+   "kind": "backscatter",
+   "label": "Backscatter HV 2026-10-10",
+   "polarization": "HV",
+   "date": "2026-10-10",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -21.25912857055664,
+   "vmax": -12.773591041564941,
+   "colormap": "grey: black = low dB, white = high dB; NaN transparent",
+   "description": "Gamma-0 backscatter, HV, on 2026-10-10. Dark = smooth (water), bright = rough.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/change_HH_2026-07-06.png",
+   "crid": "P05023",
+   "id": "change_HH_2026-07-06",
+   "kind": "change",
+   "label": "Change HH 2026-07-06 minus 2026-06-24",
+   "polarization": "HH",
+   "date": "2026-07-06",
+   "reference": "2026-06-24",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -1.57,
+   "vmax": 1.57,
+   "colormap": "diverging #3B82F6 (blue, less echo later) - #D9DEE8 - #F59E0B (orange, more echo later); |change| < 0.25 dB transparent; NaN transparent",
+   "description": "HH change on 2026-07-06 relative to 2026-06-24, scene offset removed. Blue = less echo later, orange = more.",
+   "offset_applied_db": 0.123,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)",
+    "scene offset removed (land median, offsets.json)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/change_HV_2026-07-06.png",
+   "crid": "P05023",
+   "id": "change_HV_2026-07-06",
+   "kind": "change",
+   "label": "Change HV 2026-07-06 minus 2026-06-24",
+   "polarization": "HV",
+   "date": "2026-07-06",
+   "reference": "2026-06-24",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -1.42,
+   "vmax": 1.42,
+   "colormap": "diverging #3B82F6 (blue, less echo later) - #D9DEE8 - #F59E0B (orange, more echo later); |change| < 0.25 dB transparent; NaN transparent",
+   "description": "HV change on 2026-07-06 relative to 2026-06-24, scene offset removed. Blue = less echo later, orange = more.",
+   "offset_applied_db": -0.533,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)",
+    "scene offset removed (land median, offsets.json)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/change_HH_2026-07-18.png",
+   "crid": "P05023",
+   "id": "change_HH_2026-07-18",
+   "kind": "change",
+   "label": "Change HH 2026-07-18 minus 2026-06-24",
+   "polarization": "HH",
+   "date": "2026-07-18",
+   "reference": "2026-06-24",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -1.57,
+   "vmax": 1.57,
+   "colormap": "diverging #3B82F6 (blue, less echo later) - #D9DEE8 - #F59E0B (orange, more echo later); |change| < 0.25 dB transparent; NaN transparent",
+   "description": "HH change on 2026-07-18 relative to 2026-06-24, scene offset removed. Blue = less echo later, orange = more.",
+   "offset_applied_db": -0.008,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)",
+    "scene offset removed (land median, offsets.json)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/change_HV_2026-07-18.png",
+   "crid": "P05023",
+   "id": "change_HV_2026-07-18",
+   "kind": "change",
+   "label": "Change HV 2026-07-18 minus 2026-06-24",
+   "polarization": "HV",
+   "date": "2026-07-18",
+   "reference": "2026-06-24",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -1.42,
+   "vmax": 1.42,
+   "colormap": "diverging #3B82F6 (blue, less echo later) - #D9DEE8 - #F59E0B (orange, more echo later); |change| < 0.25 dB transparent; NaN transparent",
+   "description": "HV change on 2026-07-18 relative to 2026-06-24, scene offset removed. Blue = less echo later, orange = more.",
+   "offset_applied_db": -0.145,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)",
+    "scene offset removed (land median, offsets.json)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/change_HH_2026-08-11.png",
+   "crid": "P05023",
+   "id": "change_HH_2026-08-11",
+   "kind": "change",
+   "label": "Change HH 2026-08-11 minus 2026-06-24",
+   "polarization": "HH",
+   "date": "2026-08-11",
+   "reference": "2026-06-24",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -1.57,
+   "vmax": 1.57,
+   "colormap": "diverging #3B82F6 (blue, less echo later) - #D9DEE8 - #F59E0B (orange, more echo later); |change| < 0.25 dB transparent; NaN transparent",
+   "description": "HH change on 2026-08-11 relative to 2026-06-24, scene offset removed. Blue = less echo later, orange = more.",
+   "offset_applied_db": 0.266,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)",
+    "scene offset removed (land median, offsets.json)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/change_HV_2026-08-11.png",
+   "crid": "P05023",
+   "id": "change_HV_2026-08-11",
+   "kind": "change",
+   "label": "Change HV 2026-08-11 minus 2026-06-24",
+   "polarization": "HV",
+   "date": "2026-08-11",
+   "reference": "2026-06-24",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -1.42,
+   "vmax": 1.42,
+   "colormap": "diverging #3B82F6 (blue, less echo later) - #D9DEE8 - #F59E0B (orange, more echo later); |change| < 0.25 dB transparent; NaN transparent",
+   "description": "HV change on 2026-08-11 relative to 2026-06-24, scene offset removed. Blue = less echo later, orange = more.",
+   "offset_applied_db": -0.526,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)",
+    "scene offset removed (land median, offsets.json)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/change_HH_2026-08-23.png",
+   "crid": "P05023",
+   "id": "change_HH_2026-08-23",
+   "kind": "change",
+   "label": "Change HH 2026-08-23 minus 2026-06-24",
+   "polarization": "HH",
+   "date": "2026-08-23",
+   "reference": "2026-06-24",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -1.57,
+   "vmax": 1.57,
+   "colormap": "diverging #3B82F6 (blue, less echo later) - #D9DEE8 - #F59E0B (orange, more echo later); |change| < 0.25 dB transparent; NaN transparent",
+   "description": "HH change on 2026-08-23 relative to 2026-06-24, scene offset removed. Blue = less echo later, orange = more.",
+   "offset_applied_db": 0.415,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)",
+    "scene offset removed (land median, offsets.json)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/change_HV_2026-08-23.png",
+   "crid": "P05023",
+   "id": "change_HV_2026-08-23",
+   "kind": "change",
+   "label": "Change HV 2026-08-23 minus 2026-06-24",
+   "polarization": "HV",
+   "date": "2026-08-23",
+   "reference": "2026-06-24",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -1.42,
+   "vmax": 1.42,
+   "colormap": "diverging #3B82F6 (blue, less echo later) - #D9DEE8 - #F59E0B (orange, more echo later); |change| < 0.25 dB transparent; NaN transparent",
+   "description": "HV change on 2026-08-23 relative to 2026-06-24, scene offset removed. Blue = less echo later, orange = more.",
+   "offset_applied_db": 0.261,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)",
+    "scene offset removed (land median, offsets.json)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/change_HH_2026-09-04.png",
+   "crid": "P05023",
+   "id": "change_HH_2026-09-04",
+   "kind": "change",
+   "label": "Change HH 2026-09-04 minus 2026-06-24",
+   "polarization": "HH",
+   "date": "2026-09-04",
+   "reference": "2026-06-24",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -1.57,
+   "vmax": 1.57,
+   "colormap": "diverging #3B82F6 (blue, less echo later) - #D9DEE8 - #F59E0B (orange, more echo later); |change| < 0.25 dB transparent; NaN transparent",
+   "description": "HH change on 2026-09-04 relative to 2026-06-24, scene offset removed. Blue = less echo later, orange = more.",
+   "offset_applied_db": 0.553,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)",
+    "scene offset removed (land median, offsets.json)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/change_HV_2026-09-04.png",
+   "crid": "P05023",
+   "id": "change_HV_2026-09-04",
+   "kind": "change",
+   "label": "Change HV 2026-09-04 minus 2026-06-24",
+   "polarization": "HV",
+   "date": "2026-09-04",
+   "reference": "2026-06-24",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -1.42,
+   "vmax": 1.42,
+   "colormap": "diverging #3B82F6 (blue, less echo later) - #D9DEE8 - #F59E0B (orange, more echo later); |change| < 0.25 dB transparent; NaN transparent",
+   "description": "HV change on 2026-09-04 relative to 2026-06-24, scene offset removed. Blue = less echo later, orange = more.",
+   "offset_applied_db": -0.34,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)",
+    "scene offset removed (land median, offsets.json)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/change_HH_2026-09-16.png",
+   "crid": "P05023",
+   "id": "change_HH_2026-09-16",
+   "kind": "change",
+   "label": "Change HH 2026-09-16 minus 2026-06-24",
+   "polarization": "HH",
+   "date": "2026-09-16",
+   "reference": "2026-06-24",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -1.57,
+   "vmax": 1.57,
+   "colormap": "diverging #3B82F6 (blue, less echo later) - #D9DEE8 - #F59E0B (orange, more echo later); |change| < 0.25 dB transparent; NaN transparent",
+   "description": "HH change on 2026-09-16 relative to 2026-06-24, scene offset removed. Blue = less echo later, orange = more.",
+   "offset_applied_db": 0.379,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)",
+    "scene offset removed (land median, offsets.json)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/change_HV_2026-09-16.png",
+   "crid": "P05023",
+   "id": "change_HV_2026-09-16",
+   "kind": "change",
+   "label": "Change HV 2026-09-16 minus 2026-06-24",
+   "polarization": "HV",
+   "date": "2026-09-16",
+   "reference": "2026-06-24",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -1.42,
+   "vmax": 1.42,
+   "colormap": "diverging #3B82F6 (blue, less echo later) - #D9DEE8 - #F59E0B (orange, more echo later); |change| < 0.25 dB transparent; NaN transparent",
+   "description": "HV change on 2026-09-16 relative to 2026-06-24, scene offset removed. Blue = less echo later, orange = more.",
+   "offset_applied_db": -0.252,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)",
+    "scene offset removed (land median, offsets.json)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/change_HH_2026-09-28.png",
+   "crid": "P05023",
+   "id": "change_HH_2026-09-28",
+   "kind": "change",
+   "label": "Change HH 2026-09-28 minus 2026-06-24",
+   "polarization": "HH",
+   "date": "2026-09-28",
+   "reference": "2026-06-24",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -1.57,
+   "vmax": 1.57,
+   "colormap": "diverging #3B82F6 (blue, less echo later) - #D9DEE8 - #F59E0B (orange, more echo later); |change| < 0.25 dB transparent; NaN transparent",
+   "description": "HH change on 2026-09-28 relative to 2026-06-24, scene offset removed. Blue = less echo later, orange = more.",
+   "offset_applied_db": 0.49,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)",
+    "scene offset removed (land median, offsets.json)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/change_HV_2026-09-28.png",
+   "crid": "P05023",
+   "id": "change_HV_2026-09-28",
+   "kind": "change",
+   "label": "Change HV 2026-09-28 minus 2026-06-24",
+   "polarization": "HV",
+   "date": "2026-09-28",
+   "reference": "2026-06-24",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -1.42,
+   "vmax": 1.42,
+   "colormap": "diverging #3B82F6 (blue, less echo later) - #D9DEE8 - #F59E0B (orange, more echo later); |change| < 0.25 dB transparent; NaN transparent",
+   "description": "HV change on 2026-09-28 relative to 2026-06-24, scene offset removed. Blue = less echo later, orange = more.",
+   "offset_applied_db": -0.585,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)",
+    "scene offset removed (land median, offsets.json)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/change_HH_2026-10-10.png",
+   "crid": "P05023",
+   "id": "change_HH_2026-10-10",
+   "kind": "change",
+   "label": "Change HH 2026-10-10 minus 2026-06-24",
+   "polarization": "HH",
+   "date": "2026-10-10",
+   "reference": "2026-06-24",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -1.57,
+   "vmax": 1.57,
+   "colormap": "diverging #3B82F6 (blue, less echo later) - #D9DEE8 - #F59E0B (orange, more echo later); |change| < 0.25 dB transparent; NaN transparent",
+   "description": "HH change on 2026-10-10 relative to 2026-06-24, scene offset removed. Blue = less echo later, orange = more.",
+   "offset_applied_db": 0.606,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)",
+    "scene offset removed (land median, offsets.json)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/change_HV_2026-10-10.png",
+   "crid": "P05023",
+   "id": "change_HV_2026-10-10",
+   "kind": "change",
+   "label": "Change HV 2026-10-10 minus 2026-06-24",
+   "polarization": "HV",
+   "date": "2026-10-10",
+   "reference": "2026-06-24",
+   "bounds": [
+    [
+     31.33819,
+     35.494027
+    ],
+    [
+     31.56201,
+     35.606197
+    ]
+   ],
+   "vmin": -1.42,
+   "vmax": 1.42,
+   "colormap": "diverging #3B82F6 (blue, less echo later) - #D9DEE8 - #F59E0B (orange, more echo later); |change| < 0.25 dB transparent; NaN transparent",
+   "description": "HV change on 2026-10-10 relative to 2026-06-24, scene offset removed. Blue = less echo later, orange = more.",
+   "offset_applied_db": -0.626,
+   "display_multilook": 3,
+   "processing": [
+    "gamma-0 power -> 10*log10 (product's own formula)",
+    "3x3 multilook in power (60 m)",
+    "median speckle filter 5x5",
+    "reprojected EPSG:32636 -> EPSG:3857 (bilinear for dB, nearest for masks)",
+    "scene offset removed (land median, offsets.json)"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/water_HV_2026-06-24.png",
+   "crid": "P05023",
+   "id": "water_HV_2026-06-24",
+   "kind": "water",
+   "label": "Open water HV 2026-06-24",
+   "polarization": "HV",
+   "date": "2026-06-24",
+   "bounds": [
+    [
+     31.338011,
+     35.494023
+    ],
+    [
+     31.56201,
+     35.606192
+    ]
+   ],
+   "colormap": "cyan translucent = open water (method B)",
+   "description": "Open water on 2026-06-24, primary method B: HV below -17.97 dB after land removal. Area 138.7 km2 (band 96.0 to 160.0).",
+   "threshold_db": -17.97,
+   "area_km2": 138.65,
+   "band_low_km2": 96.05,
+   "band_high_km2": 160.04,
+   "offset_applied_db": 0.0,
+   "display_multilook": 1,
+   "processing": [
+    "10*log10 gamma-0",
+    "median 5x5",
+    "scene offset removed",
+    "method B: HV > -15 dB dropped, Otsu threshold",
+    "blobs < 10 px removed, holes < 10 px filled",
+    "reprojected to EPSG:3857 nearest"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/water_band_2026-06-24.png",
+   "crid": "P05023",
+   "id": "water_band_2026-06-24",
+   "kind": "band",
+   "label": "Detection-limit band 2026-06-24",
+   "polarization": "HV",
+   "date": "2026-06-24",
+   "bounds": [
+    [
+     31.338011,
+     35.494023
+    ],
+    [
+     31.56201,
+     35.606192
+    ]
+   ],
+   "colormap": "amber = pixels that flip water/land within +/-1.5 dB of the threshold",
+   "description": "Pixels on 2026-06-24 whose water status changes if the threshold moves by 1.5 dB. This is the absolute-area uncertainty made visible.",
+   "threshold_db": -17.97,
+   "band_db": 1.5,
+   "offset_applied_db": 0.0,
+   "display_multilook": 1,
+   "processing": [
+    "as water_HV",
+    "band: threshold +/-1.5 dB; flipped pixels = low XOR high"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/water_HV_2026-07-06.png",
+   "crid": "P05023",
+   "id": "water_HV_2026-07-06",
+   "kind": "water",
+   "label": "Open water HV 2026-07-06",
+   "polarization": "HV",
+   "date": "2026-07-06",
+   "bounds": [
+    [
+     31.338011,
+     35.494023
+    ],
+    [
+     31.56201,
+     35.606192
+    ]
+   ],
+   "colormap": "cyan translucent = open water (method B)",
+   "description": "Open water on 2026-07-06, primary method B: HV below -18.02 dB after land removal. Area 139.7 km2 (band 106.0 to 160.9).",
+   "threshold_db": -18.02,
+   "area_km2": 139.71,
+   "band_low_km2": 105.98,
+   "band_high_km2": 160.91,
+   "offset_applied_db": -0.533,
+   "display_multilook": 1,
+   "processing": [
+    "10*log10 gamma-0",
+    "median 5x5",
+    "scene offset removed",
+    "method B: HV > -15 dB dropped, Otsu threshold",
+    "blobs < 10 px removed, holes < 10 px filled",
+    "reprojected to EPSG:3857 nearest"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/water_band_2026-07-06.png",
+   "crid": "P05023",
+   "id": "water_band_2026-07-06",
+   "kind": "band",
+   "label": "Detection-limit band 2026-07-06",
+   "polarization": "HV",
+   "date": "2026-07-06",
+   "bounds": [
+    [
+     31.338011,
+     35.494023
+    ],
+    [
+     31.56201,
+     35.606192
+    ]
+   ],
+   "colormap": "amber = pixels that flip water/land within +/-1.5 dB of the threshold",
+   "description": "Pixels on 2026-07-06 whose water status changes if the threshold moves by 1.5 dB. This is the absolute-area uncertainty made visible.",
+   "threshold_db": -18.02,
+   "band_db": 1.5,
+   "offset_applied_db": -0.533,
+   "display_multilook": 1,
+   "processing": [
+    "as water_HV",
+    "band: threshold +/-1.5 dB; flipped pixels = low XOR high"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/water_HV_2026-07-18.png",
+   "crid": "P05023",
+   "id": "water_HV_2026-07-18",
+   "kind": "water",
+   "label": "Open water HV 2026-07-18",
+   "polarization": "HV",
+   "date": "2026-07-18",
+   "bounds": [
+    [
+     31.338011,
+     35.494023
+    ],
+    [
+     31.56201,
+     35.606192
+    ]
+   ],
+   "colormap": "cyan translucent = open water (method B)",
+   "description": "Open water on 2026-07-18, primary method B: HV below -18.12 dB after land removal. Area 139.4 km2 (band 113.5 to 158.9).",
+   "threshold_db": -18.12,
+   "area_km2": 139.36,
+   "band_low_km2": 113.54,
+   "band_high_km2": 158.88,
+   "offset_applied_db": -0.145,
+   "display_multilook": 1,
+   "processing": [
+    "10*log10 gamma-0",
+    "median 5x5",
+    "scene offset removed",
+    "method B: HV > -15 dB dropped, Otsu threshold",
+    "blobs < 10 px removed, holes < 10 px filled",
+    "reprojected to EPSG:3857 nearest"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/water_band_2026-07-18.png",
+   "crid": "P05023",
+   "id": "water_band_2026-07-18",
+   "kind": "band",
+   "label": "Detection-limit band 2026-07-18",
+   "polarization": "HV",
+   "date": "2026-07-18",
+   "bounds": [
+    [
+     31.338011,
+     35.494023
+    ],
+    [
+     31.56201,
+     35.606192
+    ]
+   ],
+   "colormap": "amber = pixels that flip water/land within +/-1.5 dB of the threshold",
+   "description": "Pixels on 2026-07-18 whose water status changes if the threshold moves by 1.5 dB. This is the absolute-area uncertainty made visible.",
+   "threshold_db": -18.12,
+   "band_db": 1.5,
+   "offset_applied_db": -0.145,
+   "display_multilook": 1,
+   "processing": [
+    "as water_HV",
+    "band: threshold +/-1.5 dB; flipped pixels = low XOR high"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/water_HV_2026-08-11.png",
+   "crid": "P05023",
+   "id": "water_HV_2026-08-11",
+   "kind": "water",
+   "label": "Open water HV 2026-08-11",
+   "polarization": "HV",
+   "date": "2026-08-11",
+   "bounds": [
+    [
+     31.338011,
+     35.494023
+    ],
+    [
+     31.56201,
+     35.606192
+    ]
+   ],
+   "colormap": "cyan translucent = open water (method B)",
+   "description": "Open water on 2026-08-11, primary method B: HV below -18.57 dB after land removal. Area 139.2 km2 (band 126.1 to 155.1).",
+   "threshold_db": -18.57,
+   "area_km2": 139.19,
+   "band_low_km2": 126.12,
+   "band_high_km2": 155.12,
+   "offset_applied_db": -0.526,
+   "display_multilook": 1,
+   "processing": [
+    "10*log10 gamma-0",
+    "median 5x5",
+    "scene offset removed",
+    "method B: HV > -15 dB dropped, Otsu threshold",
+    "blobs < 10 px removed, holes < 10 px filled",
+    "reprojected to EPSG:3857 nearest"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/water_band_2026-08-11.png",
+   "crid": "P05023",
+   "id": "water_band_2026-08-11",
+   "kind": "band",
+   "label": "Detection-limit band 2026-08-11",
+   "polarization": "HV",
+   "date": "2026-08-11",
+   "bounds": [
+    [
+     31.338011,
+     35.494023
+    ],
+    [
+     31.56201,
+     35.606192
+    ]
+   ],
+   "colormap": "amber = pixels that flip water/land within +/-1.5 dB of the threshold",
+   "description": "Pixels on 2026-08-11 whose water status changes if the threshold moves by 1.5 dB. This is the absolute-area uncertainty made visible.",
+   "threshold_db": -18.57,
+   "band_db": 1.5,
+   "offset_applied_db": -0.526,
+   "display_multilook": 1,
+   "processing": [
+    "as water_HV",
+    "band: threshold +/-1.5 dB; flipped pixels = low XOR high"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/water_HV_2026-08-23.png",
+   "crid": "P05023",
+   "id": "water_HV_2026-08-23",
+   "kind": "water",
+   "label": "Open water HV 2026-08-23",
+   "polarization": "HV",
+   "date": "2026-08-23",
+   "bounds": [
+    [
+     31.338011,
+     35.494023
+    ],
+    [
+     31.56201,
+     35.606192
+    ]
+   ],
+   "colormap": "cyan translucent = open water (method B)",
+   "description": "Open water on 2026-08-23, primary method B: HV below -18.12 dB after land removal. Area 137.9 km2 (band 103.7 to 155.8).",
+   "threshold_db": -18.12,
+   "area_km2": 137.89,
+   "band_low_km2": 103.69,
+   "band_high_km2": 155.85,
+   "offset_applied_db": 0.261,
+   "display_multilook": 1,
+   "processing": [
+    "10*log10 gamma-0",
+    "median 5x5",
+    "scene offset removed",
+    "method B: HV > -15 dB dropped, Otsu threshold",
+    "blobs < 10 px removed, holes < 10 px filled",
+    "reprojected to EPSG:3857 nearest"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/water_band_2026-08-23.png",
+   "crid": "P05023",
+   "id": "water_band_2026-08-23",
+   "kind": "band",
+   "label": "Detection-limit band 2026-08-23",
+   "polarization": "HV",
+   "date": "2026-08-23",
+   "bounds": [
+    [
+     31.338011,
+     35.494023
+    ],
+    [
+     31.56201,
+     35.606192
+    ]
+   ],
+   "colormap": "amber = pixels that flip water/land within +/-1.5 dB of the threshold",
+   "description": "Pixels on 2026-08-23 whose water status changes if the threshold moves by 1.5 dB. This is the absolute-area uncertainty made visible.",
+   "threshold_db": -18.12,
+   "band_db": 1.5,
+   "offset_applied_db": 0.261,
+   "display_multilook": 1,
+   "processing": [
+    "as water_HV",
+    "band: threshold +/-1.5 dB; flipped pixels = low XOR high"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/water_HV_2026-09-04.png",
+   "crid": "P05023",
+   "id": "water_HV_2026-09-04",
+   "kind": "water",
+   "label": "Open water HV 2026-09-04",
+   "polarization": "HV",
+   "date": "2026-09-04",
+   "bounds": [
+    [
+     31.338011,
+     35.494023
+    ],
+    [
+     31.56201,
+     35.606192
+    ]
+   ],
+   "colormap": "cyan translucent = open water (method B)",
+   "description": "Open water on 2026-09-04, primary method B: HV below -18.17 dB after land removal. Area 138.8 km2 (band 113.8 to 158.1).",
+   "threshold_db": -18.17,
+   "area_km2": 138.78,
+   "band_low_km2": 113.8,
+   "band_high_km2": 158.09,
+   "offset_applied_db": -0.34,
+   "display_multilook": 1,
+   "processing": [
+    "10*log10 gamma-0",
+    "median 5x5",
+    "scene offset removed",
+    "method B: HV > -15 dB dropped, Otsu threshold",
+    "blobs < 10 px removed, holes < 10 px filled",
+    "reprojected to EPSG:3857 nearest"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/water_band_2026-09-04.png",
+   "crid": "P05023",
+   "id": "water_band_2026-09-04",
+   "kind": "band",
+   "label": "Detection-limit band 2026-09-04",
+   "polarization": "HV",
+   "date": "2026-09-04",
+   "bounds": [
+    [
+     31.338011,
+     35.494023
+    ],
+    [
+     31.56201,
+     35.606192
+    ]
+   ],
+   "colormap": "amber = pixels that flip water/land within +/-1.5 dB of the threshold",
+   "description": "Pixels on 2026-09-04 whose water status changes if the threshold moves by 1.5 dB. This is the absolute-area uncertainty made visible.",
+   "threshold_db": -18.17,
+   "band_db": 1.5,
+   "offset_applied_db": -0.34,
+   "display_multilook": 1,
+   "processing": [
+    "as water_HV",
+    "band: threshold +/-1.5 dB; flipped pixels = low XOR high"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/water_HV_2026-09-16.png",
+   "crid": "P05023",
+   "id": "water_HV_2026-09-16",
+   "kind": "water",
+   "label": "Open water HV 2026-09-16",
+   "polarization": "HV",
+   "date": "2026-09-16",
+   "bounds": [
+    [
+     31.338011,
+     35.494023
+    ],
+    [
+     31.56201,
+     35.606192
+    ]
+   ],
+   "colormap": "cyan translucent = open water (method B)",
+   "description": "Open water on 2026-09-16, primary method B: HV below -18.47 dB after land removal. Area 137.8 km2 (band 121.9 to 154.5).",
+   "threshold_db": -18.47,
+   "area_km2": 137.77,
+   "band_low_km2": 121.92,
+   "band_high_km2": 154.49,
+   "offset_applied_db": -0.252,
+   "display_multilook": 1,
+   "processing": [
+    "10*log10 gamma-0",
+    "median 5x5",
+    "scene offset removed",
+    "method B: HV > -15 dB dropped, Otsu threshold",
+    "blobs < 10 px removed, holes < 10 px filled",
+    "reprojected to EPSG:3857 nearest"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/water_band_2026-09-16.png",
+   "crid": "P05023",
+   "id": "water_band_2026-09-16",
+   "kind": "band",
+   "label": "Detection-limit band 2026-09-16",
+   "polarization": "HV",
+   "date": "2026-09-16",
+   "bounds": [
+    [
+     31.338011,
+     35.494023
+    ],
+    [
+     31.56201,
+     35.606192
+    ]
+   ],
+   "colormap": "amber = pixels that flip water/land within +/-1.5 dB of the threshold",
+   "description": "Pixels on 2026-09-16 whose water status changes if the threshold moves by 1.5 dB. This is the absolute-area uncertainty made visible.",
+   "threshold_db": -18.47,
+   "band_db": 1.5,
+   "offset_applied_db": -0.252,
+   "display_multilook": 1,
+   "processing": [
+    "as water_HV",
+    "band: threshold +/-1.5 dB; flipped pixels = low XOR high"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/water_HV_2026-09-28.png",
+   "crid": "P05023",
+   "id": "water_HV_2026-09-28",
+   "kind": "water",
+   "label": "Open water HV 2026-09-28",
+   "polarization": "HV",
+   "date": "2026-09-28",
+   "bounds": [
+    [
+     31.338011,
+     35.494023
+    ],
+    [
+     31.56201,
+     35.606192
+    ]
+   ],
+   "colormap": "cyan translucent = open water (method B)",
+   "description": "Open water on 2026-09-28, primary method B: HV below -18.22 dB after land removal. Area 139.7 km2 (band 116.0 to 158.6).",
+   "threshold_db": -18.22,
+   "area_km2": 139.7,
+   "band_low_km2": 116.05,
+   "band_high_km2": 158.56,
+   "offset_applied_db": -0.585,
+   "display_multilook": 1,
+   "processing": [
+    "10*log10 gamma-0",
+    "median 5x5",
+    "scene offset removed",
+    "method B: HV > -15 dB dropped, Otsu threshold",
+    "blobs < 10 px removed, holes < 10 px filled",
+    "reprojected to EPSG:3857 nearest"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/water_band_2026-09-28.png",
+   "crid": "P05023",
+   "id": "water_band_2026-09-28",
+   "kind": "band",
+   "label": "Detection-limit band 2026-09-28",
+   "polarization": "HV",
+   "date": "2026-09-28",
+   "bounds": [
+    [
+     31.338011,
+     35.494023
+    ],
+    [
+     31.56201,
+     35.606192
+    ]
+   ],
+   "colormap": "amber = pixels that flip water/land within +/-1.5 dB of the threshold",
+   "description": "Pixels on 2026-09-28 whose water status changes if the threshold moves by 1.5 dB. This is the absolute-area uncertainty made visible.",
+   "threshold_db": -18.22,
+   "band_db": 1.5,
+   "offset_applied_db": -0.585,
+   "display_multilook": 1,
+   "processing": [
+    "as water_HV",
+    "band: threshold +/-1.5 dB; flipped pixels = low XOR high"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/water_HV_2026-10-10.png",
+   "crid": "P05023",
+   "id": "water_HV_2026-10-10",
+   "kind": "water",
+   "label": "Open water HV 2026-10-10",
+   "polarization": "HV",
+   "date": "2026-10-10",
+   "bounds": [
+    [
+     31.338011,
+     35.494023
+    ],
+    [
+     31.56201,
+     35.606192
+    ]
+   ],
+   "colormap": "cyan translucent = open water (method B)",
+   "description": "Open water on 2026-10-10, primary method B: HV below -18.12 dB after land removal. Area 139.8 km2 (band 104.2 to 160.6).",
+   "threshold_db": -18.12,
+   "area_km2": 139.83,
+   "band_low_km2": 104.22,
+   "band_high_km2": 160.57,
+   "offset_applied_db": -0.626,
+   "display_multilook": 1,
+   "processing": [
+    "10*log10 gamma-0",
+    "median 5x5",
+    "scene offset removed",
+    "method B: HV > -15 dB dropped, Otsu threshold",
+    "blobs < 10 px removed, holes < 10 px filled",
+    "reprojected to EPSG:3857 nearest"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  },
+  {
+   "file": "layers/water_band_2026-10-10.png",
+   "crid": "P05023",
+   "id": "water_band_2026-10-10",
+   "kind": "band",
+   "label": "Detection-limit band 2026-10-10",
+   "polarization": "HV",
+   "date": "2026-10-10",
+   "bounds": [
+    [
+     31.338011,
+     35.494023
+    ],
+    [
+     31.56201,
+     35.606192
+    ]
+   ],
+   "colormap": "amber = pixels that flip water/land within +/-1.5 dB of the threshold",
+   "description": "Pixels on 2026-10-10 whose water status changes if the threshold moves by 1.5 dB. This is the absolute-area uncertainty made visible.",
+   "threshold_db": -18.12,
+   "band_db": 1.5,
+   "offset_applied_db": -0.626,
+   "display_multilook": 1,
+   "processing": [
+    "as water_HV",
+    "band: threshold +/-1.5 dB; flipped pixels = low XOR high"
+   ],
+   "product": "NISAR L2 GCOV",
+   "maturity": "PROVISIONAL",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857"
+  }
+ ],
+ "bounds": [
+  [
+   31.33819,
+   35.494027
+  ],
+  [
+   31.56201,
+   35.606197
+  ]
+ ],
+ "notes": [
+  "Every layer is PROVISIONAL (CRID P05023). No VALIDATED product is mixed in.",
+  "The NISAR instrument gap 2026-07-27T22:03Z to 2026-08-10T00:55Z falls between 07-18 and 08-11.",
+  "Change layers have the scene offset removed; the value is in each layer's offset_applied_db.",
+  "Display resolution is 60 m for backscatter and change; water and band layers are 20 m."
+ ]
+}

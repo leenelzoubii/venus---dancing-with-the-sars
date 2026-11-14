@@ -147,9 +147,25 @@ prints them.
 # 4. change products (dB, difference, water masks)
 .\.venv\Scripts\python scripts\04_make_change_products.py
 
-# 5. export the static web assets
-.\.venv\Scripts\python scripts\05_export_web_assets.py
+# 5. the Hour 1-2 analysis (QC, contact sheets, offsets, water methods, patches)
+.\.venv\Scripts\python scripts\06_qc_table.py --aoi dead_sea_east
+.\.venv\Scripts\python scripts\07_contact_sheets.py --aoi dead_sea_east
+.\.venv\Scripts\python scripts\08_offsets.py --aoi dead_sea_east
+.\.venv\Scripts\python scripts\09_water.py --aoi dead_sea_east
+.\.venv\Scripts\python scripts\04b_find_patches.py --aoi dead_sea_east
+
+# 6. export the static web assets (PNG layers + manifest/stats/patches as .json and .js)
+.\.venv\Scripts\python scripts\05_export_web_assets.py --aoi dead_sea_east --patch-log docs\patch_log.csv
+
+# 7. validate the web assets before deploying (exit code 1 on any failure)
+.\.venv\Scripts\python scripts\06_validate_web_assets.py
+
+# 8. tests
+.\.venv\Scripts\python -m pytest -q
 ```
+
+The exported files in `web/data/` are built to be loaded by plain `<script>` tags, so they work from
+file:// and on GitHub Pages without a server. Wiring the web app to them is the next step (Hour 3).
 
 Any script that touches data accepts `--aoi <name>` (a key in `config/study_area.yaml`) or
 `--aoi-wkt "POLYGON((...))"` for a one-off area, so trying a new location never requires code changes.

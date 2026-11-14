@@ -186,3 +186,14 @@ The GCOV ``mask`` layer is not a 0/1 validity flag: it is the **subswath number*
 one radar sample in the averaging set was partially focused or invalid, 1-3 mean valid data from that
 subswath, and 255 marks pixels outside the radar acquisition. Our window sits in subswath 1, where
 99.996 percent of pixels carry mask == 1.
+
+## Hour 2 notes
+
+- **Detection limit versus band.** The +/-1.5 dB band answers how sure we are of one date's area. Whether
+  two dates differ is a separate question, answered by the sign-robustness check and the offset
+  uncertainty.
+- **Persistence.** Speckle does not repeat from one date to the next, so a real surface change should
+  survive a two-date test while noise does not. This is the cheapest honest filter we have.
+- **Web Mercator is not metric.** A Web Mercator pixel is stretched by about 1 / cos(latitude), roughly 16
+  percent at 31 degrees north. Area must be computed in UTM (or with the cos^2 correction), never from
+  the image pixel count.
