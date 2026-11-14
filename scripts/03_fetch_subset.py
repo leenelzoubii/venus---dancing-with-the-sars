@@ -58,14 +58,39 @@ def select_scenes(args, area) -> pd.DataFrame:
     return df
 
 
+def atomic_save_npy(path: Path, array) -> None:
+    """Write an array so a crash can never leave a half-written ``.npy`` in the cache.
+
+    The cache is the only copy of a slice that took two minutes of network to fetch, so a truncated
+    file is expensive and silent: it loads fine and simply has the wrong numbers.
+    """
+    tmp = path.with_name(path.name + ".tmp")
+    with open(tmp, "wb") as handle:
+        np.save(handle, array)
+    tmp.replace(path)
+
+
+def atomic_write_text(path: Path, text: str) -> None:
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_text(text, encoding="utf-8")
+    tmp.replace(path)
+
+
 def save_subset(df_row, area, outdir: Path, bbox, polarizations, force: bool) -> Path:
     day = pd.Timestamp(df_row["acquisition_date"]).strftime("%Y-%m-%d")
     stack_tag = f"{int(df_row['track'])}-{int(df_row['frame']):03d}-{df_row['direction'][:4]}"
     stem = f"{day}_{stack_tag}"
     sidecar = outdir / f"{stem}.json"
+    # Cache hit requires the sidecar AND every array it promises: an interrupted run can leave the
+    # sidecar-less half of a date, and trusting the sidecar alone would silently skip that gap.
     if sidecar.exists() and not force:
-        print(f"  {day}: cached ({sidecar.name})")
-        return sidecar
+        promised = [sidecar, outdir / f"{stem}_looks.npy", outdir / f"{stem}_mask.npy"]
+        promised += [outdir / f"{stem}_{p}.npy" for p in polarizations]
+        missing = [p.name for p in promised if not p.exists()]
+        if not missing:
+            print(f"  {day}: cached ({sidecar.name})")
+            return sidecar
+        print(f"  {day}: incomplete cache, refetching ({', '.join(missing)})")
 
     t0 = time.time()
     h5file = nisar.open_h5(df_row["url"])
@@ -108,7 +133,7 @@ def save_subset(df_row, area, outdir: Path, bbox, polarizations, force: bool) ->
                 print(f"  {day}: {pol} not present, skipping that layer")
                 continue
             arr = nisar.read_window(h5file, dataset, rows, cols)
-            np.save(outdir / f"{stem}_{pol}.npy", arr.astype("float32"))
+            atomic_save_npy(outdir / f"{stem}_{pol}.npy", arr.astype("float32"))
             payload["layers"][pol] = {
                 "dataset": f"{nisar.GCOV_BASE}/frequencyA/{dataset}",
                 "shape": list(arr.shape),
@@ -119,10 +144,10 @@ def save_subset(df_row, area, outdir: Path, bbox, polarizations, force: bool) ->
         for extra, suffix in (("numberOfLooks", "looks"), ("mask", "mask")):
             if extra in grid:
                 arr = np.asarray(grid[extra][rows, cols])
-                np.save(outdir / f"{stem}_{suffix}.npy", arr)
+                atomic_save_npy(outdir / f"{stem}_{suffix}.npy", arr)
                 payload["layers"][extra] = {"shape": list(arr.shape), "dtype": str(arr.dtype)}
 
-        sidecar.write_text(json.dumps(payload, indent=1), encoding="utf-8")
+        atomic_write_text(sidecar, json.dumps(payload, indent=1))
     finally:
         h5file.close()
 
@@ -141,6 +166,8 @@ def main() -> int:
     ap.add_argument("--polarizations", nargs="+", default=None, help="HH HV (default from config).")
     ap.add_argument("--outdir", type=Path, default=None)
     ap.add_argument("--force", action="store_true", help="Re-download cached dates.")
+    ap.add_argument("--retries", type=int, default=3, help="Attempts per date before giving up.")
+    ap.add_argument("--retry-wait", type=float, default=15.0, help="Backoff base in seconds (x attempt).")
     args = ap.parse_args()
 
     area = load_study_area(args.aoi, args.aoi_wkt)
@@ -165,7 +192,16 @@ def main() -> int:
 
     auth.login()
     for _, row in df.iterrows():
-        save_subset(row, area, outdir, bbox, pols, args.force)
+        day = pd.Timestamp(row["acquisition_date"]).strftime("%Y-%m-%d")
+        for attempt in range(1, args.retries + 1):
+            try:
+                save_subset(row, area, outdir, bbox, pols, args.force)
+                break
+            except Exception as exc:  # noqa: BLE001 - network flakiness is expected, log and retry
+                print(f"  {day}: attempt {attempt}/{args.retries} failed: {type(exc).__name__}: {exc}")
+                if attempt == args.retries:
+                    raise
+                time.sleep(args.retry_wait * attempt)  # linear backoff, ASCII log
 
     print(f"\nDone. Subsets in {outdir.relative_to(REPO_ROOT)}")
     print("Next: python scripts/04_make_change_products.py --aoi", area.name)

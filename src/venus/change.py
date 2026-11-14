@@ -165,3 +165,50 @@ def threshold_sensitivity(
 def area_km2(mask: np.ndarray, pixel_size_m: float) -> float:
     """Area of a boolean mask given the pixel spacing in metres."""
     return float(np.count_nonzero(mask)) * (pixel_size_m**2) / 1e6
+
+
+def land_mask(
+    hv_db: np.ndarray,
+    looks: np.ndarray | None = None,
+    hh_db: np.ndarray | None = None,
+    hv_land_cut_db: float = -15.0,
+    min_looks: float = 4.0,
+) -> np.ndarray:
+    """Pixels we are willing to call land when estimating a scene-wide offset.
+
+    Deliberately strict, because an offset estimated over water or over noisy low-look pixels would
+    be an offset of the wrong population. Land here means:
+
+    * valid in HV (and in HH when supplied - both must exist for the difference to exist);
+    * ``HV > hv_land_cut_db`` - above the water/land transition, so open water is excluded;
+    * ``numberOfLooks >= min_looks`` - low-look pixels are the noisiest and least trustworthy;
+    * ``mask == 1`` when a mask is supplied.
+
+    The cut is a documented choice, not a constant of nature: open water on this AOI sits near
+    -20.5 dB in HV, and the land mode starts around -14 dB.
+    """
+    land = np.isfinite(hv_db) & (hv_db > hv_land_cut_db)
+    if hh_db is not None:
+        land &= np.isfinite(hh_db)
+    if looks is not None:
+        with np.errstate(invalid="ignore"):
+            land &= np.isfinite(looks) & (looks >= min_looks)
+    return land
+
+
+def robust_offset_db(
+    later_db: np.ndarray, earlier_db: np.ndarray, land: np.ndarray
+) -> tuple[float, int, float]:
+    """Scene-wide offset in dB: median of (later - earlier) over land, with its MAD.
+
+    The median ignores the tails (a lake drying is a real change, and it should not drag the
+    correction); the MAD says how tightly the land population agrees, which is the uncertainty on
+    the offset itself.
+    """
+    diff = np.asarray(later_db, dtype="float32") - np.asarray(earlier_db, dtype="float32")
+    selected = diff[np.asarray(land, dtype=bool) & np.isfinite(diff)]
+    if selected.size == 0:
+        return float("nan"), 0, float("nan")
+    median = float(np.median(selected))
+    mad = float(np.median(np.abs(selected - median)))
+    return median, int(selected.size), mad
