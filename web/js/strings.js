@@ -183,6 +183,12 @@ window.VENUS_STRINGS = {
 
     units_db: "dB",
     units_km2: "km2",
+    place_group: "Place",
+    place_processed: "Processed: nine radar dates with change products.",
+    place_covered: "NISAR covers this place in the archive ({dates} dates on track {stack}), but its subsets have not been downloaded and processed yet. The outline is shown; no imagery is displayed for it.",
+    place_uncovered: "No NISAR product in the archive intersects this outline yet.",
+    place_current: "Showing this place.",
+    place_pending_short: "not processed yet",
     loading_first: "Loading radar layers…",
     loading_error: "A layer failed to load. The map still works; try reloading or check the network connection."
   }

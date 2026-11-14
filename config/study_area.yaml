@@ -1,29 +1,114 @@
-# Team Venus — study areas and data filters
+# Team Venus - study areas and data filters
 # Every script takes --aoi <name> (or --aoi-wkt "POLYGON((...))" for a one-off fallback).
 # Coordinates are WGS84 (EPSG:4326), longitude latitude order, as in ASF Vertex.
+#
+# IMPORTANT - coordinate correction, 2026-11-14:
+# Roughly half of the polygons supplied by the team had longitudes near -324 instead of +35.
+# A longitude of -324 is not a valid Earth coordinate (valid range -180 to 180). Those values are
+# exactly 360 degrees too small: -323.1918 + 360 = 36.8082, which is Azraq. Each corrected entry
+# below carries a "coord_note" saying it was corrected, and the correction is a plain +360 with no
+# reshaping. Verify against the printed map before trusting any AOI.
 
-active_aoi: dead_sea_east          # the AOI used by default (tonight's Gate 1)
+active_aoi: dead_sea_east
 
 aois:
+  # --- the original Gate 1 area: the only one with a full processed series -----------------
   - name: dead_sea_east
-    title: "Dead Sea — Jordanian east shore"
-    story: >
+    title: "Dead Sea - Jordanian east shore"
+    coord_note: "Supplied by the team; valid as given."
+    story: >-
       The east shore between Suweimeh and Ghor Haditha, just north of the Lisan peninsula.
-      Two stories in one frame: shoreline retreat as the lake level falls, and the sinkhole belt
-      on the Ghor Haditha plain. 100% Jordanian shore, inside the 12-day descending stack.
-    # ~11 x 24 km -> about 550 x 1200 pixels at 20 m GCOV spacing.
+      Shoreline retreat as the lake level falls, and the sinkhole belt on the Ghor Haditha plain.
     wkt: "POLYGON((35.500 31.340, 35.600 31.340, 35.600 31.560, 35.500 31.560, 35.500 31.340))"
 
-  # --- Candidate additions: uncomment/promote once the team decides -------------
-  # - name: dead_sea_ponds
-  #   title: "Dead Sea — south evaporation ponds (Safi)"
-  #   story: "Industrial potash ponds; very strong backscatter contrast between water and salt crust."
-  #   wkt: "POLYGON((35.440 31.070, 35.560 31.070, 35.560 31.260, 35.440 31.260, 35.440 31.070))"
+  # --- additional areas supplied by the team -------------------------------------------------
+  - name: dead_sea_full
+    title: "Dead Sea - whole lake"
+    coord_note: "Supplied by the team; valid as given. Large area (~30 x 60 km), so a subset window will be much bigger."
+    story: >-
+      The whole Dead Sea outline, both shores. Shows the lake as one object, including the
+      evaporation ponds in the south, but at a coarser effective resolution per screen.
+    wkt: "POLYGON((35.2897 31.2872, 35.6384 31.2872, 35.6494 31.5223, 35.6384 31.7754, 35.5696 31.8795, 35.2897 31.7754, 35.2897 31.2872))"
 
-  # - name: azraq_wetland
-  #   title: "Azraq wetland"
-  #   story: "Ramsar wetland shrunk by groundwater abstraction; small features vs 20 m pixels."
-  #   wkt: "POLYGON((36.780 31.790, 36.870 31.790, 36.870 31.880, 36.780 31.880, 36.780 31.790))"
+  - name: azraq_wetland
+    title: "Azraq Wetland Reserve"
+    coord_note: "CORRECTED: longitude was -323.1918; +360 applied."
+    story: >-
+      A Ramsar wetland fed by groundwater, reduced by decades of abstraction. Small features
+      relative to 20 m radar pixels, so this is a hard target.
+    wkt: "POLYGON((36.8082 31.7618, 36.8990 31.7618, 36.8990 31.8798, 36.8082 31.8798, 36.8082 31.7618))"
+
+  - name: alwehda_dam
+    title: "Al-Wehda Dam"
+    coord_note: "CORRECTED: longitudes were about -324.12; +360 applied."
+    story: >-
+      A large dam on the Yarmouk river. Water surface area responds to inflow and drawdown.
+    wkt: "POLYGON((35.879 32.7231, 35.8892 32.7205, 35.8816 32.7355, 35.867 32.7365, 35.879 32.7231))"
+
+  - name: almujib_valley
+    title: "Al-Mujib Valley"
+    coord_note: "CORRECTED: longitudes were about -324.43; +360 applied."
+    story: >-
+      The Mujib canyon mouth where it reaches the Dead Sea, with the dam upstream.
+    wkt: "POLYGON((35.5622 31.4615, 35.5733 31.4603, 35.584 31.4603, 35.5821 31.4655, 35.5746 31.4724, 35.5622 31.4719, 35.5622 31.4615))"
+
+  - name: melehat_sdom
+    title: "Melehat Sdom (southern Dead Sea)"
+    coord_note: "CORRECTED: longitudes were about -324.64; +360 applied."
+    story: >-
+      The southern basin near Sdom, where the lake is shallowest and the shoreline has moved most.
+    wkt: "POLYGON((35.3583 30.9617, 35.3617 30.9578, 35.3696 30.9575, 35.3625 30.9898, 35.3475 30.9911, 35.3583 30.9617))"
+
+  - name: sad_alkarama
+    title: "Sad Al-Karama (King Abdullah Canal area)"
+    coord_note: "CORRECTED: longitudes were about -324.44; +360 applied."
+    story: >-
+      Canal and reservoir area in the Jordan Valley. Narrow water bodies, a demanding target.
+    wkt: "POLYGON((35.5554 32.0081, 35.5687 32.0081, 35.5687 32.045, 35.5554 32.045, 35.5448 32.021, 35.5478 32.0098, 35.5554 32.0081))"
+
+  - name: arab_valley_dam
+    title: "Arab Valley Dam"
+    coord_note: "CORRECTED: longitudes were about -324.37; +360 applied."
+    story: "Small reservoir in the northern Jordan Valley. Very small target for 20 m pixels."
+    wkt: "POLYGON((35.6304 32.614, 35.634 32.6139, 35.6442 32.6166, 35.6489 32.6206, 35.6423 32.6229, 35.6297 32.6205, 35.6304 32.614))"
+
+  - name: kafrein_dam
+    title: "Kafrein Dam"
+    coord_note: "CORRECTED: longitudes were about -324.33; +360 applied."
+    story: "Reservoir south of Amman, close to the Jordan Valley escarpment."
+    wkt: "POLYGON((35.6717 31.849, 35.6837 31.849, 35.6837 31.8624, 35.6717 31.8624, 35.6717 31.849))"
+
+  - name: kufranja_dam
+    title: "Kufranja Dam"
+    coord_note: "Supplied by the team; valid as given."
+    story: "Reservoir in the Ajloun highlands, in a narrow valley."
+    wkt: "POLYGON((35.6417 32.2655, 35.6526 32.2655, 35.6487 32.2684, 35.6526 32.2721, 35.6435 32.2714, 35.6417 32.2655))"
+
+  - name: potash_city
+    title: "Potash City and surroundings"
+    coord_note: "CORRECTED: longitudes were about -324.55; +360 applied. Large area (~15 x 30 km)."
+    story: >-
+      The potash industry area south of the Dead Sea: evaporation ponds, salt crust and plant
+      infrastructure. Human-driven surface change, which the challenge explicitly welcomes.
+    wkt: "POLYGON((35.4505 31.0714, 35.4967 31.0534, 35.5554 31.0553, 35.5412 31.3256, 35.466 31.3297, 35.4057 31.3174, 35.3971 31.2472, 35.4174 31.2084, 35.4601 31.1445, 35.4505 31.0714))"
+
+  - name: burqu
+    title: "Burqu Nature Reserve"
+    coord_note: "CORRECTED: longitudes were about -322.19; +360 applied."
+    story: "A desert reserve in eastern Jordan with a seasonal lake (Burqu). Basalt desert nearby."
+    wkt: "POLYGON((37.8147 32.5824, 38.0334 32.5824, 38.0334 32.7473, 37.8147 32.7473, 37.8147 32.5824))"
+
+  - name: dibeen
+    title: "Dibeen Forest Reserve and surroundings"
+    coord_note: "CORRECTED: longitudes were about -324.20; +360 applied."
+    story: "Pine and oak forest reserve north of Amman. Vegetation change, not water."
+    wkt: "POLYGON((35.8004 32.2282, 35.8299 32.227, 35.8535 32.2337, 35.8535 32.2612, 35.8296 32.2733, 35.8027 32.2612, 35.8004 32.2282))"
+
+  - name: wadi_rum
+    title: "Wadi Rum"
+    coord_note: "Supplied by the team; valid as given."
+    story: "Protected desert valley with sandstone massifs. Rock, sand and shadow, no water."
+    wkt: "POLYGON((35.35 29.4, 35.55 29.4, 35.55 29.65, 35.35 29.65, 35.35 29.4))"
 
 # --- Search filters (verified against the NISAR Data User Guide, Nov 2026) -------
 search:
@@ -32,38 +117,28 @@ search:
   data_maturity: PROVISIONAL  # PROVISIONAL | VALIDATED | BETA  (never mix within one series)
   start: "2026-06-17"       # first day of PROVISIONAL forward processing
   end: null                 # null = today
-  # Preferred geometry, verified to give 9 PROVISIONAL dates over the Dead Sea:
   track: 151                # relative orbit
   frame: 73
   flight_direction: DESCENDING
 
 # --- Processing parameters ------------------------------------------------------
 processing:
-  polarization: HH          # structural/texture layer; HV is the water-discrimination layer
+  polarization: HH
   comparison_polarizations: [HH, HV]
-  db: "10*log10(power)"     # GCOV diagonal terms are gamma-0 POWER, not amplitude.
-                            # Confirmed by the product itself:
-                            # ceosAnalysisReadyData/outputBackscatterDecibelConversionFormula
-  speckle_filter: median    # median | boxcar | lee  (document the choice and size)
-  speckle_window: 5         # pixels
-  clip_percentiles: [2, 98] # display stretch
-  pixel_spacing_m: 20       # verified: xCoordinateSpacing 20.0, yCoordinateSpacing -20.0
-
-  # Water mapping. Measured over the Dead Sea: open water is about -13.7 dB in HH and -20.5 dB in
-  # HV, so a textbook -20 dB rule is wrong for HH and a single fixed threshold cannot serve two
-  # dates that differ by a scene-wide radiometric offset. "auto" = Otsu, computed per image.
-  water_threshold: auto     # auto | a number in dB
-  water_band_db: 1.5        # +/- sensitivity quoted alongside every reported water area
-
-  # Speckle suppression before differencing: block-average in POWER (radiometrically correct),
-  # 20 m -> 60 m. Without this a two-date difference image is almost pure speckle.
+  db: "10*log10(power)"
+  speckle_filter: median
+  speckle_window: 5
+  clip_percentiles: [2, 98]
+  pixel_spacing_m: 20
+  water_threshold: auto
+  water_band_db: 1.5
   multilook: 3
-  remove_scene_offset: true # subtract the median of the difference and say so on the image
+  remove_scene_offset: true
 
-# --- Candidate patch detection (eastern plain) -----------------------------------
+# --- Candidate patch detection ---------------------------------------------------
 patches:
-  threshold_db: 3.0        # |delta| above this counts as "changed" on a date
-  min_consecutive: 2       # must be changed on this many CONSECUTIVE dates (suppresses speckle)
-  min_area_px: 20          # at 60 m, 20 px is about 0.07 km2
-  min_looks_percentile: 10 # drop pixels below this percentile of numberOfLooks
-  connectivity: 8          # 8-connected components (diagonal neighbours touch)
+  threshold_db: 3.0
+  min_consecutive: 2
+  min_area_px: 20
+  min_looks_percentile: 10
+  connectivity: 8

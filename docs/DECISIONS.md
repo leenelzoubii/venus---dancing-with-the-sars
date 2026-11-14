@@ -369,3 +369,32 @@ https://leenelzoubii.github.io/venus---dancing-with-the-sars/ with HTTP 200 for 
 
 **Reason.** A story run left 7 images in the DOM: an image superseded mid-load was never removed. After the fix a
 full story run leaves 1 overlay, verified in the browser.
+
+---
+
+## 2026-11-14 - Fourteen places, coordinates corrected, no imagery invented
+
+**Decision.** All fourteen study areas the team supplied are in `config/study_area.yaml` and selectable in the
+app. Each carries a `coord_note` recording whether it was corrected.
+
+**Coordinate correction.** Eleven of the fourteen polygons had longitudes around -322 to -325 instead of +35 to
++38. A longitude of -324 is not a valid Earth coordinate, and every bad value is exactly 360 too small
+(-323.1918 + 360 = 36.8082, Azraq). The correction is a plain +360 with no reshaping. It is checked visually:
+the corrected whole-lake polygon traces the real shoreline on the satellite basemap.
+
+**Coverage.** `scripts/01b_coverage_survey.py` searched the archive for every place without a fixed track or
+frame, so coverage could not be hidden by geometry filters. All fourteen have PROVISIONAL GCOV coverage,
+9 or 10 dates each, on five different geometries (100/17 ASC, 151/73 DESC, 151/72 DESC, 50/72 DESC, 50/74 DESC).
+Results in `data/interim/coverage_survey.csv`.
+
+**What the app shows.** Only `dead_sea_east` has processed imagery. For the other thirteen the app draws the
+place outline, states the real archive coverage (dates and track/frame), and says the subsets have not been
+processed. It never shows another place's imagery, and it never fabricates a layer.
+
+**Why not process them now.** Each place needs its own subset fetch: about 4 to 5 minutes per date, 9 or 10
+dates per place, so roughly 8 to 10 hours of unattended downloading for the remaining thirteen. That does not
+fit the remaining hour. The command is ready and unattended:
+`03_fetch_subset.py --aoi <name> --all` followed by `06`/`08`/`09`/`05` for that AOI.
+
+**Consequence for comparisons.** Places on different tracks are separate series. The app must never compare
+across places, and this rule is enforced by each place having its own manifest.

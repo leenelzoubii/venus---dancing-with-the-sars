@@ -24,7 +24,7 @@
 
   var state = {
     index: 0, layer: "backscatter", pol: "HV",
-    swipe: false, leftIndex: 0, leftLayer: "backscatter", split: 50,
+    place: "dead_sea_east", swipe: false, leftIndex: 0, leftLayer: "backscatter", split: 50,
     band: false, patches: false,
     playing: false, loop: false
   };
@@ -379,6 +379,44 @@
     });
   }
 
+  /* -------------------------------------------------------------- places */
+
+  var outlineLayer = null;
+
+  function placeByName(name) {
+    var list = (V.places && V.places.places) || [];
+    return list.filter(function (p) { return p.name === name; })[0] || null;
+  }
+
+  // Draw the selected place's outline. Only a processed place keeps its radar overlays on screen.
+  function selectPlace(name) {
+    var place = placeByName(name);
+    if (!place) return;
+    if (outlineLayer) { map.removeLayer(outlineLayer); outlineLayer = null; }
+
+    var rect = L.latLngBounds(place.bounds);
+    outlineLayer = L.rectangle(rect, {
+      color: "#E2B862", weight: 2, fillOpacity: 0.06, interactive: false
+    }).addTo(map);
+    map.fitBounds(rect, { padding: [16, 16] });
+    UI.setPlaceStatus(place);
+    state.place = place.name;
+
+    if (place.processed) {
+      map.setMaxBounds(rect.pad(0.5));
+      render();
+    } else {
+      // No imagery for this place: clear every radar layer rather than show another place's data.
+      stopPlaying();
+      ["main", "left", "band"].forEach(function (slot) { setSlot(slot, null, null); });
+      if (patchLayer && map.hasLayer(patchLayer)) map.removeLayer(patchLayer);
+      UI.setLayerNote(null);
+      document.getElementById("swipe-divider").hidden = true;
+      document.getElementById("swipe-tag-left").hidden = true;
+      document.getElementById("swipe-tag-right").hidden = true;
+    }
+  }
+
   /* ----------------------------------------------------------- render */
 
   function render() {
@@ -629,6 +667,9 @@
     UI.renderOffsetChart(V.offsets, M);
     UI.renderPatch(null, M);
     UI.renderFeatured(patchFeatures(), selectPatch);
+    UI.initPlaces(V.places, selectPlace);
+    var startPlace = placeByName((V.places && V.places.active) || "dead_sea_east");
+    if (startPlace) { state.place = startPlace.name; UI.setPlaceStatus(startPlace); }
 
     initMap();
     initBasemap();

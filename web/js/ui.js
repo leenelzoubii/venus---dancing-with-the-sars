@@ -444,6 +444,38 @@ window.VENUS_UI = (function () {
     document.getElementById("offset-mad").textContent = hvRow ? t("offset_mad_note", { mad: fmt(hvRow.MAD_dB, 2) }) : "";
   }
 
+  /* -------------------------------------------------------------- places */
+
+  // Fill the place selector from places.js. A place is only "processed" when its own manifest exists.
+  function initPlaces(places, onSelect) {
+    var select = document.getElementById("place-select");
+    if (!select || !places || !places.places) return;
+    select.innerHTML = "";
+    places.places.forEach(function (place) {
+      var option = document.createElement("option");
+      option.value = place.name;
+      option.textContent = place.title + (place.processed ? "" : " (" + t("place_pending_short") + ")");
+      select.appendChild(option);
+    });
+    select.value = places.active;
+    select.addEventListener("change", function () { onSelect(select.value); });
+  }
+
+  function setPlaceStatus(place) {
+    var el = document.getElementById("place-status");
+    if (!place) { el.textContent = ""; return; }
+    if (place.processed) {
+      el.textContent = t("place_processed");
+    } else if (place.coverage && place.coverage.products) {
+      el.textContent = t("place_covered", {
+        dates: place.coverage.dates,
+        stack: place.coverage.stack
+      });
+    } else {
+      el.textContent = t("place_uncovered");
+    }
+  }
+
   /* ------------------------------------------------------------ patch panel */
 
   // Featured patches: the ones Leyan marked use_in_pitch. Empty state says so plainly.
@@ -596,6 +628,8 @@ window.VENUS_UI = (function () {
     renderOffsetChart: renderOffsetChart,
     renderPatch: renderPatch,
     renderFeatured: renderFeatured,
+    initPlaces: initPlaces,
+    setPlaceStatus: setPlaceStatus,
     renderFooter: renderFooter,
     outageIndices: outageIndices
   };

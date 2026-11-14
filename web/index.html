@@ -64,6 +64,13 @@
       <h2 id="controls-heading" class="section-title" data-i18n="controls_label">Layer, date and comparison controls</h2>
 
       <fieldset class="field">
+        <legend class="field-label" data-i18n="place_group">Place</legend>
+        <label class="visually-hidden" for="place-select" data-i18n="place_group">Place</label>
+        <select id="place-select" class="select"></select>
+        <p class="hint" id="place-status" role="status"></p>
+      </fieldset>
+
+      <fieldset class="field">
         <legend class="field-label" data-i18n="layer_group">Layer</legend>
         <div class="choice-group">
           <label class="choice"><input type="radio" name="layer" value="backscatter" checked><span data-i18n="layer_backscatter">Radar backscatter</span></label>
@@ -234,6 +241,7 @@
   <script src="data/water_stats.js"></script>
   <script src="data/offsets.js"></script>
   <script src="data/patches.js"></script>
+  <script src="data/places.js"></script>
   <script src="data/license_and_attribution.js"></script>
   <script src="vendor/leaflet/leaflet.js"></script>
   <script src="js/charts.js"></script>

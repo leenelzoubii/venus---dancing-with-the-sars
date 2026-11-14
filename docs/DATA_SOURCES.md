@@ -160,3 +160,30 @@ Verified from the cached windows, not from documentation:
 - How the app complies with what I could verify: attribution is shown on screen; tiles are displayed only, never
   cached, exported or redistributed; a plain fallback is shown when tiles fail.
 - Alternative if the terms are not acceptable: OpenStreetMap tiles (ODbL, attribution required).
+
+---
+
+## Coverage survey, 2026-11-14 (data/interim/coverage_survey.csv)
+
+Searched per AOI with no track or frame filter, so coverage cannot be masked by geometry.
+
+| place | products | best stack | dates | first | last |
+|---|---|---|---|---|---|
+| dead_sea_east | 41 | 100/17 ASC | 9 | 2026-06-21 | 2026-10-19 |
+| dead_sea_full | 45 | 100/17 ASC | 9 | 2026-06-21 | 2026-10-19 |
+| azraq_wetland | 48 | 50/72 DESC | 10 | 2026-06-17 | 2026-10-15 |
+| alwehda_dam | 18 | 151/72 DESC | 9 | 2026-06-24 | 2026-10-10 |
+| almujib_valley | 27 | 151/73 DESC | 9 | 2026-06-24 | 2026-10-10 |
+| melehat_sdom | 27 | 100/17 ASC | 9 | 2026-06-21 | 2026-10-19 |
+| sad_alkarama | 18 | 151/72 DESC | 9 | 2026-06-24 | 2026-10-10 |
+| arab_valley_dam | 18 | 151/72 DESC | 9 | 2026-06-24 | 2026-10-10 |
+| kafrein_dam | 18 | 151/72 DESC | 9 | 2026-06-24 | 2026-10-10 |
+| kufranja_dam | 18 | 151/72 DESC | 9 | 2026-06-24 | 2026-10-10 |
+| potash_city | 27 | 100/17 ASC | 9 | 2026-06-21 | 2026-10-19 |
+| burqu | 20 | 50/72 DESC | 10 | 2026-06-17 | 2026-10-15 |
+| dibeen | 18 | 151/72 DESC | 9 | 2026-06-24 | 2026-10-10 |
+| wadi_rum | 55 | 50/74 DESC | 10 | 2026-06-17 | 2026-10-15 |
+
+Note: the processed series in the app is track 151 / frame 073 DESC (9 dates, 2026-06-24 to 2026-10-10), which is
+the stack already analysed in Hours 1 to 5. The survey's "best stack" column is the one with the most dates, not
+necessarily the one to process first; choose per place and record it.

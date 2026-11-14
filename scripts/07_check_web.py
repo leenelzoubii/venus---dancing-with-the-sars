@@ -25,7 +25,7 @@ WEB = REPO_ROOT / "web"
 DATA = WEB / "data"
 # file stem -> key used in window.VENUS (the licence file is exposed as "license")
 DATA_WRAPPERS = [("manifest", "manifest"), ("water_stats", "water_stats"), ("offsets", "offsets"),
-                 ("patches", "patches"), ("license_and_attribution", "license")]
+                 ("patches", "patches"), ("places", "places"), ("license_and_attribution", "license")]
 KEY_PATTERNS = [
     re.compile(r"""(?<![A-Za-z0-9_])t\(\s*["']([A-Za-z0-9_]+)["']"""),
     re.compile(r"""UI\.t\(\s*["']([A-Za-z0-9_]+)["']"""),
