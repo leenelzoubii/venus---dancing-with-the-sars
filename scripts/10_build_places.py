@@ -1,4 +1,4 @@
-"""Step 10 - build the places list the site shows, from the config plus the coverage survey.
+﻿"""Step 10 - build the places list the site shows, from the config plus the coverage survey.
 
 Every study area in config/study_area.yaml becomes a place the app can display. A place carries its
 polygon bounds and what the archive actually holds for it (product count, best stack, date range).
@@ -27,7 +27,7 @@ from venus.config import REPO_ROOT, load_config  # noqa: E402
 
 INTERIM = REPO_ROOT / "data" / "interim"
 WEB_DATA = REPO_ROOT / "web" / "data"
-PROCESSED_AOI = "dead_sea_east"   # the only area with a full processed series so far
+PROCESSED_AOI = "dead_sea_east"   # kept for the coverage note; real flags come from the folders
 
 
 def main() -> int:
@@ -48,7 +48,8 @@ def main() -> int:
             "coord_note": entry.get("coord_note", ""),
             "bounds": [[round(south, 6), round(west, 6)], [round(north, 6), round(east, 6)]],
             "wkt": entry["wkt"],
-            "processed": name == PROCESSED_AOI and (WEB_DATA / "manifest.json").exists(),
+            "processed": (WEB_DATA / name / "manifest.js").exists(),
+            "bundle": f"data/{name}/" if (WEB_DATA / name / "manifest.js").exists() else "",
             "coverage": {
                 "products": int(row["products"]) if row is not None and pd.notna(row.get("products")) else 0,
                 "stack": str(row["stack"]) if row is not None and pd.notna(row.get("stack", None)) else "",

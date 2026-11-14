@@ -13,7 +13,8 @@
   "use strict";
 
   var V = window.VENUS || {};
-  var M = V.manifest;
+  var M = null;                    // manifest of the place currently loaded
+  var PLACE = new URLSearchParams(window.location.search).get("place");
   var UI = window.VENUS_UI;
   var DEBUG = new URLSearchParams(window.location.search).get("debug") === "1";
 
@@ -69,7 +70,8 @@
 
   // Manifest paths are relative to web/data/, so the page prefixes the data folder.
   function imageUrl(def) {
-    return "data/" + def.file;
+    var placeName = (M && M.place && M.place.name) || "dead_sea_east";
+    return "data/" + placeName + "/" + def.file;
   }
 
   function opacityFor(def) {
@@ -388,10 +390,15 @@
     return list.filter(function (p) { return p.name === name; })[0] || null;
   }
 
-  // Draw the selected place's outline. Only a processed place keeps its radar overlays on screen.
+  // Draw the selected place's outline. Switching to a processed place reloads with its own bundle,
+  // which keeps one place's data from ever being drawn on another place's coordinates.
   function selectPlace(name) {
     var place = placeByName(name);
     if (!place) return;
+    if (place.processed && place.name !== (M && M.study_area && M.study_area.name)) {
+      window.location.search = "?place=" + encodeURIComponent(place.name);
+      return;
+    }
     if (outlineLayer) { map.removeLayer(outlineLayer); outlineLayer = null; }
 
     var rect = L.latLngBounds(place.bounds);
@@ -470,7 +477,7 @@
 
   // Caption for the detection-limit band on one date, built from water_stats numbers only.
   function bandCaption(date) {
-    var stats = V.water_stats;
+    var stats = V.place_water_stats;
     var entry = stats && stats.dates ? stats.dates.filter(function (d) { return d.date === date; })[0] : null;
     var b = entry && entry.methods ? entry.methods.B : null;
     if (!b) return UI.t("error_missing_data", { name: "water_stats.js" });
@@ -638,12 +645,42 @@
     UI.setSwipeOpen(state.swipe);
   }
 
+  // Load one place's bundle with plain script tags (file:// safe) and continue once it has arrived.
+  function loadPlace(name, done) {
+    var files = ["manifest", "water_stats", "offsets"];
+    var remaining = files.length;
+    files.forEach(function (file) {
+      var tag = document.createElement("script");
+      tag.src = "data/" + name + "/" + file + ".js";
+      tag.onload = tag.onerror = function () {
+        remaining -= 1;
+        if (remaining === 0) done();
+      };
+      document.head.appendChild(tag);
+    });
+  }
+
   function boot() {
     UI.applyStrings();
-    if (!M || typeof L === "undefined") {
+    if (typeof L === "undefined") {
       UI.showNotice(UI.t("error_no_data"));
       return;
     }
+    var wanted = PLACE || (V.places && V.places.active) || "dead_sea_east";
+    loadPlace(wanted, function () {
+      M = V.place_manifest;
+      if (!M) {
+        UI.showNotice(UI.t("error_no_data"));
+        return;
+      }
+      // Some places have only HH. Never leave the polarization pointing at a channel that is absent.
+      if (M.polarizations && M.polarizations.indexOf("HV") < 0) state.pol = M.polarizations[0];
+      else if (M.polarizations) state.pol = "HV";
+      start();
+    });
+  }
+
+  function start() {
     // A visible indicator until the first overlay has loaded, then removed.
     var mapEl = document.getElementById("map");
     mapEl.classList.add("is-loading");
@@ -663,12 +700,12 @@
     UI.initDates(M.dates, state.index, M.reference_date, UI.outageIndices(M.dates));
     applyStateToControls();
     UI.renderFooter(V.license);
-    UI.renderAreaChart(V.water_stats, M, bandDb());
-    UI.renderOffsetChart(V.offsets, M);
+    UI.renderAreaChart(V.place_water_stats, M, bandDb());
+    UI.renderOffsetChart(V.place_offsets, M);
     UI.renderPatch(null, M);
     UI.renderFeatured(patchFeatures(), selectPatch);
     UI.initPlaces(V.places, selectPlace);
-    var startPlace = placeByName((V.places && V.places.active) || "dead_sea_east");
+    var startPlace = placeByName(M.study_area.name);
     if (startPlace) { state.place = startPlace.name; UI.setPlaceStatus(startPlace); }
 
     initMap();

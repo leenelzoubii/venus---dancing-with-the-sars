@@ -1,0 +1,132 @@
+{
+ "aoi": "melehat_sdom",
+ "reference_date": "2026-06-21",
+ "offsets": [
+  {
+   "date": "2026-06-21",
+   "pol": "HH",
+   "offset_dB": 0.0,
+   "n_pixels": 2046,
+   "MAD_dB": 0.0
+  },
+  {
+   "date": "2026-06-21",
+   "pol": "HV",
+   "offset_dB": 0.0,
+   "n_pixels": 2046,
+   "MAD_dB": 0.0
+  },
+  {
+   "date": "2026-07-03",
+   "pol": "HH",
+   "offset_dB": 0.086,
+   "n_pixels": 2046,
+   "MAD_dB": 0.24
+  },
+  {
+   "date": "2026-07-03",
+   "pol": "HV",
+   "offset_dB": 0.203,
+   "n_pixels": 2046,
+   "MAD_dB": 0.242
+  },
+  {
+   "date": "2026-07-15",
+   "pol": "HH",
+   "offset_dB": -0.169,
+   "n_pixels": 2046,
+   "MAD_dB": 0.233
+  },
+  {
+   "date": "2026-07-15",
+   "pol": "HV",
+   "offset_dB": -0.375,
+   "n_pixels": 2046,
+   "MAD_dB": 0.375
+  },
+  {
+   "date": "2026-07-27",
+   "pol": "HH",
+   "offset_dB": -0.134,
+   "n_pixels": 2046,
+   "MAD_dB": 0.233
+  },
+  {
+   "date": "2026-07-27",
+   "pol": "HV",
+   "offset_dB": -0.101,
+   "n_pixels": 2046,
+   "MAD_dB": 0.259
+  },
+  {
+   "date": "2026-08-20",
+   "pol": "HH",
+   "offset_dB": 0.565,
+   "n_pixels": 2046,
+   "MAD_dB": 0.255
+  },
+  {
+   "date": "2026-08-20",
+   "pol": "HV",
+   "offset_dB": -0.205,
+   "n_pixels": 2046,
+   "MAD_dB": 0.277
+  },
+  {
+   "date": "2026-09-01",
+   "pol": "HH",
+   "offset_dB": 0.551,
+   "n_pixels": 2046,
+   "MAD_dB": 0.225
+  },
+  {
+   "date": "2026-09-01",
+   "pol": "HV",
+   "offset_dB": -0.241,
+   "n_pixels": 2046,
+   "MAD_dB": 0.429
+  },
+  {
+   "date": "2026-09-13",
+   "pol": "HH",
+   "offset_dB": 0.602,
+   "n_pixels": 2046,
+   "MAD_dB": 0.213
+  },
+  {
+   "date": "2026-09-13",
+   "pol": "HV",
+   "offset_dB": -0.264,
+   "n_pixels": 2046,
+   "MAD_dB": 0.383
+  },
+  {
+   "date": "2026-10-07",
+   "pol": "HH",
+   "offset_dB": 0.458,
+   "n_pixels": 2046,
+   "MAD_dB": 0.233
+  },
+  {
+   "date": "2026-10-07",
+   "pol": "HV",
+   "offset_dB": -0.35,
+   "n_pixels": 2046,
+   "MAD_dB": 0.422
+  },
+  {
+   "date": "2026-10-19",
+   "pol": "HH",
+   "offset_dB": 0.474,
+   "n_pixels": 2046,
+   "MAD_dB": 0.256
+  },
+  {
+   "date": "2026-10-19",
+   "pol": "HV",
+   "offset_dB": -0.279,
+   "n_pixels": 2046,
+   "MAD_dB": 0.34
+  }
+ ]
+}

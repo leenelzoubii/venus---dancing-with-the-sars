@@ -1,4 +1,4 @@
-"""Step 3 - stream only the AOI window from NISAR GCOV, for the dates we chose.
+﻿"""Step 3 - stream only the AOI window from NISAR GCOV, for the dates we chose.
 
 The file is ~1.9 GB; our window is a few hundred thousand pixels. We open the remote HDF5 by
 byte-range access, read the window, and save it locally as ``.npy`` plus a JSON sidecar holding the
@@ -32,9 +32,10 @@ SCENES_CSV = REPO_ROOT / "data" / "interim" / "nisar_gcov_scenes.csv"
 
 
 def select_scenes(args, area) -> pd.DataFrame:
-    if not SCENES_CSV.exists():
-        raise SystemExit(f"{SCENES_CSV.relative_to(REPO_ROOT)} not found - run 01_search_nisar.py first.")
-    df = pd.read_csv(SCENES_CSV, parse_dates=["acquisition_date"])
+    scenes_csv = Path(args.scenes) if getattr(args, "scenes", None) else SCENES_CSV
+    if not scenes_csv.exists():
+        raise SystemExit(f"{scenes_csv} not found - run 01_search_nisar.py first.")
+    df = pd.read_csv(scenes_csv, parse_dates=["acquisition_date"])
     track, frame, direction = args.stack.split("/")
     df = df[
         (df["track"] == int(track))
@@ -166,6 +167,7 @@ def main() -> int:
     ap.add_argument("--polarizations", nargs="+", default=None, help="HH HV (default from config).")
     ap.add_argument("--outdir", type=Path, default=None)
     ap.add_argument("--force", action="store_true", help="Re-download cached dates.")
+    ap.add_argument("--scenes", default=None, help="Scene CSV from step 1 (default: the shared one).")
     ap.add_argument("--retries", type=int, default=3, help="Attempts per date before giving up.")
     ap.add_argument("--retry-wait", type=float, default=15.0, help="Backoff base in seconds (x attempt).")
     args = ap.parse_args()

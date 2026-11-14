@@ -1,4 +1,4 @@
-/*
+﻿/*
  * All user-visible text lives in this file, so copy can be edited without touching logic.
  * Structure: window.VENUS_STRINGS = { en: { key: "text" } }. Placeholders in {braces} are filled by ui.js.
  * Add an "ar" block later with the same keys (Arabic as \uXXXX escapes; set dir="rtl" when locale is "ar").
@@ -181,10 +181,11 @@ window.VENUS_STRINGS = {
     debug_bounds: "Show overlay bounds",
     debug_crosshair: "Show crosshair",
 
-    units_db: "dB",
+    no_water_layers: "This place has HH only, so there is no water series here. Water needs HV, which is absent from these granules.",
     units_km2: "km2",
+    units_db: "dB",
     place_group: "Place",
-    place_processed: "Processed: nine radar dates with change products.",
+    place_processed: "Processed: {dates} radar dates with change products.",
     place_covered: "NISAR covers this place in the archive ({dates} dates on track {stack}), but its subsets have not been downloaded and processed yet. The outline is shown; no imagery is displayed for it.",
     place_uncovered: "No NISAR product in the archive intersects this outline yet.",
     place_current: "Showing this place.",

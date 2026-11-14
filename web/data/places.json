@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-14T11:32:22Z",
+ "generated_utc": "2026-11-14T16:24:04Z",
  "active": "dead_sea_east",
  "processing_note": "Only the Dead Sea east shore has processed imagery. Other places have confirmed NISAR coverage in the archive but their subsets have not been downloaded and processed yet.",
  "default_wkt": "POLYGON((35.500 31.340, 35.600 31.340, 35.600 31.560, 35.500 31.560, 35.500 31.340))",
@@ -21,6 +21,7 @@
    ],
    "wkt": "POLYGON((35.500 31.340, 35.600 31.340, 35.600 31.560, 35.500 31.560, 35.500 31.340))",
    "processed": true,
+   "bundle": "data/dead_sea_east/",
    "coverage": {
     "products": 41,
     "stack": "100/17/ASCENDING",
@@ -47,6 +48,7 @@
    ],
    "wkt": "POLYGON((35.2897 31.2872, 35.6384 31.2872, 35.6494 31.5223, 35.6384 31.7754, 35.5696 31.8795, 35.2897 31.7754, 35.2897 31.2872))",
    "processed": false,
+   "bundle": "",
    "coverage": {
     "products": 45,
     "stack": "100/17/ASCENDING",
@@ -72,7 +74,8 @@
     ]
    ],
    "wkt": "POLYGON((36.8082 31.7618, 36.8990 31.7618, 36.8990 31.8798, 36.8082 31.8798, 36.8082 31.7618))",
-   "processed": false,
+   "processed": true,
+   "bundle": "data/azraq_wetland/",
    "coverage": {
     "products": 48,
     "stack": "50/72/DESCENDING",
@@ -98,7 +101,8 @@
     ]
    ],
    "wkt": "POLYGON((35.879 32.7231, 35.8892 32.7205, 35.8816 32.7355, 35.867 32.7365, 35.879 32.7231))",
-   "processed": false,
+   "processed": true,
+   "bundle": "data/alwehda_dam/",
    "coverage": {
     "products": 18,
     "stack": "151/72/DESCENDING",
@@ -125,6 +129,7 @@
    ],
    "wkt": "POLYGON((35.5622 31.4615, 35.5733 31.4603, 35.584 31.4603, 35.5821 31.4655, 35.5746 31.4724, 35.5622 31.4719, 35.5622 31.4615))",
    "processed": false,
+   "bundle": "",
    "coverage": {
     "products": 27,
     "stack": "151/73/DESCENDING",
@@ -150,7 +155,8 @@
     ]
    ],
    "wkt": "POLYGON((35.3583 30.9617, 35.3617 30.9578, 35.3696 30.9575, 35.3625 30.9898, 35.3475 30.9911, 35.3583 30.9617))",
-   "processed": false,
+   "processed": true,
+   "bundle": "data/melehat_sdom/",
    "coverage": {
     "products": 27,
     "stack": "100/17/ASCENDING",
@@ -177,6 +183,7 @@
    ],
    "wkt": "POLYGON((35.5554 32.0081, 35.5687 32.0081, 35.5687 32.045, 35.5554 32.045, 35.5448 32.021, 35.5478 32.0098, 35.5554 32.0081))",
    "processed": false,
+   "bundle": "",
    "coverage": {
     "products": 18,
     "stack": "151/72/DESCENDING",
@@ -203,6 +210,7 @@
    ],
    "wkt": "POLYGON((35.6304 32.614, 35.634 32.6139, 35.6442 32.6166, 35.6489 32.6206, 35.6423 32.6229, 35.6297 32.6205, 35.6304 32.614))",
    "processed": false,
+   "bundle": "",
    "coverage": {
     "products": 18,
     "stack": "151/72/DESCENDING",
@@ -229,6 +237,7 @@
    ],
    "wkt": "POLYGON((35.6717 31.849, 35.6837 31.849, 35.6837 31.8624, 35.6717 31.8624, 35.6717 31.849))",
    "processed": false,
+   "bundle": "",
    "coverage": {
     "products": 18,
     "stack": "151/72/DESCENDING",
@@ -255,6 +264,7 @@
    ],
    "wkt": "POLYGON((35.6417 32.2655, 35.6526 32.2655, 35.6487 32.2684, 35.6526 32.2721, 35.6435 32.2714, 35.6417 32.2655))",
    "processed": false,
+   "bundle": "",
    "coverage": {
     "products": 18,
     "stack": "151/72/DESCENDING",
@@ -280,7 +290,8 @@
     ]
    ],
    "wkt": "POLYGON((35.4505 31.0714, 35.4967 31.0534, 35.5554 31.0553, 35.5412 31.3256, 35.466 31.3297, 35.4057 31.3174, 35.3971 31.2472, 35.4174 31.2084, 35.4601 31.1445, 35.4505 31.0714))",
-   "processed": false,
+   "processed": true,
+   "bundle": "data/potash_city/",
    "coverage": {
     "products": 27,
     "stack": "100/17/ASCENDING",
@@ -307,6 +318,7 @@
    ],
    "wkt": "POLYGON((37.8147 32.5824, 38.0334 32.5824, 38.0334 32.7473, 37.8147 32.7473, 37.8147 32.5824))",
    "processed": false,
+   "bundle": "",
    "coverage": {
     "products": 20,
     "stack": "50/72/DESCENDING",
@@ -333,6 +345,7 @@
    ],
    "wkt": "POLYGON((35.8004 32.2282, 35.8299 32.227, 35.8535 32.2337, 35.8535 32.2612, 35.8296 32.2733, 35.8027 32.2612, 35.8004 32.2282))",
    "processed": false,
+   "bundle": "",
    "coverage": {
     "products": 18,
     "stack": "151/72/DESCENDING",
@@ -358,7 +371,8 @@
     ]
    ],
    "wkt": "POLYGON((35.35 29.4, 35.55 29.4, 35.55 29.65, 35.35 29.65, 35.35 29.4))",
-   "processed": false,
+   "processed": true,
+   "bundle": "data/wadi_rum/",
    "coverage": {
     "products": 55,
     "stack": "50/74/DESCENDING",

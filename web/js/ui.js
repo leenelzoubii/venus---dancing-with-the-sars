@@ -340,6 +340,16 @@ window.VENUS_UI = (function () {
     }
     var dates = manifest.dates;
     var rows = areaSeries(stats, dates);
+    if (!rows.some(function (r) { return isFinite(r.area); })) {
+      var note = document.createElement("p");
+      note.className = "muted";
+      note.textContent = t("no_water_layers");
+      host.appendChild(note);
+      document.getElementById("area-axis-note").textContent = "";
+      document.getElementById("area-legend").textContent = "";
+      document.querySelector("#area-table tbody").innerHTML = "";
+      return;
+    }
     var all = [];
     rows.forEach(function (r) {
       [r.low, r.high, r.area, r.hh].forEach(function (v) { if (isFinite(v)) all.push(v); });
@@ -465,7 +475,7 @@ window.VENUS_UI = (function () {
     var el = document.getElementById("place-status");
     if (!place) { el.textContent = ""; return; }
     if (place.processed) {
-      el.textContent = t("place_processed");
+      el.textContent = t("place_processed", { dates: (place.dates_count || (window.VENUS.place_manifest || {}).dates || []).length });
     } else if (place.coverage && place.coverage.products) {
       el.textContent = t("place_covered", {
         dates: place.coverage.dates,

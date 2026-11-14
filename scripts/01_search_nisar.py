@@ -1,4 +1,4 @@
-"""Step 1 - find NISAR scenes over the AOI and tell us what we can actually use.
+﻿"""Step 1 - find NISAR scenes over the AOI and tell us what we can actually use.
 
 What it answers: *which acquisitions exist over our study area, which of them share a viewing
 geometry, and therefore which dates may be compared with each other?*
@@ -174,6 +174,7 @@ def main() -> int:
         print(f"\nRestricted to stack {args.stack}: {len(df)} date(s).")
         stacks = summarise_stacks(df)
 
+    args.out = args.out if args.out.is_absolute() else (REPO_ROOT / args.out)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     cols = [
         "granule", "acquisition_date", "track", "frame", "direction",

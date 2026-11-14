@@ -398,3 +398,49 @@ fit the remaining hour. The command is ready and unattended:
 
 **Consequence for comparisons.** Places on different tracks are separate series. The app must never compare
 across places, and this rule is enforced by each place having its own manifest.
+
+---
+
+## 2026-11-14 - Six places processed; GDAL streaming replaces h5py for fetching
+
+**Decision.** Fetch with `scripts/03b_fetch_fast.py` (GDAL `/vsicurl/` streaming) instead of h5py over
+fsspec. Build each place into its own `web/data/<place>/` bundle with `scripts/12_build_place_site.py`.
+
+**Measured.** Same 1231x505 window: h5py 300 s per date, GDAL 21 s (HH) + 12 s (HV). The five requested
+places fetched in **32.6 minutes total** (potash 7.9, azraq 6.1, melehat 3.6, wadi_rum 10.4, alwehda 4.6)
+against an earlier estimate of ~6.5 hours. The bottleneck was round trips, not bytes.
+
+**Result.** Processed: dead_sea_east 9 dates, potash_city 7, azraq_wetland 10, melehat_sdom 9,
+wadi_rum 10, alwehda_dam 9. HH+HV on four places; azraq and wadi_rum are HH only.
+
+**Alternatives.** Harmony (Earthdata) does server-side GCOV subsetting and reprojection to COG, listed
+complete Nov 2026. That is the better route at scale, but it needs a job API integration that did not fit
+the remaining hour.
+
+---
+
+## 2026-11-14 - Things that broke, and the rule each one produced
+
+1. **UTM zone is per frame.** The Dead Sea frame is EPSG:32636; a Wadi Rum frame is a different zone.
+   Assuming one zone produced empty windows. Rule: resolve the zone by testing which candidate actually
+   overlaps the product's own coordinates; stop rather than guess.
+2. **Some GCOV granules are single-polarization** (`SHSH`, HH only), so HVHV may not exist. Rule: read
+   what is there, record `polarizations_present`, and only compare a polarization present on every date.
+3. **Mixing readers mixes grids.** Two potash dates fetched by the old path had a different window shape.
+   Rule: keep only the largest group of dates sharing one shape and report what was dropped.
+4. **A mostly-water AOI can have no land above the -15 dB cut**, which made every offset NaN.
+   Rule: fall back to all finite pixels and record that the offset is weaker.
+5. **An HH-only place has no water series.** Rule: default the polarization to what exists, and say why
+   the water chart is empty instead of drawing a NaN path.
+
+---
+
+## 2026-11-14 - Assistant context recorded, assistant deliberately not built
+
+**Decision.** `scripts/13_build_assistant_context.py` writes `web/data/assistant_context.json`/`.js`:
+per-place facts, definitions, known limits, questions the data cannot answer, and suggested assistant
+behaviour. No chat feature is implemented and no model is wired in.
+
+**Reason.** Leen asked for the groundwork to be logged for a future navigation/explanation assistant.
+Recording verified facts now prevents that assistant from inventing numbers later, which is the main risk
+in a project whose whole credibility rests on not overstating the data.
