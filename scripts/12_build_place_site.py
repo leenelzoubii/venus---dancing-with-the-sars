@@ -24,10 +24,11 @@ from pathlib import Path
 
 import numpy as np
 from affine import Affine
+from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from venus import change, water, webexport as wx  # noqa: E402
+from venus import change, display as dx, water, webexport as wx  # noqa: E402
 from venus.config import REPO_ROOT, load_config, load_study_area  # noqa: E402
 
 SUBSETS = REPO_ROOT / "data" / "raw" / "subsets"
@@ -58,10 +59,12 @@ def load_place(place: str) -> list[dict]:
         if not arrays:
             continue
         looks_path = folder / f"{stem}_looks.npy"
+        mask_path = folder / f"{stem}_mask.npy"
         cards.append({
             "meta": meta,
             "stem": stem,
             "arrays": arrays,
+            "mask": np.load(mask_path) if mask_path.exists() else None,
             "looks": np.load(looks_path) if looks_path.exists() else None,
         })
     return sorted(cards, key=lambda c: c["meta"]["acquisition_date"])
@@ -102,14 +105,28 @@ def main() -> int:
 
         outdir = WEB_DATA / name
         (outdir / "layers").mkdir(parents=True, exist_ok=True)
-        for stale in (outdir / "layers").glob("*.png"):
-            stale.unlink()
+        for pattern in ("*.png", "*.webp"):
+            for stale in (outdir / "layers").glob(pattern):
+                stale.unlink()
 
         meta0 = cards[0]["meta"]
         x = np.asarray(meta0["x"], dtype="float64")
         y = np.asarray(meta0["y"], dtype="float64")
-        t20 = wx.grid_transform(x, y, float(meta0["pixel_spacing_m"]))
+        # The source CRS is the cached subset's recorded projection. Never a constant: NISAR geocodes
+        # each frame in the UTM zone chosen for that frame (Azraq and Wadi Rum are genuinely 37N).
+        src_crs = meta0.get("crs_wkt") or (f"EPSG:{meta0['epsg']}" if meta0.get("epsg") else None)
+        if not src_crs:
+            raise SystemExit(f"{name}: cached sidecar records no CRS; refetch with scripts/03b_fetch_fast.py")
+        native_px = float(meta0["pixel_spacing_m"])
+        t20 = wx.grid_transform(x, y, native_px)
         t60 = Affine(t20.a * MULTILOOK, 0.0, t20.c, 0.0, t20.e * MULTILOOK, t20.f)
+
+        def to_web60(array, **kwargs):
+            return wx.reproject_to_grid(array, t60, src_crs, g60_t, g60_h, g60_w, **kwargs)
+
+        def to_web20(array, **kwargs):
+            return wx.reproject_to_grid(array, t20, src_crs, g20_t, g20_h, g20_w, **kwargs)
+
         dates = [c["meta"]["acquisition_date"] for c in cards]
         reference = dates[0]
         # Only a polarization present on every date can be compared across the series.
@@ -135,6 +152,46 @@ def main() -> int:
         if not pols:
             print(f"{name:18s} skipped: no finite data in any polarization")
             continue
+
+        # ---- display chain: one crop rectangle and one set of grids for every layer ------------
+        # The crop is chosen from the validity of the native 20 m samples pooled over all dates, so
+        # not one date's swath edge can leave a transparent notch inside the shared rectangle.
+        import shapely.wkt as _wkt
+
+        valid_pol = {}
+        for card in cards:
+            day = card["meta"]["acquisition_date"]
+            for pol in pols:
+                valid_pol[(day, pol)] = dx.valid_native(card["arrays"][pol], card["mask"])
+        pooled_valid = np.ones(next(iter(valid_pol.values())).shape, dtype=bool)
+        for valid in valid_pol.values():
+            pooled_valid &= valid
+        centre_lat = _wkt.loads(area.wkt).centroid.y
+        crop, display_res, crop_fraction = dx.choose_crop(
+            pooled_valid, t20, src_crs, area.wkt, centre_lat, native_px
+        )
+        disp_t, disp_w, disp_h = dx.grid_for_rect(crop, display_res)
+        resolution_fallback = ""
+        if disp_w * disp_h > 4_500_000:
+            # The brief's documented size fallback: a very large AOI at 2x native would produce layers
+            # over the 700 KB budget even at q=68. Use 1.5x native instead, decided BEFORE any colour is
+            # applied so no already-coloured pixel is ever resampled.
+            display_res *= 1.5
+            disp_t, disp_w, disp_h = dx.grid_for_rect(crop, display_res)
+            resolution_fallback = "1.5x native instead of 2x, for the per-layer size budget"
+            print(f"{name:18s} size fallback: display res {display_res:.1f} m")
+        g60_t, g60_w, g60_h = dx.grid_for_rect(crop, 60.0)
+        g20_t, g20_w, g20_h = dx.grid_for_rect(crop, 20.0)
+        bounds = wx.web_bounds_lonlat(disp_t, disp_h, disp_w)
+        display_limits = {}
+        for pol in pols:
+            display_limits[pol] = dx.pooled_db_limits(
+                {d: card["arrays"][pol] for card, d in zip(cards, dates)},
+                {d: valid_pol[(d, pol)] for d in dates},
+            )
+        print(f"{name:18s} crop {crop_fraction:.3f} valid  res {display_res:.1f} m  "
+              f"grid {disp_w}x{disp_h}  {crop[2] - crop[0]:.0f}x{crop[3] - crop[1]:.0f} m")
+        layer_sizes = []
 
         # ---- offsets on land only, estimated against the reference date ----------------
         if "HV" in pols:
@@ -181,103 +238,121 @@ def main() -> int:
             change_limits[pol] = round(min(6.0, float(np.percentile(pooled, 99))), 2)
 
         layers = []
+        by_day = {c["meta"]["acquisition_date"]: c for c in cards}
         base = {
             "product": "NISAR L2 GCOV", "crid": meta0.get("crid"), "maturity": meta0.get("maturity"),
             "track": meta0.get("track"), "frame": meta0.get("frame"), "direction": meta0.get("direction"),
-            "native_crs": f"EPSG:{meta0.get('epsg', 32636)}", "display_crs": wx.CRS_WEB,
+            "native_crs": f"EPSG:{meta0['epsg']}" if meta0.get("epsg") else "recorded crs_wkt",
+            "display_crs": wx.CRS_WEB,
         }
-        steps = ["10*log10(gamma-0)", f"{MULTILOOK}x{MULTILOOK} multilook in power (60 m)",
-                 f"{SPECKLE[0]} {SPECKLE[1]}x{SPECKLE[1]}", "reprojected to EPSG:3857"]
+        if resolution_fallback:
+            base["resolution_fallback"] = resolution_fallback
+        analysis_steps = ["10*log10(gamma-0)", f"{MULTILOOK}x{MULTILOOK} multilook in power (60 m)",
+                          f"{SPECKLE[0]} {SPECKLE[1]}x{SPECKLE[1]}", "reprojected to EPSG:3857"]
+        display_chain = [
+            "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+            "invalid -> NaN (product mask 0/255 or non-finite)",
+            f"reprojected once to EPSG:3857, bilinear on linear power, at {display_res:.1f} m",
+            "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+            "6 px inward edge feather (display only)",
+            "WebP q82 with alpha",
+        ]
 
-        def save(image, filename, **fields):
-            size = wx.save_png(image, outdir / "layers" / filename)
-            layers.append({"file": f"layers/{filename}", **base, **fields})
-            return size
+        def save(rgba, filename, px_size, chain, **fields):
+            image = Image.fromarray(np.ascontiguousarray(rgba), mode="RGBA")
+            size, quality = dx.save_layer(image, outdir / "layers" / filename)
+            layer_sizes.append(size)
+            layers.append({
+                "file": f"layers/{filename}", "format": "webp",
+                "preview": f"layers/{Path(filename).stem}_preview.webp",
+                "native_px_m": native_px, "px_size_m_3857": round(float(px_size), 2),
+                "bounds": bounds, "crop_bounds_3857": [round(float(v), 1) for v in crop],
+                "display_chain": chain, "webp_quality": quality,
+                **base, **fields,
+            })
 
-        bounds = None
+        def display_power(day, pol):
+            power, weight = dx.warp_nansafe(
+                by_day[day]["arrays"][pol], valid_pol[(day, pol)], t20, src_crs, disp_t, disp_w, disp_h
+            )
+            return power, weight >= 0.5
+
         for day in dates:
             for pol in pols:
-                dst, dst_t = wx.reproject_to_web(db[(day, pol)], t60)
-                bounds = bounds or wx.web_bounds_lonlat(dst_t, *dst.shape)
-                vmin, vmax = back_limits[pol]
-                save(wx.grey_rgba(dst, vmin, vmax), f"backscatter_{pol}_{day}.png",
+                power, valid = display_power(day, pol)
+                vmin, vmax = display_limits[pol]
+                db = dx.single_pol_db(power, vmin, vmax, valid)
+                rgba = np.array(wx.grey_rgba(db, vmin, vmax))
+                save(dx.feather_alpha(rgba), f"backscatter_{pol}_{day}.webp", abs(disp_t.a), display_chain,
                      id=f"backscatter_{pol}_{day}", kind="backscatter", label=f"Backscatter {pol} {day}",
-                     polarization=pol, date=day, bounds=wx.web_bounds_lonlat(dst_t, *dst.shape),
-                     vmin=vmin, vmax=vmax, colormap="grey: dark = smooth (water), bright = rough",
+                     polarization=pol, date=day,
+                     vmin=round(vmin, 2), vmax=round(vmax, 2),
+                     colormap="grey: dark = smooth (water), bright = rough",
                      description=f"Gamma-0 backscatter {pol} on {day}.",
-                     offset_applied_db=0.0, display_multilook=MULTILOOK, processing=steps)
+                     offset_applied_db=0.0, display_multilook=1,
+                     processing=display_chain)
 
         for day in dates[1:]:
             for pol in pols:
-                dst, dst_t = wx.reproject_to_web(deltas[(day, pol)], t60)
+                dst = to_web60(deltas[(day, pol)])[0]
                 limit = change_limits[pol]
-                save(wx.change_rgba(dst, limit), f"change_{pol}_{day}.png",
+                rgba = np.array(wx.change_rgba(dst, limit))
+                save(dx.feather_alpha(rgba), f"change_{pol}_{day}.webp", abs(g60_t.a),
+                     display_chain[:2] + ["change computed on the 60 m analysis chain"] +
+                     ["reprojected to EPSG:3857 nearest neighbour"],
                      id=f"change_{pol}_{day}", kind="change", label=f"Change {pol} {day} minus {reference}",
                      polarization=pol, date=day, reference=reference,
-                     bounds=wx.web_bounds_lonlat(dst_t, *dst.shape), vmin=-limit, vmax=limit,
+                     vmin=-limit, vmax=limit,
                      colormap="diverging: blue = weaker echo, orange = stronger echo",
                      description=f"{pol} change on {day} relative to {reference}, scene offset removed.",
                      offset_applied_db=round(offset_of.get((day, pol), 0.0), 3),
                      display_multilook=MULTILOOK,
-                     processing=steps + ["scene offset removed (land median)"])
+                     processing=analysis_steps + ["scene offset removed (land median)"])
 
-        # ---- false-colour RGB ------------------------------------------------------------------
-        # Dual-pol places use the NISAR standard decomposition (HH, HV). Single-pol places use the
-        # fixed blue-to-yellow ramp NASA describes for single-polarization GCOV, so every place still
-        # has a comparable picture. Both scales are absolute, not per-image.
+        # ---- false-colour RGB (display chain) --------------------------------------------------
+        # Dual-pol places use the NISAR standard decomposition (HH, HV). The two bands are clipped at
+        # their pooled dB limits and converted back to linear power, so the recipe itself is unchanged
+        # and every date of the place has identical colour limits. Single-pol places use the fixed
+        # blue-to-green-orange-yellow ramp, driven by the same pooled limits.
         if "HH" in pols and "HV" in pols:
-            for card in cards:
-                day = card["meta"]["acquisition_date"]
-                hh_lin = change.multilook_power(card["arrays"]["HH"], MULTILOOK)
-                hv_lin = change.multilook_power(card["arrays"]["HV"], MULTILOOK)
-                invalid = ~(np.isfinite(hh_lin) & np.isfinite(hv_lin))
-                rgb = wx.rgb_decomposition(hh_lin, hv_lin, invalid)
-                valid = ~invalid
-                channels = []
-                for index in range(3):
-                    dst_c, dst_t = wx.reproject_to_web(rgb[..., index].astype("float32"), t60, nearest=True)
-                    channels.append(dst_c)
-                dst_valid, _ = wx.reproject_to_web(valid, t60, mask=True)
-                image = np.stack([np.nan_to_num(c, nan=0.0) for c in channels], axis=-1).astype("uint8")
-                rgba = np.dstack([image, np.where(dst_valid, 255, 0).astype("uint8")])
-                from PIL import Image as PILImage
-                save(PILImage.fromarray(rgba, mode="RGBA"), f"rgb_HHHV_{day}.png",
+            for day in dates:
+                hh, hh_valid = display_power(day, "HH")
+                hv, hv_valid = display_power(day, "HV")
+                valid = hh_valid & hv_valid
+                hh_lo, hh_hi = display_limits["HH"]
+                hv_lo, hv_hi = display_limits["HV"]
+                hh_s = dx.stretched_linear(hh, hh_lo, hh_hi, valid)
+                hv_s = dx.stretched_linear(hv, hv_lo, hv_hi, valid)
+                rgb = wx.rgb_decomposition(hh_s, hv_s, ~valid)
+                rgba = dx.rgba_from_rgb(rgb, valid)
+                save(dx.feather_alpha(rgba), f"rgb_HHHV_{day}.webp", abs(disp_t.a), display_chain,
                      id=f"rgb_HHHV_{day}", kind="rgb", label=f"False colour HH/HV {day}",
-                     polarization="HH+HV", date=day, bounds=wx.web_bounds_lonlat(dst_t, *image.shape[:2]),
-                     colormap="red = HH co-pol, green = HV cross-pol, blue = ratio; absolute scale",
+                     polarization="HH+HV", date=day,
+                     vmin=round(min(hh_lo, hv_lo), 2), vmax=round(max(hh_hi, hv_hi), 2),
+                     colormap="red = HH co-pol, green = HV cross-pol, blue = ratio; pooled dB limits",
                      description=f"NISAR false-colour decomposition on {day}. Green: volume scattering. "
                                  f"Yellow and orange: rough or built surfaces.",
-                     offset_applied_db=0.0, display_multilook=MULTILOOK,
-                     processing=["linear gamma-0 power", f"{MULTILOOK}x{MULTILOOK} multilook in power (60 m)",
-                                 "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)",
-                                 "no speckle filter (matches the reference method)",
-                                 "reprojected to EPSG:3857 nearest neighbour"])
+                     offset_applied_db=0.0, display_multilook=1,
+                     processing=display_chain + ["NISAR GCOV RGB decomposition "
+                                                 "(as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)"])
         else:
             pol = pols[0]
-            for card in cards:
-                day = card["meta"]["acquisition_date"]
-                layer_db = db[(day, pol)]
-                rgb = wx.single_pol_rgb(layer_db)
-                valid = np.isfinite(layer_db)
-                channels = []
-                for index in range(3):
-                    dst_c, dst_t = wx.reproject_to_web(rgb[..., index].astype("float32"), t60, nearest=True)
-                    channels.append(dst_c)
-                dst_valid, _ = wx.reproject_to_web(valid, t60, mask=True)
-                image = np.stack([np.nan_to_num(c, nan=0.0) for c in channels], axis=-1).astype("uint8")
-                rgba = np.dstack([image, np.where(dst_valid, 255, 0).astype("uint8")])
-                from PIL import Image as PILImage
-                save(PILImage.fromarray(rgba, mode="RGBA"), f"rgb_{pol}_{day}.png",
+            for day in dates:
+                power, valid = display_power(day, pol)
+                vmin, vmax = display_limits[pol]
+                db = dx.single_pol_db(power, vmin, vmax, valid)
+                rgb = dx.single_pol_ramp(db, vmin, vmax)
+                rgba = dx.rgba_from_rgb(rgb, valid)
+                save(dx.feather_alpha(rgba), f"rgb_{pol}_{day}.webp", abs(disp_t.a), display_chain,
                      id=f"rgb_{pol}_{day}", kind="rgb", label=f"False colour {pol} {day}",
-                     polarization=pol, date=day, bounds=wx.web_bounds_lonlat(dst_t, *image.shape[:2]),
-                     colormap="single-polarization ramp: blue (low) to green to orange to yellow (high); absolute scale",
+                     polarization=pol, date=day,
+                     vmin=round(vmin, 2), vmax=round(vmax, 2),
+                     colormap="single-polarization ramp: blue (low) to green to orange to yellow (high); pooled dB limits",
                      description=f"Single-polarization false colour ({pol}) on {day}. Our approximation of the "
                                  f"NASA single-pol ramp; exact breakpoints are not published.",
-                     offset_applied_db=0.0, display_multilook=MULTILOOK,
-                     processing=["10*log10(gamma-0)", f"{MULTILOOK}x{MULTILOOK} multilook in power (60 m)",
-                                 f"{SPECKLE[0]} {SPECKLE[1]}x{SPECKLE[1]}",
-                                 "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)",
-                                 "reprojected to EPSG:3857 nearest neighbour"])
+                     offset_applied_db=0.0, display_multilook=1,
+                     processing=display_chain + ["fixed blue-green-orange-yellow ramp "
+                                                 "(approximation of NASA single-pol)"])
 
         # ---- water where HV exists -----------------------------------------------------
         water_rows = []
@@ -292,23 +367,30 @@ def main() -> int:
                 low = water.clean_mask(np.isfinite(hv_db) & (hv_db < threshold - BAND_DB))
                 high = water.clean_mask(np.isfinite(hv_db) & (hv_db < threshold + BAND_DB))
                 flip = low ^ high
-                dst_w, dst_t20 = wx.reproject_to_web(centre, t20, mask=True)
-                dst_b, _ = wx.reproject_to_web(flip, t20, mask=True)
+                dst_w = to_web20(centre, mask=True)[0]
+                dst_b = to_web20(flip, mask=True)[0]
                 water_km2 = water.water_area_km2(centre, 20.0, clean=False)
                 low_area = water.water_area_km2(low, 20.0, clean=False)
                 high_area = water.water_area_km2(high, 20.0, clean=False)
-                save(wx.mask_palette(dst_w, wx.WATER_RGB, wx.WATER_ALPHA), f"water_HV_{day}.png",
+                rgba_w = dx.feather_alpha(dx.rgba_from_mask(dst_w, wx.WATER_RGB, wx.WATER_ALPHA))
+                save(rgba_w, f"water_HV_{day}.webp", abs(g20_t.a),
+                     ["native 20 m HV power", "10*log10", f"median {SPECKLE[1]}x{SPECKLE[1]}",
+                      "offset removed", "method B threshold", "blobs < 10 px removed",
+                      "reprojected to EPSG:3857 nearest neighbour", "6 px inward edge feather (display only)"],
                      id=f"water_HV_{day}", kind="water", label=f"Open water HV {day}", polarization="HV",
-                     date=day, bounds=wx.web_bounds_lonlat(dst_t20, *dst_w.shape),
+                     date=day,
                      colormap="cyan = open water (method B)", threshold_db=round(float(threshold), 2),
                      area_km2=round(water_km2, 2), band_low_km2=round(low_area, 2), band_high_km2=round(high_area, 2),
                      description=f"Open water on {day}: HV below {threshold:.2f} dB after land removal.",
                      offset_applied_db=offset_of.get((day, "HV"), 0.0), display_multilook=1,
                      processing=["10*log10", f"median {SPECKLE[1]}x{SPECKLE[1]}", "offset removed",
                                  "method B threshold", "blobs < 10 px removed"])
-                save(wx.mask_palette(dst_b, wx.BAND_RGB, wx.BAND_ALPHA), f"water_band_{day}.png",
+                rgba_b = dx.feather_alpha(dx.rgba_from_mask(dst_b, wx.BAND_RGB, wx.BAND_ALPHA))
+                save(rgba_b, f"water_band_{day}.webp", abs(g20_t.a),
+                     ["as water", f"band = threshold +/-{BAND_DB} dB",
+                      "reprojected to EPSG:3857 nearest neighbour", "6 px inward edge feather (display only)"],
                      id=f"water_band_{day}", kind="band", label=f"Detection-limit band {day}",
-                     polarization="HV", date=day, bounds=wx.web_bounds_lonlat(dst_t20, *dst_w.shape),
+                     polarization="HV", date=day,
                      colormap="amber = pixels that flip within +/-1.5 dB", band_db=BAND_DB,
                      threshold_db=round(float(threshold), 2),
                      description=f"Pixels that change water status within +/-{BAND_DB} dB of the threshold.",
@@ -330,7 +412,8 @@ def main() -> int:
             "study_area": {"name": name, "title": area.title, "wkt": area.wkt, "story": area.story},
             "product": "NISAR L2 GCOV", "crid": meta0.get("crid"), "maturity": meta0.get("maturity"),
             "track": meta0.get("track"), "frame": meta0.get("frame"), "direction": meta0.get("direction"),
-            "native_crs": f"EPSG:{meta0.get('epsg', 32636)}", "display_crs": wx.CRS_WEB,
+            "native_crs": f"EPSG:{meta0['epsg']}" if meta0.get("epsg") else "recorded crs_wkt",
+            "display_crs": wx.CRS_WEB,
             "reference_date": reference, "dates": dates, "polarizations": pols,
             "primary_water": {"method": PRIMARY, "polarization": "HV"},
             "scales": {"backscatter_db": {p: list(v) for p, v in back_limits.items()},

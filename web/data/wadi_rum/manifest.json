@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-14T18:57:42Z",
+ "generated_utc": "2026-11-14T20:58:42Z",
  "place": {
   "name": "wadi_rum",
   "title": "Wadi Rum",
@@ -52,7 +52,36 @@
  },
  "layers": [
   {
-   "file": "layers/backscatter_HH_2026-06-17.png",
+   "file": "layers/backscatter_HH_2026-06-17.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HH_2026-06-17_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
+   ],
+   "webp_quality": 75,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -61,36 +90,58 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "backscatter_HH_2026-06-17",
    "kind": "backscatter",
    "label": "Backscatter HH 2026-06-17",
    "polarization": "HH",
    "date": "2026-06-17",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
-   "vmin": -17.102435836791994,
-   "vmax": -4.500919818878174,
+   "vmin": -19.15,
+   "vmax": -0.8,
    "colormap": "grey: dark = smooth (water), bright = rough",
    "description": "Gamma-0 backscatter HH on 2026-06-17.",
    "offset_applied_db": 0.0,
-   "display_multilook": 3,
+   "display_multilook": 1,
    "processing": [
-    "10*log10(gamma-0)",
-    "3x3 multilook in power (60 m)",
-    "median 5x5",
-    "reprojected to EPSG:3857"
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
    ]
   },
   {
-   "file": "layers/backscatter_HH_2026-06-29.png",
+   "file": "layers/backscatter_HH_2026-06-29.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HH_2026-06-29_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
+   ],
+   "webp_quality": 75,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -99,36 +150,58 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "backscatter_HH_2026-06-29",
    "kind": "backscatter",
    "label": "Backscatter HH 2026-06-29",
    "polarization": "HH",
    "date": "2026-06-29",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
-   "vmin": -17.102435836791994,
-   "vmax": -4.500919818878174,
+   "vmin": -19.15,
+   "vmax": -0.8,
    "colormap": "grey: dark = smooth (water), bright = rough",
    "description": "Gamma-0 backscatter HH on 2026-06-29.",
    "offset_applied_db": 0.0,
-   "display_multilook": 3,
+   "display_multilook": 1,
    "processing": [
-    "10*log10(gamma-0)",
-    "3x3 multilook in power (60 m)",
-    "median 5x5",
-    "reprojected to EPSG:3857"
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
    ]
   },
   {
-   "file": "layers/backscatter_HH_2026-07-11.png",
+   "file": "layers/backscatter_HH_2026-07-11.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HH_2026-07-11_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
+   ],
+   "webp_quality": 75,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -137,36 +210,58 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "backscatter_HH_2026-07-11",
    "kind": "backscatter",
    "label": "Backscatter HH 2026-07-11",
    "polarization": "HH",
    "date": "2026-07-11",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
-   "vmin": -17.102435836791994,
-   "vmax": -4.500919818878174,
+   "vmin": -19.15,
+   "vmax": -0.8,
    "colormap": "grey: dark = smooth (water), bright = rough",
    "description": "Gamma-0 backscatter HH on 2026-07-11.",
    "offset_applied_db": 0.0,
-   "display_multilook": 3,
+   "display_multilook": 1,
    "processing": [
-    "10*log10(gamma-0)",
-    "3x3 multilook in power (60 m)",
-    "median 5x5",
-    "reprojected to EPSG:3857"
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
    ]
   },
   {
-   "file": "layers/backscatter_HH_2026-07-23.png",
+   "file": "layers/backscatter_HH_2026-07-23.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HH_2026-07-23_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
+   ],
+   "webp_quality": 75,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -175,36 +270,58 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "backscatter_HH_2026-07-23",
    "kind": "backscatter",
    "label": "Backscatter HH 2026-07-23",
    "polarization": "HH",
    "date": "2026-07-23",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
-   "vmin": -17.102435836791994,
-   "vmax": -4.500919818878174,
+   "vmin": -19.15,
+   "vmax": -0.8,
    "colormap": "grey: dark = smooth (water), bright = rough",
    "description": "Gamma-0 backscatter HH on 2026-07-23.",
    "offset_applied_db": 0.0,
-   "display_multilook": 3,
+   "display_multilook": 1,
    "processing": [
-    "10*log10(gamma-0)",
-    "3x3 multilook in power (60 m)",
-    "median 5x5",
-    "reprojected to EPSG:3857"
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
    ]
   },
   {
-   "file": "layers/backscatter_HH_2026-08-16.png",
+   "file": "layers/backscatter_HH_2026-08-16.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HH_2026-08-16_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
+   ],
+   "webp_quality": 75,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -213,36 +330,58 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "backscatter_HH_2026-08-16",
    "kind": "backscatter",
    "label": "Backscatter HH 2026-08-16",
    "polarization": "HH",
    "date": "2026-08-16",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
-   "vmin": -17.102435836791994,
-   "vmax": -4.500919818878174,
+   "vmin": -19.15,
+   "vmax": -0.8,
    "colormap": "grey: dark = smooth (water), bright = rough",
    "description": "Gamma-0 backscatter HH on 2026-08-16.",
    "offset_applied_db": 0.0,
-   "display_multilook": 3,
+   "display_multilook": 1,
    "processing": [
-    "10*log10(gamma-0)",
-    "3x3 multilook in power (60 m)",
-    "median 5x5",
-    "reprojected to EPSG:3857"
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
    ]
   },
   {
-   "file": "layers/backscatter_HH_2026-08-28.png",
+   "file": "layers/backscatter_HH_2026-08-28.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HH_2026-08-28_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
+   ],
+   "webp_quality": 75,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -251,36 +390,58 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "backscatter_HH_2026-08-28",
    "kind": "backscatter",
    "label": "Backscatter HH 2026-08-28",
    "polarization": "HH",
    "date": "2026-08-28",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
-   "vmin": -17.102435836791994,
-   "vmax": -4.500919818878174,
+   "vmin": -19.15,
+   "vmax": -0.8,
    "colormap": "grey: dark = smooth (water), bright = rough",
    "description": "Gamma-0 backscatter HH on 2026-08-28.",
    "offset_applied_db": 0.0,
-   "display_multilook": 3,
+   "display_multilook": 1,
    "processing": [
-    "10*log10(gamma-0)",
-    "3x3 multilook in power (60 m)",
-    "median 5x5",
-    "reprojected to EPSG:3857"
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
    ]
   },
   {
-   "file": "layers/backscatter_HH_2026-09-09.png",
+   "file": "layers/backscatter_HH_2026-09-09.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HH_2026-09-09_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
+   ],
+   "webp_quality": 75,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -289,36 +450,58 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "backscatter_HH_2026-09-09",
    "kind": "backscatter",
    "label": "Backscatter HH 2026-09-09",
    "polarization": "HH",
    "date": "2026-09-09",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
-   "vmin": -17.102435836791994,
-   "vmax": -4.500919818878174,
+   "vmin": -19.15,
+   "vmax": -0.8,
    "colormap": "grey: dark = smooth (water), bright = rough",
    "description": "Gamma-0 backscatter HH on 2026-09-09.",
    "offset_applied_db": 0.0,
-   "display_multilook": 3,
+   "display_multilook": 1,
    "processing": [
-    "10*log10(gamma-0)",
-    "3x3 multilook in power (60 m)",
-    "median 5x5",
-    "reprojected to EPSG:3857"
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
    ]
   },
   {
-   "file": "layers/backscatter_HH_2026-09-21.png",
+   "file": "layers/backscatter_HH_2026-09-21.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HH_2026-09-21_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
+   ],
+   "webp_quality": 75,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -327,36 +510,58 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "backscatter_HH_2026-09-21",
    "kind": "backscatter",
    "label": "Backscatter HH 2026-09-21",
    "polarization": "HH",
    "date": "2026-09-21",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
-   "vmin": -17.102435836791994,
-   "vmax": -4.500919818878174,
+   "vmin": -19.15,
+   "vmax": -0.8,
    "colormap": "grey: dark = smooth (water), bright = rough",
    "description": "Gamma-0 backscatter HH on 2026-09-21.",
    "offset_applied_db": 0.0,
-   "display_multilook": 3,
+   "display_multilook": 1,
    "processing": [
-    "10*log10(gamma-0)",
-    "3x3 multilook in power (60 m)",
-    "median 5x5",
-    "reprojected to EPSG:3857"
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
    ]
   },
   {
-   "file": "layers/backscatter_HH_2026-10-03.png",
+   "file": "layers/backscatter_HH_2026-10-03.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HH_2026-10-03_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
+   ],
+   "webp_quality": 75,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -365,36 +570,58 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "backscatter_HH_2026-10-03",
    "kind": "backscatter",
    "label": "Backscatter HH 2026-10-03",
    "polarization": "HH",
    "date": "2026-10-03",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
-   "vmin": -17.102435836791994,
-   "vmax": -4.500919818878174,
+   "vmin": -19.15,
+   "vmax": -0.8,
    "colormap": "grey: dark = smooth (water), bright = rough",
    "description": "Gamma-0 backscatter HH on 2026-10-03.",
    "offset_applied_db": 0.0,
-   "display_multilook": 3,
+   "display_multilook": 1,
    "processing": [
-    "10*log10(gamma-0)",
-    "3x3 multilook in power (60 m)",
-    "median 5x5",
-    "reprojected to EPSG:3857"
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
    ]
   },
   {
-   "file": "layers/backscatter_HH_2026-10-15.png",
+   "file": "layers/backscatter_HH_2026-10-15.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HH_2026-10-15_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
+   ],
+   "webp_quality": 75,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -403,36 +630,56 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "backscatter_HH_2026-10-15",
    "kind": "backscatter",
    "label": "Backscatter HH 2026-10-15",
    "polarization": "HH",
    "date": "2026-10-15",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
-   "vmin": -17.102435836791994,
-   "vmax": -4.500919818878174,
+   "vmin": -19.15,
+   "vmax": -0.8,
    "colormap": "grey: dark = smooth (water), bright = rough",
    "description": "Gamma-0 backscatter HH on 2026-10-15.",
    "offset_applied_db": 0.0,
-   "display_multilook": 3,
+   "display_multilook": 1,
    "processing": [
-    "10*log10(gamma-0)",
-    "3x3 multilook in power (60 m)",
-    "median 5x5",
-    "reprojected to EPSG:3857"
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
    ]
   },
   {
-   "file": "layers/change_HH_2026-06-29.png",
+   "file": "layers/change_HH_2026-06-29.webp",
+   "format": "webp",
+   "preview": "layers/change_HH_2026-06-29_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 60.06,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "change computed on the 60 m analysis chain",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ],
+   "webp_quality": 82,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -441,22 +688,13 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "change_HH_2026-06-29",
    "kind": "change",
    "label": "Change HH 2026-06-29 minus 2026-06-17",
    "polarization": "HH",
    "date": "2026-06-29",
    "reference": "2026-06-17",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
    "vmin": -1.8,
    "vmax": 1.8,
    "colormap": "diverging: blue = weaker echo, orange = stronger echo",
@@ -472,7 +710,34 @@
    ]
   },
   {
-   "file": "layers/change_HH_2026-07-11.png",
+   "file": "layers/change_HH_2026-07-11.webp",
+   "format": "webp",
+   "preview": "layers/change_HH_2026-07-11_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 60.06,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "change computed on the 60 m analysis chain",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ],
+   "webp_quality": 82,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -481,22 +746,13 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "change_HH_2026-07-11",
    "kind": "change",
    "label": "Change HH 2026-07-11 minus 2026-06-17",
    "polarization": "HH",
    "date": "2026-07-11",
    "reference": "2026-06-17",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
    "vmin": -1.8,
    "vmax": 1.8,
    "colormap": "diverging: blue = weaker echo, orange = stronger echo",
@@ -512,7 +768,34 @@
    ]
   },
   {
-   "file": "layers/change_HH_2026-07-23.png",
+   "file": "layers/change_HH_2026-07-23.webp",
+   "format": "webp",
+   "preview": "layers/change_HH_2026-07-23_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 60.06,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "change computed on the 60 m analysis chain",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ],
+   "webp_quality": 82,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -521,22 +804,13 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "change_HH_2026-07-23",
    "kind": "change",
    "label": "Change HH 2026-07-23 minus 2026-06-17",
    "polarization": "HH",
    "date": "2026-07-23",
    "reference": "2026-06-17",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
    "vmin": -1.8,
    "vmax": 1.8,
    "colormap": "diverging: blue = weaker echo, orange = stronger echo",
@@ -552,7 +826,34 @@
    ]
   },
   {
-   "file": "layers/change_HH_2026-08-16.png",
+   "file": "layers/change_HH_2026-08-16.webp",
+   "format": "webp",
+   "preview": "layers/change_HH_2026-08-16_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 60.06,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "change computed on the 60 m analysis chain",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ],
+   "webp_quality": 82,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -561,22 +862,13 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "change_HH_2026-08-16",
    "kind": "change",
    "label": "Change HH 2026-08-16 minus 2026-06-17",
    "polarization": "HH",
    "date": "2026-08-16",
    "reference": "2026-06-17",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
    "vmin": -1.8,
    "vmax": 1.8,
    "colormap": "diverging: blue = weaker echo, orange = stronger echo",
@@ -592,7 +884,34 @@
    ]
   },
   {
-   "file": "layers/change_HH_2026-08-28.png",
+   "file": "layers/change_HH_2026-08-28.webp",
+   "format": "webp",
+   "preview": "layers/change_HH_2026-08-28_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 60.06,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "change computed on the 60 m analysis chain",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ],
+   "webp_quality": 82,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -601,22 +920,13 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "change_HH_2026-08-28",
    "kind": "change",
    "label": "Change HH 2026-08-28 minus 2026-06-17",
    "polarization": "HH",
    "date": "2026-08-28",
    "reference": "2026-06-17",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
    "vmin": -1.8,
    "vmax": 1.8,
    "colormap": "diverging: blue = weaker echo, orange = stronger echo",
@@ -632,7 +942,34 @@
    ]
   },
   {
-   "file": "layers/change_HH_2026-09-09.png",
+   "file": "layers/change_HH_2026-09-09.webp",
+   "format": "webp",
+   "preview": "layers/change_HH_2026-09-09_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 60.06,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "change computed on the 60 m analysis chain",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ],
+   "webp_quality": 82,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -641,22 +978,13 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "change_HH_2026-09-09",
    "kind": "change",
    "label": "Change HH 2026-09-09 minus 2026-06-17",
    "polarization": "HH",
    "date": "2026-09-09",
    "reference": "2026-06-17",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
    "vmin": -1.8,
    "vmax": 1.8,
    "colormap": "diverging: blue = weaker echo, orange = stronger echo",
@@ -672,7 +1000,34 @@
    ]
   },
   {
-   "file": "layers/change_HH_2026-09-21.png",
+   "file": "layers/change_HH_2026-09-21.webp",
+   "format": "webp",
+   "preview": "layers/change_HH_2026-09-21_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 60.06,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "change computed on the 60 m analysis chain",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ],
+   "webp_quality": 82,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -681,22 +1036,13 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "change_HH_2026-09-21",
    "kind": "change",
    "label": "Change HH 2026-09-21 minus 2026-06-17",
    "polarization": "HH",
    "date": "2026-09-21",
    "reference": "2026-06-17",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
    "vmin": -1.8,
    "vmax": 1.8,
    "colormap": "diverging: blue = weaker echo, orange = stronger echo",
@@ -712,7 +1058,34 @@
    ]
   },
   {
-   "file": "layers/change_HH_2026-10-03.png",
+   "file": "layers/change_HH_2026-10-03.webp",
+   "format": "webp",
+   "preview": "layers/change_HH_2026-10-03_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 60.06,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "change computed on the 60 m analysis chain",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ],
+   "webp_quality": 82,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -721,22 +1094,13 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "change_HH_2026-10-03",
    "kind": "change",
    "label": "Change HH 2026-10-03 minus 2026-06-17",
    "polarization": "HH",
    "date": "2026-10-03",
    "reference": "2026-06-17",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
    "vmin": -1.8,
    "vmax": 1.8,
    "colormap": "diverging: blue = weaker echo, orange = stronger echo",
@@ -752,7 +1116,34 @@
    ]
   },
   {
-   "file": "layers/change_HH_2026-10-15.png",
+   "file": "layers/change_HH_2026-10-15.webp",
+   "format": "webp",
+   "preview": "layers/change_HH_2026-10-15_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 60.06,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "change computed on the 60 m analysis chain",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ],
+   "webp_quality": 82,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -761,22 +1152,13 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "change_HH_2026-10-15",
    "kind": "change",
    "label": "Change HH 2026-10-15 minus 2026-06-17",
    "polarization": "HH",
    "date": "2026-10-15",
    "reference": "2026-06-17",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
    "vmin": -1.8,
    "vmax": 1.8,
    "colormap": "diverging: blue = weaker echo, orange = stronger echo",
@@ -792,7 +1174,36 @@
    ]
   },
   {
-   "file": "layers/rgb_HH_2026-06-17.png",
+   "file": "layers/rgb_HH_2026-06-17.webp",
+   "format": "webp",
+   "preview": "layers/rgb_HH_2026-06-17_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
+   ],
+   "webp_quality": 75,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -801,35 +1212,59 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "rgb_HH_2026-06-17",
    "kind": "rgb",
    "label": "False colour HH 2026-06-17",
    "polarization": "HH",
    "date": "2026-06-17",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
-   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); absolute scale",
+   "vmin": -19.15,
+   "vmax": -0.8,
+   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); pooled dB limits",
    "description": "Single-polarization false colour (HH) on 2026-06-17. Our approximation of the NASA single-pol ramp; exact breakpoints are not published.",
    "offset_applied_db": 0.0,
-   "display_multilook": 3,
+   "display_multilook": 1,
    "processing": [
-    "10*log10(gamma-0)",
-    "3x3 multilook in power (60 m)",
-    "median 5x5",
-    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)",
-    "reprojected to EPSG:3857 nearest neighbour"
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha",
+    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)"
    ]
   },
   {
-   "file": "layers/rgb_HH_2026-06-29.png",
+   "file": "layers/rgb_HH_2026-06-29.webp",
+   "format": "webp",
+   "preview": "layers/rgb_HH_2026-06-29_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
+   ],
+   "webp_quality": 75,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -838,35 +1273,59 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "rgb_HH_2026-06-29",
    "kind": "rgb",
    "label": "False colour HH 2026-06-29",
    "polarization": "HH",
    "date": "2026-06-29",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
-   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); absolute scale",
+   "vmin": -19.15,
+   "vmax": -0.8,
+   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); pooled dB limits",
    "description": "Single-polarization false colour (HH) on 2026-06-29. Our approximation of the NASA single-pol ramp; exact breakpoints are not published.",
    "offset_applied_db": 0.0,
-   "display_multilook": 3,
+   "display_multilook": 1,
    "processing": [
-    "10*log10(gamma-0)",
-    "3x3 multilook in power (60 m)",
-    "median 5x5",
-    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)",
-    "reprojected to EPSG:3857 nearest neighbour"
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha",
+    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)"
    ]
   },
   {
-   "file": "layers/rgb_HH_2026-07-11.png",
+   "file": "layers/rgb_HH_2026-07-11.webp",
+   "format": "webp",
+   "preview": "layers/rgb_HH_2026-07-11_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
+   ],
+   "webp_quality": 75,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -875,35 +1334,59 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "rgb_HH_2026-07-11",
    "kind": "rgb",
    "label": "False colour HH 2026-07-11",
    "polarization": "HH",
    "date": "2026-07-11",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
-   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); absolute scale",
+   "vmin": -19.15,
+   "vmax": -0.8,
+   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); pooled dB limits",
    "description": "Single-polarization false colour (HH) on 2026-07-11. Our approximation of the NASA single-pol ramp; exact breakpoints are not published.",
    "offset_applied_db": 0.0,
-   "display_multilook": 3,
+   "display_multilook": 1,
    "processing": [
-    "10*log10(gamma-0)",
-    "3x3 multilook in power (60 m)",
-    "median 5x5",
-    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)",
-    "reprojected to EPSG:3857 nearest neighbour"
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha",
+    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)"
    ]
   },
   {
-   "file": "layers/rgb_HH_2026-07-23.png",
+   "file": "layers/rgb_HH_2026-07-23.webp",
+   "format": "webp",
+   "preview": "layers/rgb_HH_2026-07-23_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
+   ],
+   "webp_quality": 75,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -912,35 +1395,59 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "rgb_HH_2026-07-23",
    "kind": "rgb",
    "label": "False colour HH 2026-07-23",
    "polarization": "HH",
    "date": "2026-07-23",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
-   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); absolute scale",
+   "vmin": -19.15,
+   "vmax": -0.8,
+   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); pooled dB limits",
    "description": "Single-polarization false colour (HH) on 2026-07-23. Our approximation of the NASA single-pol ramp; exact breakpoints are not published.",
    "offset_applied_db": 0.0,
-   "display_multilook": 3,
+   "display_multilook": 1,
    "processing": [
-    "10*log10(gamma-0)",
-    "3x3 multilook in power (60 m)",
-    "median 5x5",
-    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)",
-    "reprojected to EPSG:3857 nearest neighbour"
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha",
+    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)"
    ]
   },
   {
-   "file": "layers/rgb_HH_2026-08-16.png",
+   "file": "layers/rgb_HH_2026-08-16.webp",
+   "format": "webp",
+   "preview": "layers/rgb_HH_2026-08-16_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
+   ],
+   "webp_quality": 75,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -949,35 +1456,59 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "rgb_HH_2026-08-16",
    "kind": "rgb",
    "label": "False colour HH 2026-08-16",
    "polarization": "HH",
    "date": "2026-08-16",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
-   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); absolute scale",
+   "vmin": -19.15,
+   "vmax": -0.8,
+   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); pooled dB limits",
    "description": "Single-polarization false colour (HH) on 2026-08-16. Our approximation of the NASA single-pol ramp; exact breakpoints are not published.",
    "offset_applied_db": 0.0,
-   "display_multilook": 3,
+   "display_multilook": 1,
    "processing": [
-    "10*log10(gamma-0)",
-    "3x3 multilook in power (60 m)",
-    "median 5x5",
-    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)",
-    "reprojected to EPSG:3857 nearest neighbour"
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha",
+    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)"
    ]
   },
   {
-   "file": "layers/rgb_HH_2026-08-28.png",
+   "file": "layers/rgb_HH_2026-08-28.webp",
+   "format": "webp",
+   "preview": "layers/rgb_HH_2026-08-28_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
+   ],
+   "webp_quality": 75,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -986,35 +1517,59 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "rgb_HH_2026-08-28",
    "kind": "rgb",
    "label": "False colour HH 2026-08-28",
    "polarization": "HH",
    "date": "2026-08-28",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
-   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); absolute scale",
+   "vmin": -19.15,
+   "vmax": -0.8,
+   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); pooled dB limits",
    "description": "Single-polarization false colour (HH) on 2026-08-28. Our approximation of the NASA single-pol ramp; exact breakpoints are not published.",
    "offset_applied_db": 0.0,
-   "display_multilook": 3,
+   "display_multilook": 1,
    "processing": [
-    "10*log10(gamma-0)",
-    "3x3 multilook in power (60 m)",
-    "median 5x5",
-    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)",
-    "reprojected to EPSG:3857 nearest neighbour"
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha",
+    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)"
    ]
   },
   {
-   "file": "layers/rgb_HH_2026-09-09.png",
+   "file": "layers/rgb_HH_2026-09-09.webp",
+   "format": "webp",
+   "preview": "layers/rgb_HH_2026-09-09_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
+   ],
+   "webp_quality": 75,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -1023,35 +1578,59 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "rgb_HH_2026-09-09",
    "kind": "rgb",
    "label": "False colour HH 2026-09-09",
    "polarization": "HH",
    "date": "2026-09-09",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
-   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); absolute scale",
+   "vmin": -19.15,
+   "vmax": -0.8,
+   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); pooled dB limits",
    "description": "Single-polarization false colour (HH) on 2026-09-09. Our approximation of the NASA single-pol ramp; exact breakpoints are not published.",
    "offset_applied_db": 0.0,
-   "display_multilook": 3,
+   "display_multilook": 1,
    "processing": [
-    "10*log10(gamma-0)",
-    "3x3 multilook in power (60 m)",
-    "median 5x5",
-    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)",
-    "reprojected to EPSG:3857 nearest neighbour"
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha",
+    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)"
    ]
   },
   {
-   "file": "layers/rgb_HH_2026-09-21.png",
+   "file": "layers/rgb_HH_2026-09-21.webp",
+   "format": "webp",
+   "preview": "layers/rgb_HH_2026-09-21_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
+   ],
+   "webp_quality": 75,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -1060,35 +1639,59 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "rgb_HH_2026-09-21",
    "kind": "rgb",
    "label": "False colour HH 2026-09-21",
    "polarization": "HH",
    "date": "2026-09-21",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
-   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); absolute scale",
+   "vmin": -19.15,
+   "vmax": -0.8,
+   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); pooled dB limits",
    "description": "Single-polarization false colour (HH) on 2026-09-21. Our approximation of the NASA single-pol ramp; exact breakpoints are not published.",
    "offset_applied_db": 0.0,
-   "display_multilook": 3,
+   "display_multilook": 1,
    "processing": [
-    "10*log10(gamma-0)",
-    "3x3 multilook in power (60 m)",
-    "median 5x5",
-    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)",
-    "reprojected to EPSG:3857 nearest neighbour"
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha",
+    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)"
    ]
   },
   {
-   "file": "layers/rgb_HH_2026-10-03.png",
+   "file": "layers/rgb_HH_2026-10-03.webp",
+   "format": "webp",
+   "preview": "layers/rgb_HH_2026-10-03_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
+   ],
+   "webp_quality": 75,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -1097,35 +1700,59 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "rgb_HH_2026-10-03",
    "kind": "rgb",
    "label": "False colour HH 2026-10-03",
    "polarization": "HH",
    "date": "2026-10-03",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
-   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); absolute scale",
+   "vmin": -19.15,
+   "vmax": -0.8,
+   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); pooled dB limits",
    "description": "Single-polarization false colour (HH) on 2026-10-03. Our approximation of the NASA single-pol ramp; exact breakpoints are not published.",
    "offset_applied_db": 0.0,
-   "display_multilook": 3,
+   "display_multilook": 1,
    "processing": [
-    "10*log10(gamma-0)",
-    "3x3 multilook in power (60 m)",
-    "median 5x5",
-    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)",
-    "reprojected to EPSG:3857 nearest neighbour"
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha",
+    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)"
    ]
   },
   {
-   "file": "layers/rgb_HH_2026-10-15.png",
+   "file": "layers/rgb_HH_2026-10-15.webp",
+   "format": "webp",
+   "preview": "layers/rgb_HH_2026-10-15_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha"
+   ],
+   "webp_quality": 75,
    "product": "NISAR L2 GCOV",
    "crid": "P05023",
    "maturity": "PROVISIONAL",
@@ -1134,42 +1761,37 @@
    "direction": "DESCENDING",
    "native_crs": "EPSG:32637",
    "display_crs": "EPSG:3857",
+   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
    "id": "rgb_HH_2026-10-15",
    "kind": "rgb",
    "label": "False colour HH 2026-10-15",
    "polarization": "HH",
    "date": "2026-10-15",
-   "bounds": [
-    [
-     29.400109,
-     29.341179
-    ],
-    [
-     29.649973,
-     29.558251
-    ]
-   ],
-   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); absolute scale",
+   "vmin": -19.15,
+   "vmax": -0.8,
+   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); pooled dB limits",
    "description": "Single-polarization false colour (HH) on 2026-10-15. Our approximation of the NASA single-pol ramp; exact breakpoints are not published.",
    "offset_applied_db": 0.0,
-   "display_multilook": 3,
+   "display_multilook": 1,
    "processing": [
-    "10*log10(gamma-0)",
-    "3x3 multilook in power (60 m)",
-    "median 5x5",
-    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)",
-    "reprojected to EPSG:3857 nearest neighbour"
+    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
+    "invalid -> NaN (product mask 0/255 or non-finite)",
+    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
+    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
+    "6 px inward edge feather (display only)",
+    "WebP q82 with alpha",
+    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)"
    ]
   }
  ],
  "bounds": [
   [
-   29.400109,
-   29.341179
+   29.407919,
+   35.348466
   ],
   [
-   29.649973,
-   29.558251
+   29.646708,
+   35.551328
   ]
  ],
  "notes": [
