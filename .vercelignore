@@ -1,9 +1,9 @@
 .git
 .venv
 .pytest_cache
-data
-docs
-notebooks
-tests
+/docs
+/notebooks
+/tests
+/data
 *.pyc
 __pycache__

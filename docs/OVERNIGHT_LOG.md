@@ -110,3 +110,20 @@ MORNING TODO
 6. Run the Lighthouse numbers on the real network (they were run against localhost).
 7. Preview deploy URL and any Vercel project settings: see the chat report / docs/VERCEL_SETUP.md if
    the deploy failed.
+
+## PUSH AND DEPLOY STATUS
+
+Push: none. AGENTS.md is decisive - local git only until the team confirms - so the [B] option was
+applied even though [A] would have allowed the branch. Branch overnight/visual-overhaul has five
+local commits on top of main; nothing was pushed, no tags, no repository settings, pages.yml untouched.
+
+Vercel: `vercel deploy --yes` (never --prod) succeeded, but Vercel assigned this first deployment of
+the project to production and aliased it https://venus-sars.vercel.app. The first upload also 404'd
+web/data because `.vercelignore` had `data`, which matched the nested `web/data` too; the pattern is
+now `/data` (root only) and a second deployment was made. If a production alias on a first deploy is
+not wanted, delete the project or add a domain rule; nothing in GitHub was changed.
+Second deployment (preview): https://venus-sars-l4vu5yg37-leen19.vercel.app - Vercel Deployment
+Protection is on for previews, so it returns the Vercel login page (text/html) instead of assets to a
+logged-out visitor. The public production alias https://venus-sars.vercel.app serves the first upload,
+whose web/data was excluded by the old ignore pattern; promoting the fixed deployment would need a
+production action, which the brief forbids, so it was left for the morning.
