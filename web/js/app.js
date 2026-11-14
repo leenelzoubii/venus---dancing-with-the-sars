@@ -21,7 +21,6 @@
   var BASEMAP_URL = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
   var OPACITY = { backscatter: 0.92, change: 0.9, water: 1, band: 1 };
   var PLAY_TOTAL_MS = 12000;           // the whole series plays in about 12 seconds
-  var NOTE_MS = 6000;
 
   var state = {
     index: 0, layer: "backscatter", pol: "HV",
@@ -121,11 +120,16 @@
 
   /* -------------------------------------------------------------- overlays */
 
-  // A slot holds one overlay. A new image replaces the old one only after it has loaded.
+  // A slot holds one overlay. A new image replaces the old one only after it has loaded, and only
+  // one load may be in flight per slot, so rapid changes (story steps, fast stepping) cannot pile up.
   function setSlot(name, def, pane) {
     var slot = slots[name];
     var id = def ? def.id : null;
     slot.wanted = id;
+    if (slot.pending) {
+      overlays.removeLayer(slot.pending);
+      slot.pending = null;
+    }
     if (!def) {
       if (slot.overlay) { overlays.removeLayer(slot.overlay); slot.overlay = null; }
       return;
@@ -136,7 +140,9 @@
       opacity: 0, interactive: false, alt: def.label, pane: pane, className: "radar-layer"
     });
     next.options.venusId = id;
+    slot.pending = next;
     next.on("load", function () {
+      if (slot.pending === next) slot.pending = null;
       if (slot.wanted !== id) { overlays.removeLayer(next); return; }
       next.setOpacity(opacityFor(def));
       if (slot.overlay && slot.overlay !== next) overlays.removeLayer(slot.overlay);
@@ -144,6 +150,8 @@
       applyClip();
     });
     next.on("error", function () {
+      if (slot.pending === next) slot.pending = null;
+      overlays.removeLayer(next);
       UI.setLayerNote(UI.t("error_layer", { name: def.label }));
     });
     overlays.addLayer(next);

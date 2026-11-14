@@ -565,10 +565,6 @@ window.VENUS_UI = (function () {
     }
   }
 
-  function missingNotice(name) {
-    return t("error_missing_data", { name: name });
-  }
-
   return {
     t: t,
     applyStrings: applyStrings,
@@ -601,7 +597,6 @@ window.VENUS_UI = (function () {
     renderPatch: renderPatch,
     renderFeatured: renderFeatured,
     renderFooter: renderFooter,
-    outageIndices: outageIndices,
-    missingNotice: missingNotice
+    outageIndices: outageIndices
   };
 })();

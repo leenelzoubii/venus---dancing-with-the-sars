@@ -76,3 +76,23 @@ checked. Run this again after any change to `web/`.
 - Real offline run (network off): only the basemap error handler was exercised.
 - Google Fonts offline: system fallbacks are set but not tested.
 - GitHub Pages sub-path: relative paths only; not deployed.
+
+---
+
+## Hour 5 execution record (2026-11-14)
+
+Verified in the in-app browser (Chromium) on both `http://localhost:8000` and `file://`:
+
+- [x] Story mode: all six steps drive layer, polarization, date, swipe and band as intended; Escape exits.
+- [x] Step 4 shows two water masks clipped at 50 percent plus the unclipped band layer; tags name both sides.
+- [x] Patch layer: 3 sensitivity candidates load; featured list shows the empty-state sentence (no human fills yet).
+- [x] Area chart renders with band, HH series, outage shading and the values table.
+- [x] Offset chart renders with both polarizations.
+- [x] No console errors or warnings on load or during the story, on http and file://.
+- [x] Lighthouse: accessibility 1.00, best practices 1.00, SEO 1.00, zero failed audits.
+- [x] First load: 16 local requests, 178 KB, DOMContentLoaded 327 ms.
+- [x] Overlay leak after a full story run: fixed, now 1 image in the DOM.
+- [x] GitHub Pages: workflow run 43584265357 succeeded; live page, overlay PNG and manifest.js all HTTP 200.
+
+Not verified (unchanged from Hour 4): real touch device, real offline run, Google Fonts offline, 360/768/1280 px
+widths by resizing a real window (the app pane cannot be resized; Lighthouse mobile emulation covers phone width).

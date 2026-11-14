@@ -319,3 +319,53 @@ constraint, decided with Leen. Not yet in the stats files, so it is not shown in
 offline fallback. Recorded in docs/DATA_SOURCES.md. Team must confirm the full terms before public launch.
 
 **Alternative.** OpenStreetMap tiles.
+
+---
+
+## 2026-11-14 - Patch log is validated, not trusted; nothing merged when it is empty
+
+**Decision.** `05_export_web_assets.py --patch-log` now validates the analyst CSV before merging: UTF-8,
+required columns, `confidence` in low/medium/high, `use_in_pitch` in yes/no, no duplicate ids. Errors abort
+the export; unusual values (a free-text `behaviour`) are warnings. A hypothesis without a confidence word is
+flagged. Only `use_in_pitch == yes` features the patch in the app.
+
+**State at Hour 5.** `docs/patch_log.csv` contains the header row only: Leyan has not filled it yet. The merge
+therefore carried 0 human rows, and the Featured list says so in the app instead of inventing content.
+
+**Also.** The patch layer shown in the app is the sensitivity run (`--patches-tag _sensitive`, 1 dB and 10 px),
+labelled as such in `patches.js` (`detection_rule`) and in the legend. The configured 3 dB rule finds 0 patches.
+
+---
+
+## 2026-11-14 - Story mode drives the same state as the controls
+
+**Decision.** The six story steps set the same `state` fields the controls set, then call `applyStateToControls()`
+and `render()`. There is no second rendering path, so the story and the controls cannot disagree.
+
+**Reason.** Duplicate logic is how a demo drifts away from what the controls show. Step 4 compares the water
+mask at the first and last dates with the detection band on, because the band is only meaningful with the water
+layer; an earlier draft put the band over the change layer, where it cannot render.
+
+---
+
+## 2026-11-14 - Pages deployment: workflow build type, action versions verified
+
+**Decision.** `.github/workflows/pages.yml` publishes only `web/` with
+`actions/checkout@v7`, `actions/configure-pages@v6`, `actions/upload-pages-artifact@v5`, `actions/deploy-pages@v5`.
+Versions verified against the GitHub releases API on 2026-11-14 (v7.0.1, v6.0.0, v5.0.0, v5.0.1). The site source
+was set to "GitHub Actions" with `gh api -X POST .../pages -f build_type=workflow`.
+
+**Result.** Run 43584265357 succeeded on the first attempt. Live at
+https://leenelzoubii.github.io/venus---dancing-with-the-sars/ with HTTP 200 for the page, an overlay PNG and
+`data/manifest.js`.
+
+**Note.** Only `web/` is published; pipeline code, raw data and docs are not part of the site.
+
+---
+
+## 2026-11-14 - Overlay slots hold at most one in-flight image
+
+**Decision.** Replacing a slot cancels any pending load for that slot before starting the next one.
+
+**Reason.** A story run left 7 images in the DOM: an image superseded mid-load was never removed. After the fix a
+full story run leaves 1 overlay, verified in the browser.
