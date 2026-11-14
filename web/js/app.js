@@ -20,7 +20,7 @@
 
   // Esri World Imagery (terms: docs/DATA_SOURCES.md). Displayed only, never cached or exported.
   var BASEMAP_URL = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
-  var OPACITY = { backscatter: 0.92, change: 0.9, water: 1, band: 1 };
+  var OPACITY = { rgb: 1, backscatter: 0.92, change: 0.9, water: 1, band: 1 };
   var PLAY_TOTAL_MS = 12000;           // the whole series plays in about 12 seconds
 
   var state = {
@@ -40,7 +40,7 @@
     for (var i = 0; i < M.layers.length; i++) {
       var layer = M.layers[i];
       if (layer.kind !== kind || layer.date !== date) continue;
-      if (kind === "water" || kind === "band" || layer.polarization === pol) return layer;
+      if (kind === "water" || kind === "band" || kind === "rgb" || layer.polarization === pol) return layer;
     }
     return null;
   }
@@ -48,6 +48,9 @@
   // What the controls ask for at one date. Returns {def, note}; note explains an empty result.
   function resolve(layerKind, pol, index) {
     var date = M.dates[index];
+    if (layerKind === "rgb") {
+      return { def: find("rgb", "HH+HV", date), note: null };
+    }
     if (layerKind === "water") {
       if (pol !== "HV") return { def: null, note: UI.t("water_hh_note") };
       return { def: find("water", "HV", date), note: null };
@@ -575,7 +578,7 @@
     var date = params.get("date");
     if (date && M.dates.indexOf(date) >= 0) state.index = M.dates.indexOf(date);
     var layer = params.get("layer");
-    if (["backscatter", "change", "water"].indexOf(layer) >= 0) state.layer = layer;
+    if (["rgb", "backscatter", "change", "water"].indexOf(layer) >= 0) state.layer = layer;
     var pol = params.get("pol");
     if (pol === "HV" || pol === "HH") state.pol = pol;
     var swipe = params.get("swipe");
@@ -584,7 +587,7 @@
       state.leftIndex = M.dates.indexOf(swipe);
     }
     var left = params.get("left");
-    if (["backscatter", "change", "water"].indexOf(left) >= 0) state.leftLayer = left;
+    if (["rgb", "backscatter", "change", "water"].indexOf(left) >= 0) state.leftLayer = left;
     var split = Number(params.get("split"));
     if (isFinite(split) && params.get("split") !== null) state.split = Math.min(100, Math.max(0, split));
     state.band = params.get("band") === "1";
@@ -696,6 +699,7 @@
       }
     }, 150);
     state.index = M.dates.length - 1;
+    state.layer = "rgb";
     readHash();
     UI.initDates(M.dates, state.index, M.reference_date, UI.outageIndices(M.dates));
     applyStateToControls();

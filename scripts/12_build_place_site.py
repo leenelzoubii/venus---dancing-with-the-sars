@@ -221,6 +221,35 @@ def main() -> int:
                      display_multilook=MULTILOOK,
                      processing=steps + ["scene offset removed (land median)"])
 
+        # ---- false-colour RGB (NISAR standard decomposition), needs HH and HV -----------------
+        if "HH" in pols and "HV" in pols:
+            for card in cards:
+                day = card["meta"]["acquisition_date"]
+                hh_lin = change.multilook_power(card["arrays"]["HH"], MULTILOOK)
+                hv_lin = change.multilook_power(card["arrays"]["HV"], MULTILOOK)
+                invalid = ~(np.isfinite(hh_lin) & np.isfinite(hv_lin))
+                rgb = wx.rgb_decomposition(hh_lin, hv_lin, invalid)
+                valid = ~invalid
+                channels = []
+                for index in range(3):
+                    dst_c, dst_t = wx.reproject_to_web(rgb[..., index].astype("float32"), t60, nearest=True)
+                    channels.append(dst_c)
+                dst_valid, _ = wx.reproject_to_web(valid, t60, mask=True)
+                image = np.stack([np.nan_to_num(c, nan=0.0) for c in channels], axis=-1).astype("uint8")
+                rgba = np.dstack([image, np.where(dst_valid, 255, 0).astype("uint8")])
+                from PIL import Image as PILImage
+                save(PILImage.fromarray(rgba, mode="RGBA"), f"rgb_HHHV_{day}.png",
+                     id=f"rgb_HHHV_{day}", kind="rgb", label=f"False colour HH/HV {day}",
+                     polarization="HH+HV", date=day, bounds=wx.web_bounds_lonlat(dst_t, *image.shape[:2]),
+                     colormap="red = HH co-pol, green = HV cross-pol, blue = ratio; absolute scale (same for all dates)",
+                     description=f"NISAR false-colour decomposition on {day}. Blue: calm water and dry sand. "
+                                 f"Green: volume scattering from vegetation structure. Magenta or pink: strong HH return.",
+                     offset_applied_db=0.0, display_multilook=MULTILOOK,
+                     processing=["linear gamma-0 power", f"{MULTILOOK}x{MULTILOOK} multilook in power (60 m)",
+                                 "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)",
+                                 "no speckle filter (matches the reference method)",
+                                 "reprojected to EPSG:3857 nearest neighbour"])
+
         # ---- water where HV exists -----------------------------------------------------
         water_rows = []
         if "HV" in pols:

@@ -444,3 +444,41 @@ behaviour. No chat feature is implemented and no model is wired in.
 **Reason.** Leen asked for the groundwork to be logged for a future navigation/explanation assistant.
 Recording verified facts now prevents that assistant from inventing numbers later, which is the main risk
 in a project whose whole credibility rests on not overstating the data.
+
+---
+
+## 2026-11-14 - The site now shows the standard NISAR false-colour decomposition
+
+**Why this changed.** The team compared our site with ASF Vertex and the images did not look alike. Vertex
+shows a false-colour composite (magenta, green, white); the site showed one grey dB channel per polarization.
+Both were correct for what they were, but they were different pictures, so the comparison was impossible.
+
+**What the reference method is.** Verified from the source of ASF's `nisar-py` (`gcov_rgb.py`, adapted from
+hyp3-lib `rtc2color`) and from NASA's Worldview and SVS documentation: red = HH co-pol, green = HV cross-pol,
+blue = a function of their ratio, computed from linear gamma-0 power on a fixed absolute scale.
+
+**What we changed.**
+- `src/venus/webexport.py` now has `rgb_decomposition`, a line-for-line port of the reference formulas, with
+  three unit tests (invalid pixels black; calm-water case blue-dominant; absolute scale, not a per-image stretch).
+- `scripts/12_build_place_site.py` writes one `rgb_HHHV_<date>.png` per date for every place with HH and HV.
+- The composite is the default layer. The grey dB layers stay as analysis views.
+
+**What the composite shows on this scene (measured, not tuned).** Vegetation and the plain render green to
+yellow-orange, as in Vertex. The Dead Sea lake renders olive, not blue. Mechanism: the reference assigns blue only
+where cross-pol return is below -24 dB; the lake's HV is about -20 dB (QC table, Hour 1), above that floor. The
+legend now says so. We did not change the formula to make the lake look bluer.
+
+**Still different from Vertex, on purpose.** Vertex shows the full scene frame; we show only the place's window
+(the outline on the map). Vertex's browse may use a different resampling; ours is nearest neighbour on the 60 m grid.
+
+**Not yet verified.** A side-by-side against an exact Vertex browse of the same granule. The reference images
+were not downloaded, so the match is by method, not by pixel.
+
+**Known gap.** Azraq Wetland and Wadi Rum are HH-only, so they have no composite (the method needs cross-pol) and
+no water series.
+
+---
+
+## 2026-11-14 - Not pushed
+
+Committed locally only. The standing rule requires the exact phrase `PUSH APPROVED` in the message that asks for a push.

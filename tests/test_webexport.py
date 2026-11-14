@@ -165,3 +165,28 @@ def test_manifest_fields_the_validator_requires_are_listed_here():
     module = util.module_from_spec(spec)
     spec.loader.exec_module(module)
     assert {"id", "crid", "bounds", "processing", "display_crs"} <= set(module.REQUIRED_FIELDS)
+
+
+def test_rgb_decomposition_marks_invalid_pixels_black():
+    copol = np.array([[0.2, 0.2]])
+    crosspol = np.array([[0.02, 0.02]])
+    invalid = np.array([[True, False]])
+    rgb = wx.rgb_decomposition(copol, crosspol, invalid)
+    assert tuple(rgb[0, 0]) == (0, 0, 0)
+    assert rgb[0, 1].any()
+
+
+def test_rgb_decomposition_calm_water_is_blue_dominant():
+    # Calm water: moderate co-pol (about -14 dB) and very little cross-pol. The reference colour
+    # description says calm water is blue, so blue should dominate green.
+    rgb = wx.rgb_decomposition(np.array([[0.04]]), np.array([[0.0001]]), np.array([[False]]))
+    red, green, blue = rgb[0, 0]
+    assert blue > green
+    assert blue > red
+
+
+def test_rgb_decomposition_is_absolute_not_stretched():
+    # Same inputs give the same colour regardless of the rest of the image: no per-image stretch.
+    single = wx.rgb_decomposition(np.array([[0.3]]), np.array([[0.03]]), np.array([[False]]))
+    crowd = wx.rgb_decomposition(np.array([[0.3, 5.0]]), np.array([[0.03, 0.5]]), np.array([[False, False]]))
+    assert tuple(single[0, 0]) == tuple(crowd[0, 0])

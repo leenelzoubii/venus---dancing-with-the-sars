@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-14T16:24:03Z",
+ "generated_utc": "2026-11-14T17:00:05Z",
  "place": {
   "name": "potash_city",
   "title": "Potash City and surroundings",
@@ -1064,6 +1064,265 @@
     "median 5x5",
     "reprojected to EPSG:3857",
     "scene offset removed (land median)"
+   ]
+  },
+  {
+   "file": "layers/rgb_HHHV_2026-07-15.png",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 100,
+   "frame": 17,
+   "direction": "ASCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857",
+   "id": "rgb_HHHV_2026-07-15",
+   "kind": "rgb",
+   "label": "False colour HH/HV 2026-07-15",
+   "polarization": "HH+HV",
+   "date": "2026-07-15",
+   "bounds": [
+    [
+     31.05042,
+     35.397045
+    ],
+    [
+     31.332603,
+     35.555028
+    ]
+   ],
+   "colormap": "red = HH co-pol, green = HV cross-pol, blue = ratio; absolute scale (same for all dates)",
+   "description": "NISAR false-colour decomposition on 2026-07-15. Blue: calm water and dry sand. Green: volume scattering from vegetation structure. Magenta or pink: strong HH return.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "linear gamma-0 power",
+    "3x3 multilook in power (60 m)",
+    "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)",
+    "no speckle filter (matches the reference method)",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ]
+  },
+  {
+   "file": "layers/rgb_HHHV_2026-07-27.png",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 100,
+   "frame": 17,
+   "direction": "ASCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857",
+   "id": "rgb_HHHV_2026-07-27",
+   "kind": "rgb",
+   "label": "False colour HH/HV 2026-07-27",
+   "polarization": "HH+HV",
+   "date": "2026-07-27",
+   "bounds": [
+    [
+     31.05042,
+     35.397045
+    ],
+    [
+     31.332603,
+     35.555028
+    ]
+   ],
+   "colormap": "red = HH co-pol, green = HV cross-pol, blue = ratio; absolute scale (same for all dates)",
+   "description": "NISAR false-colour decomposition on 2026-07-27. Blue: calm water and dry sand. Green: volume scattering from vegetation structure. Magenta or pink: strong HH return.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "linear gamma-0 power",
+    "3x3 multilook in power (60 m)",
+    "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)",
+    "no speckle filter (matches the reference method)",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ]
+  },
+  {
+   "file": "layers/rgb_HHHV_2026-08-20.png",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 100,
+   "frame": 17,
+   "direction": "ASCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857",
+   "id": "rgb_HHHV_2026-08-20",
+   "kind": "rgb",
+   "label": "False colour HH/HV 2026-08-20",
+   "polarization": "HH+HV",
+   "date": "2026-08-20",
+   "bounds": [
+    [
+     31.05042,
+     35.397045
+    ],
+    [
+     31.332603,
+     35.555028
+    ]
+   ],
+   "colormap": "red = HH co-pol, green = HV cross-pol, blue = ratio; absolute scale (same for all dates)",
+   "description": "NISAR false-colour decomposition on 2026-08-20. Blue: calm water and dry sand. Green: volume scattering from vegetation structure. Magenta or pink: strong HH return.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "linear gamma-0 power",
+    "3x3 multilook in power (60 m)",
+    "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)",
+    "no speckle filter (matches the reference method)",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ]
+  },
+  {
+   "file": "layers/rgb_HHHV_2026-09-01.png",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 100,
+   "frame": 17,
+   "direction": "ASCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857",
+   "id": "rgb_HHHV_2026-09-01",
+   "kind": "rgb",
+   "label": "False colour HH/HV 2026-09-01",
+   "polarization": "HH+HV",
+   "date": "2026-09-01",
+   "bounds": [
+    [
+     31.05042,
+     35.397045
+    ],
+    [
+     31.332603,
+     35.555028
+    ]
+   ],
+   "colormap": "red = HH co-pol, green = HV cross-pol, blue = ratio; absolute scale (same for all dates)",
+   "description": "NISAR false-colour decomposition on 2026-09-01. Blue: calm water and dry sand. Green: volume scattering from vegetation structure. Magenta or pink: strong HH return.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "linear gamma-0 power",
+    "3x3 multilook in power (60 m)",
+    "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)",
+    "no speckle filter (matches the reference method)",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ]
+  },
+  {
+   "file": "layers/rgb_HHHV_2026-09-13.png",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 100,
+   "frame": 17,
+   "direction": "ASCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857",
+   "id": "rgb_HHHV_2026-09-13",
+   "kind": "rgb",
+   "label": "False colour HH/HV 2026-09-13",
+   "polarization": "HH+HV",
+   "date": "2026-09-13",
+   "bounds": [
+    [
+     31.05042,
+     35.397045
+    ],
+    [
+     31.332603,
+     35.555028
+    ]
+   ],
+   "colormap": "red = HH co-pol, green = HV cross-pol, blue = ratio; absolute scale (same for all dates)",
+   "description": "NISAR false-colour decomposition on 2026-09-13. Blue: calm water and dry sand. Green: volume scattering from vegetation structure. Magenta or pink: strong HH return.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "linear gamma-0 power",
+    "3x3 multilook in power (60 m)",
+    "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)",
+    "no speckle filter (matches the reference method)",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ]
+  },
+  {
+   "file": "layers/rgb_HHHV_2026-10-07.png",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 100,
+   "frame": 17,
+   "direction": "ASCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857",
+   "id": "rgb_HHHV_2026-10-07",
+   "kind": "rgb",
+   "label": "False colour HH/HV 2026-10-07",
+   "polarization": "HH+HV",
+   "date": "2026-10-07",
+   "bounds": [
+    [
+     31.05042,
+     35.397045
+    ],
+    [
+     31.332603,
+     35.555028
+    ]
+   ],
+   "colormap": "red = HH co-pol, green = HV cross-pol, blue = ratio; absolute scale (same for all dates)",
+   "description": "NISAR false-colour decomposition on 2026-10-07. Blue: calm water and dry sand. Green: volume scattering from vegetation structure. Magenta or pink: strong HH return.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "linear gamma-0 power",
+    "3x3 multilook in power (60 m)",
+    "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)",
+    "no speckle filter (matches the reference method)",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ]
+  },
+  {
+   "file": "layers/rgb_HHHV_2026-10-19.png",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 100,
+   "frame": 17,
+   "direction": "ASCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857",
+   "id": "rgb_HHHV_2026-10-19",
+   "kind": "rgb",
+   "label": "False colour HH/HV 2026-10-19",
+   "polarization": "HH+HV",
+   "date": "2026-10-19",
+   "bounds": [
+    [
+     31.05042,
+     35.397045
+    ],
+    [
+     31.332603,
+     35.555028
+    ]
+   ],
+   "colormap": "red = HH co-pol, green = HV cross-pol, blue = ratio; absolute scale (same for all dates)",
+   "description": "NISAR false-colour decomposition on 2026-10-19. Blue: calm water and dry sand. Green: volume scattering from vegetation structure. Magenta or pink: strong HH return.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "linear gamma-0 power",
+    "3x3 multilook in power (60 m)",
+    "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)",
+    "no speckle filter (matches the reference method)",
+    "reprojected to EPSG:3857 nearest neighbour"
    ]
   },
   {

@@ -17,6 +17,7 @@ window.VENUS_STRINGS = {
 
     layer_group: "Layer",
     layer_backscatter: "Radar backscatter",
+    layer_rgb: "False colour (HH, HV)",
     layer_change: "Change map",
     layer_water: "Water mask (HV)",
     layer_patches: "Candidate patches",
@@ -49,6 +50,9 @@ window.VENUS_STRINGS = {
     outage_track: "Outage 27 Jul to 10 Aug",
 
     legend_title: "Legend",
+    legend_rgb: "False-colour decomposition (NISAR standard)",
+    legend_rgb_caption: "Red = HH (co-polarized) return. Green = HV (cross-polarized) return. Blue = their ratio. The colour scale is fixed, so the same colour means the same surface on every date.",
+    legend_rgb_help: "Reading it: green = volume scattering (vegetation structure); yellow and orange = rough or built surfaces. Blue appears only where cross-pol return is very low (below about -24 dB); the Dead Sea lake has more cross-pol return than that, so it appears olive here, not blue. This is a property of the method on this scene, not a processing error. Method: ASF nisar-py gcov_rgb, adapted from hyp3-lib rtc2color.",
     legend_backscatter: "Radar backscatter, gamma-0 power in dB",
     legend_backscatter_caption: "Dark = smooth (water). Bright = rough or textured (shore, salt crust, plain).",
     legend_change: "Change in echo strength (dB), after offset removal",

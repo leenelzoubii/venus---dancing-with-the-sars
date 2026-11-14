@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-14T16:25:34Z",
+ "generated_utc": "2026-11-14T17:01:52Z",
  "purpose": "Ground truth for a future assistant that helps users navigate and interpret this app.",
  "status": "The assistant is not implemented. This file only records verified facts and limits.",
  "app_facts": {
@@ -63,6 +63,7 @@
     "backscatter",
     "band",
     "change",
+    "rgb",
     "water"
    ],
    "has_water": true
@@ -163,6 +164,7 @@
     "backscatter",
     "band",
     "change",
+    "rgb",
     "water"
    ],
    "has_water": true
@@ -221,6 +223,7 @@
     "backscatter",
     "band",
     "change",
+    "rgb",
     "water"
    ],
    "has_water": true
@@ -319,6 +322,7 @@
     "backscatter",
     "band",
     "change",
+    "rgb",
     "water"
    ],
    "has_water": true

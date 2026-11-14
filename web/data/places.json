@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-14T16:24:04Z",
+ "generated_utc": "2026-11-14T17:01:51Z",
  "active": "dead_sea_east",
  "processing_note": "Only the Dead Sea east shore has processed imagery. Other places have confirmed NISAR coverage in the archive but their subsets have not been downloaded and processed yet.",
  "default_wkt": "POLYGON((35.500 31.340, 35.600 31.340, 35.600 31.560, 35.500 31.560, 35.500 31.340))",

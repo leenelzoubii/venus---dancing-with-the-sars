@@ -244,6 +244,11 @@ window.VENUS_UI = (function () {
         addTick(ticks, "+" + fmt(limit) + " " + t("units_db"), "end");
         caption.textContent = t("legend_change_caption");
         more.textContent = t("legend_change_offset");
+      } else if (def.kind === "rgb") {
+        bar.style.display = "none";
+        text.textContent = t("legend_rgb");
+        caption.textContent = t("legend_rgb_caption");
+        more.textContent = t("legend_rgb_help");
       } else {
         bar.className = "legend-bar legend-water";
         bar.setAttribute("aria-label", t("legend_water"));

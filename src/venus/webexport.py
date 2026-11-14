@@ -117,8 +117,14 @@ def reproject_to_web(
     src_transform: Affine,
     src_crs: str = CRS_NATIVE,
     mask: bool = False,
+    nearest: bool = False,
 ) -> tuple[np.ndarray, Affine]:
-    """Resample a grid into a north-up EPSG:3857 rectangle. Returns (array, transform)."""
+    """Resample a grid into a north-up EPSG:3857 rectangle. Returns (array, transform).
+
+    Bilinear for continuous dB fields. Masks and colour channels (``mask`` or ``nearest``) use nearest
+    neighbour: blending a colour channel across the edge of valid data would invent colours no sensor
+    measured, and interpolating a mask would invent water fractions that cannot exist.
+    """
     from rasterio.crs import CRS
     from rasterio.warp import Resampling, calculate_default_transform, reproject as warp
 
@@ -136,11 +142,12 @@ def reproject_to_web(
              resampling=Resampling.nearest, src_nodata=0, dst_nodata=0)
         return destination.astype(bool), dst_transform
 
+    method = Resampling.nearest if nearest else Resampling.bilinear
     source = np.asarray(array, dtype="float32")
     destination = np.full((height, width), np.nan, dtype="float32")
     warp(source=source, destination=destination, src_transform=src_transform,
          src_crs=CRS.from_string(src_crs), dst_transform=dst_transform, dst_crs=dst_crs,
-         resampling=Resampling.bilinear, src_nodata=np.nan, dst_nodata=np.nan)
+         resampling=method, src_nodata=np.nan, dst_nodata=np.nan)
     return destination, dst_transform
 
 
@@ -230,3 +237,39 @@ def assert_provisional(layers: list[dict], crid: str = "P05023") -> None:
     bad = [layer["id"] for layer in layers if layer.get("crid") != crid]
     if bad:
         raise SystemExit(f"REFUSING TO EXPORT: layers not from CRID {crid}: {', '.join(bad)}")
+
+
+def rgb_decomposition(copol: np.ndarray, crosspol: np.ndarray, invalid: np.ndarray) -> np.ndarray:
+    """False-colour RGB from linear gamma-0 power, using the NISAR GCOV decomposition.
+
+    Same algorithm as ASF's ``nisar_py.gcov_rgb`` (adapted from hyp3-lib ``rtc2color``), which produces
+    the false-colour imagery shown in ASF Vertex and NASA Worldview:
+    red = co-polarized (HH), green = cross-polarized (HV), blue = a function of their ratio.
+    The scale is absolute (fixed by the formulas, not by the image), so every date is comparable.
+
+    Inputs are linear power (not dB). Returns uint8 (rows, cols, 3); invalid pixels are 0.
+    """
+    copol = np.nan_to_num(np.asarray(copol, dtype="float64"))
+    crosspol = np.nan_to_num(np.asarray(crosspol, dtype="float64"))
+    invalid = np.asarray(invalid, dtype=bool)
+
+    below = crosspol < 0.003981071705534973  # -24 dB cross-pol floor, as in the reference code
+    zp = np.arctan(np.sqrt(np.clip(copol - crosspol, 0, None))) * (2.0 / np.pi)
+    zp[~below] = 0.0
+
+    red = 2.0 * np.sqrt(np.clip(copol - 3.0 * crosspol, 0, None))
+    red[below] = 0.0
+    red = red + zp
+
+    green = 3.0 * np.sqrt(crosspol)
+    green[below] = 0.0
+    green = green + 2.0 * zp
+
+    blue = 5.0 * zp
+
+    out = np.zeros(copol.shape + (3,), dtype="uint8")
+    for index, channel in enumerate((red, green, blue)):
+        scaled = np.clip(channel * 254.0 + 1.0, 0, 255).astype("uint8")
+        scaled[invalid] = 0
+        out[..., index] = scaled
+    return out

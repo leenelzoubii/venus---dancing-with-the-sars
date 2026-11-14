@@ -73,7 +73,8 @@
       <fieldset class="field">
         <legend class="field-label" data-i18n="layer_group">Layer</legend>
         <div class="choice-group">
-          <label class="choice"><input type="radio" name="layer" value="backscatter" checked><span data-i18n="layer_backscatter">Radar backscatter</span></label>
+          <label class="choice"><input type="radio" name="layer" value="rgb" checked><span data-i18n="layer_rgb">False colour (HH, HV)</span></label>
+          <label class="choice"><input type="radio" name="layer" value="backscatter"><span data-i18n="layer_backscatter">Radar backscatter</span></label>
           <label class="choice"><input type="radio" name="layer" value="change"><span data-i18n="layer_change">Change map</span></label>
           <label class="choice"><input type="radio" name="layer" value="water"><span data-i18n="layer_water">Water mask (HV)</span></label>
         </div>
@@ -118,6 +119,7 @@
           <select id="left-date" class="select"></select>
           <label class="field-label" for="left-layer" data-i18n="swipe_left_layer">Left (before): layer</label>
           <select id="left-layer" class="select">
+            <option value="rgb">False colour (HH, HV)</option>
             <option value="backscatter">Radar backscatter</option>
             <option value="change">Change map</option>
             <option value="water">Water mask (HV)</option>
