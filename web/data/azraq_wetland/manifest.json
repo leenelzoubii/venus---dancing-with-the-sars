@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-14T17:00:17Z",
+ "generated_utc": "2026-11-14T18:56:10Z",
  "place": {
   "name": "azraq_wetland",
   "title": "Azraq Wetland Reserve",
@@ -789,6 +789,376 @@
     "median 5x5",
     "reprojected to EPSG:3857",
     "scene offset removed (land median)"
+   ]
+  },
+  {
+   "file": "layers/rgb_HH_2026-06-17.png",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 50,
+   "frame": 72,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "id": "rgb_HH_2026-06-17",
+   "kind": "rgb",
+   "label": "False colour HH 2026-06-17",
+   "polarization": "HH",
+   "date": "2026-06-17",
+   "bounds": [
+    [
+     31.762061,
+     30.805482
+    ],
+    [
+     31.879818,
+     30.901475
+    ]
+   ],
+   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); absolute scale",
+   "description": "Single-polarization false colour (HH) on 2026-06-17. Our approximation of the NASA single-pol ramp; exact breakpoints are not published.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "10*log10(gamma-0)",
+    "3x3 multilook in power (60 m)",
+    "median 5x5",
+    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ]
+  },
+  {
+   "file": "layers/rgb_HH_2026-06-29.png",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 50,
+   "frame": 72,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "id": "rgb_HH_2026-06-29",
+   "kind": "rgb",
+   "label": "False colour HH 2026-06-29",
+   "polarization": "HH",
+   "date": "2026-06-29",
+   "bounds": [
+    [
+     31.762061,
+     30.805482
+    ],
+    [
+     31.879818,
+     30.901475
+    ]
+   ],
+   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); absolute scale",
+   "description": "Single-polarization false colour (HH) on 2026-06-29. Our approximation of the NASA single-pol ramp; exact breakpoints are not published.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "10*log10(gamma-0)",
+    "3x3 multilook in power (60 m)",
+    "median 5x5",
+    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ]
+  },
+  {
+   "file": "layers/rgb_HH_2026-07-11.png",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 50,
+   "frame": 72,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "id": "rgb_HH_2026-07-11",
+   "kind": "rgb",
+   "label": "False colour HH 2026-07-11",
+   "polarization": "HH",
+   "date": "2026-07-11",
+   "bounds": [
+    [
+     31.762061,
+     30.805482
+    ],
+    [
+     31.879818,
+     30.901475
+    ]
+   ],
+   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); absolute scale",
+   "description": "Single-polarization false colour (HH) on 2026-07-11. Our approximation of the NASA single-pol ramp; exact breakpoints are not published.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "10*log10(gamma-0)",
+    "3x3 multilook in power (60 m)",
+    "median 5x5",
+    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ]
+  },
+  {
+   "file": "layers/rgb_HH_2026-07-23.png",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 50,
+   "frame": 72,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "id": "rgb_HH_2026-07-23",
+   "kind": "rgb",
+   "label": "False colour HH 2026-07-23",
+   "polarization": "HH",
+   "date": "2026-07-23",
+   "bounds": [
+    [
+     31.762061,
+     30.805482
+    ],
+    [
+     31.879818,
+     30.901475
+    ]
+   ],
+   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); absolute scale",
+   "description": "Single-polarization false colour (HH) on 2026-07-23. Our approximation of the NASA single-pol ramp; exact breakpoints are not published.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "10*log10(gamma-0)",
+    "3x3 multilook in power (60 m)",
+    "median 5x5",
+    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ]
+  },
+  {
+   "file": "layers/rgb_HH_2026-08-16.png",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 50,
+   "frame": 72,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "id": "rgb_HH_2026-08-16",
+   "kind": "rgb",
+   "label": "False colour HH 2026-08-16",
+   "polarization": "HH",
+   "date": "2026-08-16",
+   "bounds": [
+    [
+     31.762061,
+     30.805482
+    ],
+    [
+     31.879818,
+     30.901475
+    ]
+   ],
+   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); absolute scale",
+   "description": "Single-polarization false colour (HH) on 2026-08-16. Our approximation of the NASA single-pol ramp; exact breakpoints are not published.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "10*log10(gamma-0)",
+    "3x3 multilook in power (60 m)",
+    "median 5x5",
+    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ]
+  },
+  {
+   "file": "layers/rgb_HH_2026-08-28.png",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 50,
+   "frame": 72,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "id": "rgb_HH_2026-08-28",
+   "kind": "rgb",
+   "label": "False colour HH 2026-08-28",
+   "polarization": "HH",
+   "date": "2026-08-28",
+   "bounds": [
+    [
+     31.762061,
+     30.805482
+    ],
+    [
+     31.879818,
+     30.901475
+    ]
+   ],
+   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); absolute scale",
+   "description": "Single-polarization false colour (HH) on 2026-08-28. Our approximation of the NASA single-pol ramp; exact breakpoints are not published.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "10*log10(gamma-0)",
+    "3x3 multilook in power (60 m)",
+    "median 5x5",
+    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ]
+  },
+  {
+   "file": "layers/rgb_HH_2026-09-09.png",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 50,
+   "frame": 72,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "id": "rgb_HH_2026-09-09",
+   "kind": "rgb",
+   "label": "False colour HH 2026-09-09",
+   "polarization": "HH",
+   "date": "2026-09-09",
+   "bounds": [
+    [
+     31.762061,
+     30.805482
+    ],
+    [
+     31.879818,
+     30.901475
+    ]
+   ],
+   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); absolute scale",
+   "description": "Single-polarization false colour (HH) on 2026-09-09. Our approximation of the NASA single-pol ramp; exact breakpoints are not published.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "10*log10(gamma-0)",
+    "3x3 multilook in power (60 m)",
+    "median 5x5",
+    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ]
+  },
+  {
+   "file": "layers/rgb_HH_2026-09-21.png",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 50,
+   "frame": 72,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "id": "rgb_HH_2026-09-21",
+   "kind": "rgb",
+   "label": "False colour HH 2026-09-21",
+   "polarization": "HH",
+   "date": "2026-09-21",
+   "bounds": [
+    [
+     31.762061,
+     30.805482
+    ],
+    [
+     31.879818,
+     30.901475
+    ]
+   ],
+   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); absolute scale",
+   "description": "Single-polarization false colour (HH) on 2026-09-21. Our approximation of the NASA single-pol ramp; exact breakpoints are not published.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "10*log10(gamma-0)",
+    "3x3 multilook in power (60 m)",
+    "median 5x5",
+    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ]
+  },
+  {
+   "file": "layers/rgb_HH_2026-10-03.png",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 50,
+   "frame": 72,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "id": "rgb_HH_2026-10-03",
+   "kind": "rgb",
+   "label": "False colour HH 2026-10-03",
+   "polarization": "HH",
+   "date": "2026-10-03",
+   "bounds": [
+    [
+     31.762061,
+     30.805482
+    ],
+    [
+     31.879818,
+     30.901475
+    ]
+   ],
+   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); absolute scale",
+   "description": "Single-polarization false colour (HH) on 2026-10-03. Our approximation of the NASA single-pol ramp; exact breakpoints are not published.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "10*log10(gamma-0)",
+    "3x3 multilook in power (60 m)",
+    "median 5x5",
+    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)",
+    "reprojected to EPSG:3857 nearest neighbour"
+   ]
+  },
+  {
+   "file": "layers/rgb_HH_2026-10-15.png",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 50,
+   "frame": 72,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "id": "rgb_HH_2026-10-15",
+   "kind": "rgb",
+   "label": "False colour HH 2026-10-15",
+   "polarization": "HH",
+   "date": "2026-10-15",
+   "bounds": [
+    [
+     31.762061,
+     30.805482
+    ],
+    [
+     31.879818,
+     30.901475
+    ]
+   ],
+   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high); absolute scale",
+   "description": "Single-polarization false colour (HH) on 2026-10-15. Our approximation of the NASA single-pol ramp; exact breakpoints are not published.",
+   "offset_applied_db": 0.0,
+   "display_multilook": 3,
+   "processing": [
+    "10*log10(gamma-0)",
+    "3x3 multilook in power (60 m)",
+    "median 5x5",
+    "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)",
+    "reprojected to EPSG:3857 nearest neighbour"
    ]
   }
  ],

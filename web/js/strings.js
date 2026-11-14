@@ -17,7 +17,7 @@ window.VENUS_STRINGS = {
 
     layer_group: "Layer",
     layer_backscatter: "Radar backscatter",
-    layer_rgb: "False colour (HH, HV)",
+    layer_rgb: "False colour composite",
     layer_change: "Change map",
     layer_water: "Water mask (HV)",
     layer_patches: "Candidate patches",

@@ -1,244 +1,148 @@
-﻿# Team Venus — Seeing the Dead Sea through the clouds
+﻿# Team Venus: Seeing the Dead Sea through the clouds
+
+**Six places in Jordan, read through radar that works at night and through cloud.**
+Live app: **https://leenelzoubii.github.io/venus---dancing-with-the-sars/**
 
 > Venus, the planet of light and love, turns against the current of the other planets, and burns
 > brightest in the dark night sky. Named for a goddess, it is the light we steer by.
 
-Venus is wrapped in permanent cloud; we know its surface only because radar sees through it. This
-project reads Earth the same way — with **NISAR**, the joint NASA–ISRO radar mission — and points it at
-a lake on our doorstep that is quietly disappearing.
-
-**NASA Space Apps Challenge 2026 · "Dancing with the SARs" · Earth Science**
-
----
+Venus is wrapped in permanent cloud, and we know its surface only because radar sees through it. We read
+Earth the same way. This project began with that idea and then had to earn it.
 
 ## What it does
 
-We use NISAR L-band radar to watch the **Jordanian shore of the Dead Sea** between June and October
-2026. Radar does not see colour; it measures how rough and how wet the ground is, which is exactly what
-you need at a shoreline: open water answers almost not at all, so it goes black, while exposed,
-salt-crusted mud answers loudly, so it goes bright. We turn twelve-day repeat passes into a small,
-static, offline-capable web app: a map, a before/after swipe, a time slider across the acquisitions, and
-a difference layer in decibels with a plain-language explainer. Everything the app shows is
-pre-computed — the live demo needs no network, no backend and no API key.
+The app shows NISAR L-band radar over six places in Jordan: the Dead Sea east shore, Potash City, Azraq
+Wetland, Melehat Sdom, Wadi Rum and Al-Wehda Dam. For each place it loads seven to ten satellite dates
+and displays them as a false-colour composite in the same style as NASA's own NISAR tools, plus an
+analysis view of calibrated backscatter in decibels. You can step through dates, compare the first and
+last acquisition with a swipe, and see where the water edge is and how confident that edge actually is.
 
-![Screenshot placeholder — map with swipe slider](docs/images/screenshot-placeholder.png)
+Everything runs from pre-computed files. No backend, no API keys, no build step: open `web/index.html`
+and it works.
 
 ## Why it matters
 
-The Dead Sea is a closed basin: water leaves only by evaporation, and inflow has fallen. As the level
-drops, the shore retreats, salt is exposed, and the ground becomes unstable — sinkholes have opened in
-farmland along the Jordanian shore. A 12-day, all-weather record of where the water actually is turns a
-slow emergency into something measurable: water accounting for a closed basin, coastal and agricultural
-planning, and a template for wetlands elsewhere (for example Azraq, also in Jordan).
+The Dead Sea is shrinking, and its shore is where people live, farm and work. The eastern plain carries
+potash industry: evaporation ponds and salt crust that change because of us, not the climate. Meanwhile
+water is the scarce resource in Jordan, and knowing where it is, week by week, is not academic. Radar is
+one of the few instruments that answers that question when the sky is not clear.
 
-## Data
+## What we found, stated honestly
+
+- **HV is the water channel, HH is not.** Open water sits near -20.5 dB in HV, with about 7 dB of
+  separation from land. In HH, water and land overlap, so no single HH threshold works. Every water
+  number we publish is HV. Places whose granules are single-polarization HH have no water series at all,
+  and the app says so rather than drawing an empty chart.
+- **Shoreline change over about three and a half months is below our detection threshold at 20 m.** The
+  water area for the Dead Sea east shore is 138.99 km2 on average (method B, standard deviation 0.77),
+  with an absolute band of +/-22.67 km2 for the threshold. The change-detection limit is 2.51 km2. Eleven
+  of 36 date pairs exceed it with a stable sign, the largest being +5.59 km2 between 2026-06-24 and
+  2026-08-11. We present those as hypotheses, not confirmed change.
+- **A scene-wide offset exists between dates and is unexplained.** Between the first and last Dead Sea
+  dates the offset is -0.63 dB in HV and +0.61 dB in HH, on water and land alike, so it is not surface
+  change. We measure it on land only, remove it before any comparison, and print the value on every
+  change layer. Calibration drift and seasonal surface change are both consistent with the pattern; we
+  cannot yet separate them.
+- **Localized patches on the eastern plain are unexplained.** Under the configured rule (3 dB on two
+  consecutive dates) none qualify. At 1 dB three small candidates appear; one darkens for four dates
+  about 60 m from water. These are questions, not results, and no field check has been done.
+
+Numbers above come from `data/interim/water_stats.json` and `data/interim/offsets.json`.
+
+## The data
 
 | Item | Value |
 |---|---|
-| Mission | NISAR (NASA / ISRO), L-band SAR |
-| Product | **L2 GCOV** — Geocoded Polarimetric Covariance, terrain-corrected gamma-0 **power**, 20 m, UTM |
-| Maturity | **PROVISIONAL** (CRID P05023) for the series; **VALIDATED** (P05036) only as a labelled latest state |
-| Geometry | Descending track **151**, frame **073** (one geometry only — never mixed) |
-| Dates | 2026-06-24 → 2026-10-10, 9 acquisitions at ~12-day cadence |
-| Access | ASF DAAC via NASA Earthdata Login (free) |
+| Product | NISAR L2 GCOV (geocoded polarimetric covariance, gamma-0 power) |
+| Maturity | PROVISIONAL, CRID P05023 |
+| Geometry | one track/frame per place; Dead Sea is track 151, frame 073, descending |
+| Dates | 7 to 10 acquisitions per place, 2026-06-17 to 2026-10-19 |
+| Source | ASF DAAC, NASA Earthdata |
+| Known gap | instrument outage 2026-07-27 to 2026-08-10; the series jumps 07-18 to 08-11 |
 
-Exact product names, verified layer paths, file sizes and the documented mission data gap are in
-[`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md). Products are ~1.9 GB each, so the pipeline streams only
-the small window over our AOI.
+VALIDATED products (CRID P05036) were **not** mixed into any series. The validator fails the build if a
+layer carries another CRID.
 
-## First results (Gate 1, 2026-11-13)
+Data credit: NISAR data courtesy of NASA/JPL-Caltech and ISRO, distributed by the Alaska Satellite
+Facility (ASF DAAC) and NASA Earthdata. Basemap: Esri World Imagery, displayed only, never cached or
+redistributed. NASA does not endorse any non-U.S. Government entity or this project.
 
-Two dates from the same geometry — **2026-06-24** and **2026-10-10**, descending 151/073, PROVISIONAL —
-streamed at 20 m over a 1231 × 505 pixel window (~10 × 24 km) and turned into dB imagery:
+## How it works
 
-| | measured |
-|---|---|
-| open water, HV | ≈ −20.5 dB (clean, ~4 dB below land) |
-| open water, HH | ≈ −13.7 dB (only ~6 dB below land — HH is not the water channel here) |
-| mapped lake area | **140 ± 15 km²** of the 249 km² window (threshold sensitivity band) |
-| change 06-24 → 10-10 | **smaller than the method's uncertainty** (≤ 2 km² net; thresholds move it by ±15 km²) |
-| scene-wide offset | ≈ −0.8 dB in HV, ≈ +0.4 dB in HH — removed before interpreting |
-
-We report the trend as **not yet detectable** rather than inventing one. See
-[`docs/SCIENCE_NOTES.md`](docs/SCIENCE_NOTES.md) for what these numbers mean and
-[`docs/DECISIONS.md`](docs/DECISIONS.md) for why the thresholds are derived per image.
-
-
-
-```mermaid
-flowchart LR
-    A[Find<br/>ASF search over AOI] --> B[Fetch a slice<br/>stream only our window]
-    B --> C[Clean<br/>power to dB, dedupe dates, mask]
-    C --> D[Compare dates<br/>difference and ratio]
-    D --> E[Visualise<br/>COG / PNG + bounds JSON]
-    E --> F[Share<br/>static app on GitHub Pages]
+```
+Find  ->  Fetch a slice  ->  Clean  ->  Compare dates  ->  Visualise  ->  Share
+search      stream only       dB +      offset removal      static PNGs    GitHub
+the archive the AOI window    multilook  + difference        + JSON/JS      Pages
 ```
 
-Two stages, deliberately:
-
-1. **Offline pipeline (Python).** Search, subset/stream, clean, compute change products, export small
-   web-ready assets to `web/assets/`.
-2. **Static web app (HTML/CSS/JS).** Loads only those assets. Deployable to GitHub Pages, and it also
-   works offline from a local folder.
+Two stages, on purpose. The pipeline runs offline in Python and writes small static assets. The web app
+reads only those assets, so the demo cannot fail because of network, authentication or a processing bug.
+Fetches use GDAL `/vsicurl/` streaming with merged byte ranges: about 20 seconds per date here, against
+about 300 seconds for plain range reads, because the cost was round trips rather than megabytes.
 
 ## How to run
 
-### 1. Get the code and an environment
-
-```powershell
-git clone https://github.com/leenelzoubii/venus---dancing-with-the-sars.git
-cd venus---dancing-with-the-sars
-
-py -3.12 -m venv .venv
-.\.venv\Scripts\python -m pip install --upgrade pip
-.\.venv\Scripts\python -m pip install -r requirements.txt
-
-# verify every dependency imports
-.\.venv\Scripts\python scripts\00_check_environment.py
-```
-
-macOS / Linux:
+Windows (PowerShell), macOS and Linux. Python 3.12.
 
 ```bash
-python3.12 -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-python scripts/00_check_environment.py
+git clone https://github.com/leenelzoubii/venus---dancing-with-the-sars
+cd venus---dancing-with-the-sars
+python -m venv .venv
+# Windows: .\.venv\Scripts\Activate.ps1      macOS/Linux: source .venv/bin/activate
+pip install -r requirements.txt
+python -m pytest -q            # 63 tests, no network needed
 ```
 
-If you need byte-identical rebuilds, install the frozen set instead:
-`python -m pip install -r requirements.lock.txt`.
+The app needs no build:
 
-### 2. Authenticate with NASA Earthdata
+```bash
+# open directly
+web/index.html
 
-Create a free account at <https://urs.earthdata.nasa.gov/>, then either
-
-- let `earthaccess` prompt you interactively:
-
-  ```powershell
-  .\.venv\Scripts\python -c "import earthaccess; earthaccess.login()"
-  ```
-
-- or write a `.netrc` (Windows: `C:\Users\<you>\.netrc`) so streaming and GDAL can authenticate without
-  prompting:
-
-  ```
-  machine urs.earthdata.nasa.gov
-      login YOUR_USERNAME
-      password YOUR_PASSWORD
-  ```
-
-**Never commit credentials.** `.netrc`, `_netrc`, tokens and `.env` files are git-ignored, and no script
-prints them.
-
-### 3. Run the pipeline
-
-```powershell
-# 1. search: what does NISAR have over our AOI?
-.\.venv\Scripts\python scripts\01_search_nisar.py --aoi dead_sea_east
-
-# 2. inspect one product's real internal structure (streams metadata, no big download)
-.\.venv\Scripts\python scripts\02_inspect_product.py
-
-# 3. subset just the AOI window for the dates we need
-.\.venv\Scripts\python scripts\03_fetch_subset.py --aoi dead_sea_east
-
-# 4. change products (dB, difference, water masks)
-.\.venv\Scripts\python scripts\04_make_change_products.py
-
-# 5. the Hour 1-2 analysis (QC, contact sheets, offsets, water methods, patches)
-.\.venv\Scripts\python scripts\06_qc_table.py --aoi dead_sea_east
-.\.venv\Scripts\python scripts\07_contact_sheets.py --aoi dead_sea_east
-.\.venv\Scripts\python scripts\08_offsets.py --aoi dead_sea_east
-.\.venv\Scripts\python scripts\09_water.py --aoi dead_sea_east
-.\.venv\Scripts\python scripts\04b_find_patches.py --aoi dead_sea_east
-
-# 6. export the static web assets (PNG layers + manifest/stats/patches as .json and .js)
-.\.venv\Scripts\python scripts\05_export_web_assets.py --aoi dead_sea_east --patch-log docs\patch_log.csv
-
-# 7. validate the web assets before deploying (exit code 1 on any failure)
-.\.venv\Scripts\python scripts\06_validate_web_assets.py
-
-# 8. tests
-.\.venv\Scripts\python -m pytest -q
+# or serve it
+python -m http.server 8000 --directory web     # http://localhost:8000/index.html
 ```
 
-The exported files in `web/data/` are built to be loaded by plain `<script>` tags, so they work from
-file:// and on GitHub Pages without a server. Wiring the web app to them is the next step (Hour 3).
+Regenerating data needs a NASA Earthdata login. Credentials are read from `~/.netrc`
+(`machine urs.earthdata.nasa.gov login <user> password <pass>`) and are never stored in this repository.
 
-Any script that touches data accepts `--aoi <name>` (a key in `config/study_area.yaml`) or
-`--aoi-wkt "POLYGON((...))"` for a one-off area, so trying a new location never requires code changes.
-
-## Open the web app
-
-The app is plain HTML, CSS and JavaScript. There is no build step, no backend and no API key.
-
-- **Double-click** `web\index.html`. Everything the radar layers need is loaded from `web\data\*.js`
-  with ordinary `<script>` tags, so it works from `file://`.
-- **Or serve the folder** (needed only if you want the same URL that GitHub Pages uses):
-  `.\.venv\Scripts\python -m http.server 8000 --directory web`, then open `http://localhost:8000/index.html`.
-- Add `?debug=1` to the URL to show overlay bounds, a crosshair and an opacity slider.
-
-**How the data wrappers work.** Every data file is written twice by `scripts/05_export_web_assets.py`:
-`web/data/<name>.json` for people and tools, and `web/data/<name>.js` for the app. The `.js` file does
-`window.VENUS["<name>"] = {...};`, so the page reads the same content without `fetch()`. The validator
-(`scripts/06_validate_web_assets.py`) checks that the two copies match exactly.
-
-**Paths.** Layer images are listed in the manifest relative to `web/data/` (for example
-`layers/backscatter_HV_2026-10-10.png`); the app prefixes `data/`.
-
-**Basemap.** The basemap is Esri World Imagery, loaded over the network and displayed only (tiles are
-never cached or exported). If tiles cannot load, the page says "Basemap unavailable offline; radar layers
-still work." Leaflet 1.9.4 is vendored in `web/vendor/leaflet/` with its licence file.
-## Study area
-
-`dead_sea_east` — the Jordanian east shore between Suweimeh and Ghor Haditha, just north of the Lisan
-peninsula:
-
-```
-POLYGON((35.500 31.340, 35.600 31.340, 35.600 31.560, 35.500 31.560, 35.500 31.340))
+```bash
+python scripts/01_search_nisar.py --aoi potash_city --out data/interim/scenes_potash_city.csv
+python scripts/03b_fetch_fast.py --aoi potash_city --stack 100/17/ASC --all --scenes data/interim/scenes_potash_city.csv
+python scripts/12_build_place_site.py --aoi potash_city
+python scripts/10_build_places.py
+python scripts/13_build_assistant_context.py
+python scripts/06_validate_web_assets.py
+python scripts/07_check_web.py
+python scripts/99_release_check.py
 ```
 
-≈ 11 × 24 km, about 550 × 1200 pixels at 20 m. Additional Jordanian AOIs can be added to the config as a
-one-line edit (see the commented candidates: south evaporation ponds, Azraq wetland).
+Scripts 01-13 and 99 are documented inline; `scripts/README` order is 01, 03b, 12, 10, 13, then the checks.
 
-## Limitations, stated plainly
+## Limitations and honesty notes
 
-- **Nine acquisitions is a series, not a climatology.** We describe what changed in this window only.
-- **One geometry.** All comparisons are descending track 151 / frame 073. Ascending products exist but
-  are not mixed in, because geometry differences look like ground change.
-- **A known mission gap.** NISAR has a permanent data gap `2026-07-27T22:03Z → 2026-08-10T00:55Z`, so
-  the series jumps from 07-18 to 08-11. That is the spacecraft, not our code.
-- **PROVISIONAL calibration.** Fully calibrated, partially validated. Reprocessing is expected in 2027;
-  every layer records its product name and CRID.
-- **20 m pixels vs a slow process.** A ~0.3 m lake-level drop over 3.5 months moves a shoreline by metres
-  to tens of metres — a few pixels on gentle mudflats, essentially invisible against steep cliffs.
-  Sub-pixel sinkholes cannot be resolved individually.
-- **Water is not simply "dark".** Wind roughens the lake and brightens it; wet salt crust and wet mud can
-  be bright too. Water masks are thresholded, sanity-checked, and reported with that uncertainty.
-- **Interpretations are labelled.** What the data shows and what we hypothesise are kept separate,
-  in the app and in [`docs/SCIENCE_NOTES.md`](docs/SCIENCE_NOTES.md).
+- Only one geometry per place. Places on different tracks are separate series and are never compared.
+- Data are PROVISIONAL and may be reprocessed, which can move numbers.
+- Wind roughens water and brightens it; salt crust can also be bright.
+- Every water area carries a threshold band. Change smaller than the uncertainty is not called change.
+- About 7 to 8 percent of mapped water pixels at the Dead Sea lie outside the main lake body
+  (hypothesis: dark terrain or radar shadow). Not yet removed.
+- The false-colour composite follows ASF's published method exactly; the single-polarization ramp is our
+  approximation of the one NASA describes, because its exact breakpoints are not published.
+- The composite shows each place's window, not the full satellite frame.
 
 ## Future work
 
-- Extend to the south evaporation ponds and Azraq wetland as additional AOIs with a location switcher.
-- Add ascending-track cross-validation (172/017) as an independent check on the same events.
-- Explore GUNW interferometric products for line-of-sight deformation and sinkhole precursors — only if
-  pair quality and coherence hold up.
-- Quantify water area per date with uncertainty, and compare against lake-level records.
-- Bilingual English/Arabic interface with right-to-left layout.
-- Then: an operational, 12-day, all-weather shoreline monitor for closed basins — the kind of product
-  NISAR was designed to make routine.
+- Validated products (P05036) over a longer series, kept separate from the provisional series.
+- Test the eastern-plain candidates against optical imagery and, if possible, field knowledge.
+- GUNW/GSLC interferometry for subsidence and sinkholes. **Availability for these track/frame pairs was
+  not checked**; this is future work, not a result.
+- Arabic interface, reviewed by a native speaker.
 
 ## Team
 
-**Team Venus** — two women, data science graduates, one based in Amman, Jordan. Named for the planet
-that turns against the current and burns brightest in the dark.
+Team Venus, NASA Space Apps Challenge 2026, challenge "Dancing with the SARs".
 
-## Licence and acknowledgements
+## Licence
 
-Released under the [MIT Licence](LICENSE). NISAR data are a joint NASA–ISRO product, processed and
-archived by the Alaska Satellite Facility DAAC and distributed through NASA's Earthdata Cloud; data are
-freely available under NASA's open data policy. Basemaps and ancillary layers remain under their
-providers' terms. NASA does not endorse any non-U.S. Government entity or any product of this project.
+MIT, see `LICENSE`.

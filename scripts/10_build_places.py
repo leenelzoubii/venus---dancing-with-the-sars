@@ -64,11 +64,11 @@ def main() -> int:
         "generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "active": PROCESSED_AOI,
         "processing_note": (
-            "Only the Dead Sea east shore has processed imagery. Other places have confirmed NISAR "
-            "coverage in the archive but their subsets have not been downloaded and processed yet."
+            "Only processed places are listed. Each has radar dates, change products and a water "
+            "series where the polarization exists."
         ),
         "default_wkt": wkt_of(config, PROCESSED_AOI),
-        "places": places,
+        "places": [p for p in places if p["processed"]],
     }
     wx.write_json(WEB_DATA / "places.json", payload)
     wx.write_js(WEB_DATA / "places.js", "places", payload)

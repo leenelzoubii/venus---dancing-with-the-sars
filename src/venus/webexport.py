@@ -273,3 +273,37 @@ def rgb_decomposition(copol: np.ndarray, crosspol: np.ndarray, invalid: np.ndarr
         scaled[invalid] = 0
         out[..., index] = scaled
     return out
+
+
+# Single-polarization ramp, our approximation of the one NASA describes for single-pol NISAR GCOV:
+# the colour passes from blue to green to orange to yellow as co-polarized backscatter rises.
+# The exact NASA breakpoints are not published, so these dB values are our own and are labelled as an
+# approximation wherever the layer is described.
+SINGLE_POL_STOPS = [
+    (-24.0, (30, 60, 150)),     # dark blue: calm water, dry soil
+    (-18.0, (40, 150, 90)),     # green
+    (-12.0, (230, 140, 40)),    # orange
+    (-6.0, (240, 220, 60)),     # yellow: built and bare surfaces
+]
+
+
+def single_pol_rgb(db: np.ndarray, stops=SINGLE_POL_STOPS) -> np.ndarray:
+    """Colourise one co-polarized dB layer with a fixed absolute ramp. Returns uint8 (rows, cols, 3).
+
+    Fixed, not per-image: the same dB gives the same colour on every date, so colours can be compared
+    between dates. Invalid pixels are 0.
+    """
+    values = np.asarray(db, dtype="float64")
+    valid = np.isfinite(values)
+    clipped = np.clip(np.nan_to_num(values, nan=stops[0][0]), stops[0][0], stops[-1][0])
+    out = np.zeros(values.shape + (3,), dtype="float64")
+    for (v0, c0), (v1, c1) in zip(stops, stops[1:]):
+        span = max(v1 - v0, 1e-9)
+        band = (clipped >= v0) & (clipped <= v1)
+        local = (clipped[band] - v0) / span
+        for channel in range(3):
+            out[..., channel][band] = c0[channel] + local * (c1[channel] - c0[channel])
+    rgba = np.zeros(values.shape + (3,), dtype="uint8")
+    rgba[..., :] = np.clip(np.round(out), 0, 255).astype("uint8")
+    rgba[~valid] = 0
+    return rgba

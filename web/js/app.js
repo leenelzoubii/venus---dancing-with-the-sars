@@ -158,6 +158,9 @@
       if (slot.pending === next) slot.pending = null;
       overlays.removeLayer(next);
       UI.setLayerNote(UI.t("error_layer", { name: def.label }));
+      document.getElementById("map").classList.remove("is-loading");
+      var stale = document.querySelector("#map .loading-text");
+      if (stale) stale.parentNode.removeChild(stale);
     });
     overlays.addLayer(next);
   }
@@ -181,6 +184,18 @@
     if (r.width < 1) return;
     var p = Math.min(100, Math.max(0, (xAbs - r.left) / r.width * 100));
     img.style.clipPath = side === "left" ? "inset(0 " + (100 - p) + "% 0 0)" : "inset(0 0 0 " + p + "%)";
+  }
+
+  // Fetch every date of the current layer and polarization into the browser cache, so stepping through
+  // the series has little or no delay. Images are small (tens of KB each); this is a few MB at most.
+  var preloaded = {};
+  function preloadSeries() {
+    M.dates.forEach(function (date, index) {
+      var def = resolve(state.layer, state.pol, index).def;
+      if (!def || preloaded[def.id]) return;
+      preloaded[def.id] = true;
+      new Image().src = imageUrl(def);
+    });
   }
 
   // Ask the browser to fetch the neighbouring frames so stepping is smooth.
@@ -684,20 +699,27 @@
   }
 
   function start() {
-    // A visible indicator until the first overlay has loaded, then removed.
+    // A visible indicator until the first overlay has loaded. It is also cleared on failure and by a
+    // timeout, because a spinner that never clears is worse than no spinner at all.
     var mapEl = document.getElementById("map");
     mapEl.classList.add("is-loading");
     var loadingText = document.createElement("p");
     loadingText.className = "loading-text";
     loadingText.textContent = UI.t("loading_first");
     mapEl.appendChild(loadingText);
+    var cleared = false;
+    function clearLoading() {
+      if (cleared) return;
+      cleared = true;
+      clearInterval(firstLoad);
+      clearTimeout(giveUp);
+      mapEl.classList.remove("is-loading");
+      if (loadingText.parentNode) loadingText.parentNode.removeChild(loadingText);
+    }
     var firstLoad = setInterval(function () {
-      if (slots.main.overlay) {
-        clearInterval(firstLoad);
-        mapEl.classList.remove("is-loading");
-        if (loadingText.parentNode) loadingText.parentNode.removeChild(loadingText);
-      }
-    }, 150);
+      if (slots.main.overlay) clearLoading();
+    }, 120);
+    var giveUp = setTimeout(clearLoading, 15000);
     state.index = M.dates.length - 1;
     state.layer = "rgb";
     readHash();
@@ -710,7 +732,7 @@
     UI.renderFeatured(patchFeatures(), selectPatch);
     UI.initPlaces(V.places, selectPlace);
     var startPlace = placeByName(M.study_area.name);
-    if (startPlace) { state.place = startPlace.name; UI.setPlaceStatus(startPlace); }
+    if (startPlace) { state.place = startPlace.name; UI.setPlaceStatus(startPlace); UI.setPlaceSelection(startPlace.name); }
 
     initMap();
     initBasemap();
@@ -730,6 +752,7 @@
       state.loop = event.target.checked;
     });
     render();
+    preloadSeries();
   }
 
   try {

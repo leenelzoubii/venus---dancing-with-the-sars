@@ -221,7 +221,10 @@ def main() -> int:
                      display_multilook=MULTILOOK,
                      processing=steps + ["scene offset removed (land median)"])
 
-        # ---- false-colour RGB (NISAR standard decomposition), needs HH and HV -----------------
+        # ---- false-colour RGB ------------------------------------------------------------------
+        # Dual-pol places use the NISAR standard decomposition (HH, HV). Single-pol places use the
+        # fixed blue-to-yellow ramp NASA describes for single-polarization GCOV, so every place still
+        # has a comparable picture. Both scales are absolute, not per-image.
         if "HH" in pols and "HV" in pols:
             for card in cards:
                 day = card["meta"]["acquisition_date"]
@@ -241,13 +244,39 @@ def main() -> int:
                 save(PILImage.fromarray(rgba, mode="RGBA"), f"rgb_HHHV_{day}.png",
                      id=f"rgb_HHHV_{day}", kind="rgb", label=f"False colour HH/HV {day}",
                      polarization="HH+HV", date=day, bounds=wx.web_bounds_lonlat(dst_t, *image.shape[:2]),
-                     colormap="red = HH co-pol, green = HV cross-pol, blue = ratio; absolute scale (same for all dates)",
-                     description=f"NISAR false-colour decomposition on {day}. Blue: calm water and dry sand. "
-                                 f"Green: volume scattering from vegetation structure. Magenta or pink: strong HH return.",
+                     colormap="red = HH co-pol, green = HV cross-pol, blue = ratio; absolute scale",
+                     description=f"NISAR false-colour decomposition on {day}. Green: volume scattering. "
+                                 f"Yellow and orange: rough or built surfaces.",
                      offset_applied_db=0.0, display_multilook=MULTILOOK,
                      processing=["linear gamma-0 power", f"{MULTILOOK}x{MULTILOOK} multilook in power (60 m)",
                                  "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)",
                                  "no speckle filter (matches the reference method)",
+                                 "reprojected to EPSG:3857 nearest neighbour"])
+        else:
+            pol = pols[0]
+            for card in cards:
+                day = card["meta"]["acquisition_date"]
+                layer_db = db[(day, pol)]
+                rgb = wx.single_pol_rgb(layer_db)
+                valid = np.isfinite(layer_db)
+                channels = []
+                for index in range(3):
+                    dst_c, dst_t = wx.reproject_to_web(rgb[..., index].astype("float32"), t60, nearest=True)
+                    channels.append(dst_c)
+                dst_valid, _ = wx.reproject_to_web(valid, t60, mask=True)
+                image = np.stack([np.nan_to_num(c, nan=0.0) for c in channels], axis=-1).astype("uint8")
+                rgba = np.dstack([image, np.where(dst_valid, 255, 0).astype("uint8")])
+                from PIL import Image as PILImage
+                save(PILImage.fromarray(rgba, mode="RGBA"), f"rgb_{pol}_{day}.png",
+                     id=f"rgb_{pol}_{day}", kind="rgb", label=f"False colour {pol} {day}",
+                     polarization=pol, date=day, bounds=wx.web_bounds_lonlat(dst_t, *image.shape[:2]),
+                     colormap="single-polarization ramp: blue (low) to green to orange to yellow (high); absolute scale",
+                     description=f"Single-polarization false colour ({pol}) on {day}. Our approximation of the "
+                                 f"NASA single-pol ramp; exact breakpoints are not published.",
+                     offset_applied_db=0.0, display_multilook=MULTILOOK,
+                     processing=["10*log10(gamma-0)", f"{MULTILOOK}x{MULTILOOK} multilook in power (60 m)",
+                                 f"{SPECKLE[0]} {SPECKLE[1]}x{SPECKLE[1]}",
+                                 "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)",
                                  "reprojected to EPSG:3857 nearest neighbour"])
 
         # ---- water where HV exists -----------------------------------------------------

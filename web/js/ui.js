@@ -476,6 +476,11 @@ window.VENUS_UI = (function () {
     select.addEventListener("change", function () { onSelect(select.value); });
   }
 
+  function setPlaceSelection(name) {
+    var select = document.getElementById("place-select");
+    if (select && name) select.value = name;
+  }
+
   function setPlaceStatus(place) {
     var el = document.getElementById("place-status");
     if (!place) { el.textContent = ""; return; }
@@ -644,6 +649,7 @@ window.VENUS_UI = (function () {
     renderPatch: renderPatch,
     renderFeatured: renderFeatured,
     initPlaces: initPlaces,
+    setPlaceSelection: setPlaceSelection,
     setPlaceStatus: setPlaceStatus,
     renderFooter: renderFooter,
     outageIndices: outageIndices
