@@ -1,40 +1,128 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Team Venus — Seeing the Dead Sea through the clouds</title>
-    <style>
-      :root { color-scheme: dark; }
-      html, body { margin: 0; height: 100%; }
-      body {
-        display: grid; place-items: center;
-        background: #08090f radial-gradient(60% 60% at 50% 30%, #17203a 0%, #08090f 70%);
-        color: #e8ecf5;
-        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      }
-      main { max-width: 42rem; padding: 2rem; text-align: center; }
-      h1 { font-size: clamp(1.5rem, 4vw, 2.4rem); font-weight: 600; letter-spacing: 0.01em; margin: 0 0 0.75rem; }
-      p { line-height: 1.6; color: #b9c2d6; margin: 0 0 1rem; }
-      .status {
-        display: inline-block; margin-top: 1rem; padding: 0.4rem 0.8rem;
-        border: 1px solid #33405e; border-radius: 999px;
-        font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8fa3c9;
-      }
-    </style>
-  </head>
-  <body>
-    <main>
-      <h1>Seeing the Dead Sea through the clouds</h1>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Team Venus — Seeing the Dead Sea through the clouds</title>
+<meta name="description" content="NISAR L-band radar over the Dead Sea, Jordan: before/after, time series and change detection, explained in plain language.">
+<link rel="stylesheet" href="vendor/leaflet.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <h1>Team Venus — Seeing the Dead Sea through the clouds</h1>
+  <p class="tagline">NISAR L-band radar · Dead Sea east shore, Jordan</p>
+  <span class="badge">NISAR L2 GCOV · PROVISIONAL</span>
+</header>
+
+<main>
+  <div id="map">
+    <div id="status" role="status" aria-live="polite"></div>
+
+    <div id="swipeHandle" class="swipe-handle" aria-hidden="true"></div>
+    <div id="tagLeft" class="date-tag left hidden"></div>
+    <div id="tagRight" class="date-tag right hidden"></div>
+
+    <div class="map-note">
+      Drag anywhere on the map to move the divider. Overlay only — the basemap needs a connection.
+    </div>
+  </div>
+
+  <aside id="panel">
+
+    <div class="field">
+      <span class="label">View mode</span>
+      <div class="seg" id="mode" role="group" aria-label="View mode">
+        <button type="button" data-mode="date" aria-pressed="false">Date</button>
+        <button type="button" data-mode="swipe" aria-pressed="true">Swipe</button>
+        <button type="button" data-mode="change" aria-pressed="false">Change</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <span class="label">Polarization</span>
+      <div class="seg" id="pol" role="group" aria-label="Polarization"></div>
+    </div>
+
+    <div class="field">
+      <label class="label" for="dateRange">
+        <span>Date</span>
+        <output id="dateOutput" for="dateRange">—</output>
+      </label>
+      <input type="range" id="dateRange" min="0" max="0" step="1" value="0"
+             aria-label="Acquisition date">
+    </div>
+
+    <div class="field">
+      <label class="label" for="opacityRange">
+        <span>Overlay opacity</span>
+        <output id="opacityOutput" for="opacityRange">100%</output>
+      </label>
+      <input type="range" id="opacityRange" min="20" max="100" step="5" value="100"
+             aria-label="Overlay opacity">
+    </div>
+
+    <div class="field">
+      <span class="label">Legend</span>
+      <div class="legend-bar" id="legendBar"></div>
+      <div class="legend-ticks" id="legendTicks"></div>
+      <p class="legend-caption" id="legendCaption"></p>
+    </div>
+
+    <div class="field">
+      <span class="label">Numbers</span>
+      <div class="stats" id="stats"></div>
+    </div>
+
+    <details>
+      <summary>What am I looking at?</summary>
       <p>
-        Radar sees what light cannot. This app will show the Jordanian shore of the Dead Sea as NISAR
-        saw it every twelve days through the 2026 science phase.
+        This is <strong>radar</strong>, not a photograph. NISAR sends a pulse down and measures how
+        much of it comes back. Smooth open water bounces the pulse away from the satellite, so it
+        appears <strong>dark</strong>. Rough surfaces — shoreline salt crusts, vegetation, built
+        ground — scatter the pulse back and appear <strong>bright</strong>.
       </p>
+      <ul>
+        <li><strong>Date</strong> shows one acquisition.</li>
+        <li><strong>Swipe</strong> puts the earliest date on the left and the chosen date on the right.</li>
+        <li><strong>Change</strong> subtracts the two in decibels. <strong>Blue</strong> means less
+          radar echo came back on the later date — smoother or wetter, as with new water.
+          <strong>Red</strong> means more echo — rougher or drier.</li>
+        <li><strong>HH</strong> and <strong>HV</strong> are two ways of listening. HV is quieter and
+          more sensitive to vegetation and water; HH is louder and responds to surface roughness and
+          structure.</li>
+      </ul>
       <p>
-        The map, the before/after swipe and the change layer are built from pre-computed static layers, so
-        this page needs no server and no network.
+        Because radar sees through cloud and darkness, this works at night and in haze — the same
+        reason we can map the surface of Venus, a planet wrapped in permanent cloud.
       </p>
-      <span class="status">Placeholder — map lands after Gate 1</span>
-    </main>
-  </body>
+    </details>
+
+    <details>
+      <summary>Limitations and honesty notes</summary>
+      <ul>
+        <li><strong>One geometry only.</strong> Every date is descending track 151, frame 073.
+          Mixing passes would fake change that is not there.</li>
+        <li><strong>Provisional data.</strong> These products are calibrated but not fully validated;
+          reprocessing is expected. Numbers may shift slightly.</li>
+        <li><strong>Water masks are thresholded.</strong> Wind roughens water and makes it brighter;
+          wet salt crust can be bright too. Each area is quoted with a band, not a single number.</li>
+        <li><strong>Scene offset removed.</strong> A whole-scene brightness offset between dates is
+          corrected before differencing, and the value is stated in the legend.</li>
+        <li><strong>Change below our uncertainty is called that.</strong> A small difference is not a
+          trend.</li>
+        <li><strong>Instrument gap.</strong> There is a planned NISAR data gap between 2026-07-27 and
+          2026-08-10, so the series is not evenly spaced there.</li>
+      </ul>
+    </details>
+
+    <div class="provenance" id="provenance"></div>
+  </aside>
+</main>
+
+<script src="vendor/leaflet.js"></script>
+<script src="assets/manifest.js"></script>
+<script src="app.js"></script>
+</body>
 </html>

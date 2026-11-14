@@ -1,0 +1,164 @@
+{
+ "generated_utc": "2026-11-14T06:37:42Z",
+ "aoi": {
+  "name": "dead_sea_east",
+  "title": "Dead Sea \u2014 Jordanian east shore",
+  "story": "The east shore between Suweimeh and Ghor Haditha, just north of the Lisan peninsula. Two stories in one frame: shoreline retreat as the lake level falls, and the sinkhole belt on the Ghor Haditha plain. 100% Jordanian shore, inside the 12-day descending stack.",
+  "wkt": "POLYGON((35.500 31.340, 35.600 31.340, 35.600 31.560, 35.500 31.560, 35.500 31.340))",
+  "bbox_wgs84": [
+   31.34,
+   35.5,
+   31.56,
+   35.6
+  ]
+ },
+ "mission": {
+  "sensor": "NISAR L-band SAR (NASA / ISRO)",
+  "product": "L2 GCOV - Geocoded Polarimetric Covariance",
+  "quantity": "gamma-0 normalised radar backscatter (NRB)",
+  "maturity": "PROVISIONAL",
+  "crid": "P05023",
+  "track": 151,
+  "frame": 73,
+  "direction": "DESCENDING",
+  "epsg": 32636
+ },
+ "processing": {
+  "db": "10*log10(power) - as stated by the product itself",
+  "multilook": 3,
+  "pixel_spacing_m": 60.0,
+  "speckle_filter": "median 5x5",
+  "stretch": "2-98 percentile per image",
+  "water_threshold": "Otsu per image",
+  "water_band_db": 1.5,
+  "scene_offset_removed": true
+ },
+ "grid": {
+  "rows": 1231,
+  "cols": 505,
+  "bounds": [
+   31.33779,
+   35.49381,
+   31.56219,
+   35.60645
+  ]
+ },
+ "polarizations": [
+  "HH",
+  "HV"
+ ],
+ "dates": [
+  {
+   "date": "2026-06-24",
+   "granule": "NISAR_L2_PR_GCOV_023_151_D_073_2005_DHDH_A_20260624T162547_20260624T162622_P05023_N_F_J_001",
+   "url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_023_151_D_073_2005_DHDH_A_20260624T162547_20260624T162622_P05023_N_F_J_001/NISAR_L2_PR_GCOV_023_151_D_073_2005_DHDH_A_20260624T162547_20260624T162622_P05023_N_F_J_001.h5",
+   "maturity": "PROVISIONAL",
+   "crid": "P05023",
+   "rows": [
+    3614,
+    4845
+   ],
+   "cols": [
+    11196,
+    11701
+   ],
+   "bounds": [
+    31.337794464991575,
+    35.49380783206332,
+    31.562194244681784,
+    35.606447257218065
+   ],
+   "layers": {
+    "HH": {
+     "png": "2026-06-24_HH.png",
+     "vmin": -13.74,
+     "vmax": -5.26,
+     "water_km2": 132.9,
+     "water_threshold_db": -10.02,
+     "water_low_km2": 128.1,
+     "water_high_km2": 145.6
+    },
+    "HV": {
+     "png": "2026-06-24_HV.png",
+     "vmin": -19.98,
+     "vmax": -12.61,
+     "water_km2": 140.1,
+     "water_threshold_db": -17.07,
+     "water_low_km2": 129.7,
+     "water_high_km2": 165.0
+    }
+   }
+  },
+  {
+   "date": "2026-10-10",
+   "granule": "NISAR_L2_PR_GCOV_032_151_D_073_2005_DHDH_A_20261010T162543_20261010T162618_P05023_N_F_J_001",
+   "url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_032_151_D_073_2005_DHDH_A_20261010T162543_20261010T162618_P05023_N_F_J_001/NISAR_L2_PR_GCOV_032_151_D_073_2005_DHDH_A_20261010T162543_20261010T162618_P05023_N_F_J_001.h5",
+   "maturity": "PROVISIONAL",
+   "crid": "P05023",
+   "rows": [
+    3614,
+    4845
+   ],
+   "cols": [
+    11196,
+    11701
+   ],
+   "bounds": [
+    31.337794464991575,
+    35.49380783206332,
+    31.562194244681784,
+    35.606447257218065
+   ],
+   "layers": {
+    "HH": {
+     "png": "2026-10-10_HH.png",
+     "vmin": -13.23,
+     "vmax": -4.69,
+     "water_km2": 131.9,
+     "water_threshold_db": -9.62,
+     "water_low_km2": 127.8,
+     "water_high_km2": 142.5
+    },
+    "HV": {
+     "png": "2026-10-10_HV.png",
+     "vmin": -20.8,
+     "vmax": -13.18,
+     "water_km2": 140.9,
+     "water_threshold_db": -17.82,
+     "water_low_km2": 130.6,
+     "water_high_km2": 164.7
+    }
+   }
+  }
+ ],
+ "changes": [
+  {
+   "date": "2026-10-10",
+   "first": "2026-06-24",
+   "layers": {
+    "HH": {
+     "png": "change_2026-06-24_2026-10-10_HH.png",
+     "limit_db": 0.85,
+     "offset_dB_removed": 0.42,
+     "median_dB": 0.42,
+     "frac_darker_3db": 0.0,
+     "frac_brighter_3db": 0.0
+    },
+    "HV": {
+     "png": "change_2026-06-24_2026-10-10_HV.png",
+     "limit_db": 0.82,
+     "offset_dB_removed": -0.78,
+     "median_dB": -0.78,
+     "frac_darker_3db": 0.0002,
+     "frac_brighter_3db": 0.0
+    }
+   }
+  }
+ ],
+ "notes": [
+  "One geometry only: descending track 151 / frame 073. Ascending products exist but are never mixed in.",
+  "NISAR instrument data gap 2026-07-27T22:03Z to 2026-08-10T00:55Z, so the series jumps 07-18 to 08-11.",
+  "PROVISIONAL products: fully calibrated, partially validated. Reprocessing expected in 2027.",
+  "Wind roughens open water and brightens it; wet salt crust can be bright too. Water masks are thresholded and quoted with a band."
+ ]
+}
