@@ -82,7 +82,7 @@ about 300 seconds for plain range reads, because the cost was round trips rather
 
 ## How to run
 
-Windows (PowerShell), macOS and Linux. Python 3.12.
+Windows (PowerShell), macOS and Linux. Python 3.12 or newer: verified on 3.12 and 3.13.
 
 ```bash
 git clone https://github.com/leenelzoubii/venus---dancing-with-the-sars
