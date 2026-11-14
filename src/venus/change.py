@@ -2,9 +2,9 @@
 
 Three conversions, in the order the pipeline applies them:
 
-1. **power -> dB** (``10*log10``) — GCOV diagonal terms are gamma-0 *power*, not amplitude;
-2. **speckle reduction** — a small median or boxcar window, because radar images are grainy;
-3. **stretch to 8-bit** — percentile clip, so one bright outlier cannot flatten the picture.
+1. **power -> dB** (``10*log10``) - GCOV diagonal terms are gamma-0 *power*, not amplitude;
+2. **speckle reduction** - a small median or boxcar window, because radar images are grainy;
+3. **stretch to 8-bit** - percentile clip, so one bright outlier cannot flatten the picture.
 
 And the change operation: **dB difference** (later minus earlier), plus a simple water mask.
 """
@@ -76,7 +76,7 @@ def difference_db(later_db: np.ndarray, earlier_db: np.ndarray) -> np.ndarray:
 
 
 def ratio_db(later_db: np.ndarray, earlier_db: np.ndarray) -> np.ndarray:
-    """Ratio expressed in dB — identical arithmetic to the difference of two dB images, kept as a
+    """Ratio expressed in dB - identical arithmetic to the difference of two dB images, kept as a
     separate name because the *interpretation* differs (multiplicative change in power)."""
     return difference_db(later_db, earlier_db)
 

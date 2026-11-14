@@ -1,4 +1,4 @@
-"""Step 1 — find NISAR scenes over the AOI and tell us what we can actually use.
+"""Step 1 - find NISAR scenes over the AOI and tell us what we can actually use.
 
 What it answers: *which acquisitions exist over our study area, which of them share a viewing
 geometry, and therefore which dates may be compared with each other?*
@@ -32,6 +32,10 @@ from venus.search import (  # noqa: E402
 )
 
 ASF_REST = "https://api.daac.asf.alaska.edu/services/search/param"
+
+# Documented permanent NISAR instrument data gap (NISAR Data User Guide, "Available Data").
+MISSION_GAP_START = pd.Timestamp("2026-07-27T22:03:25Z")
+MISSION_GAP_END = pd.Timestamp("2026-08-10T00:55:27Z")
 
 
 def search_asf(kwargs: dict, max_results: int | None = None) -> pd.DataFrame:
@@ -107,9 +111,13 @@ def print_summary(df: pd.DataFrame, stacks) -> None:
         print(f"{stack.key:<18} {len(stack.dates):>2} date(s)   cadence {typical:>4}")
         print(f"    {dates}")
         if gaps:
-            unusual = [(str(a.date()), str(b.date()), g) for a, b, g in zip(stack.dates, stack.dates[1:], gaps) if g > 13]
-            for a, b, g in unusual:
-                print(f"    note: {g}-day gap {a} -> {b} (known NISAR gap: 2026-07-27 → 2026-08-10)")
+            for a, b, g in zip(stack.dates, stack.dates[1:], gaps):
+                if g <= 13:
+                    continue
+                first, second = pd.Timestamp(a), pd.Timestamp(b)
+                overlaps_mission_gap = first < MISSION_GAP_END and second > MISSION_GAP_START
+                why = " (crosses the documented NISAR instrument gap)" if overlaps_mission_gap else ""
+                print(f"    note: {g}-day gap {first.date()} -> {second.date()}{why}")
         print()
 
     best = stacks[0]
@@ -136,7 +144,7 @@ def main() -> int:
         kwargs["processingLevel"] = args.processing_level.upper()
 
     print("=" * 78)
-    print(f"AOI      : {area.name} — {area.title}")
+    print(f"AOI      : {area.name} - {area.title}")
     print(f"Search   : {kwargs}")
     print("=" * 78)
 
@@ -155,7 +163,7 @@ def main() -> int:
     before = len(df)
     df = dedupe_latest(df)
     if before != len(df):
-        print(f"Deduped {before - len(df)} reprocessed duplicate(s) — kept the latest processing date.")
+        print(f"Deduped {before - len(df)} reprocessed duplicate(s) - kept the latest processing date.")
 
     stacks = summarise_stacks(df)
     print_summary(df, stacks)

@@ -1,4 +1,4 @@
-"""Team Venus — reusable pipeline code for the NISAR "Dancing with the SARs" project.
+"""Team Venus - reusable pipeline code for the NISAR "Dancing with the SARs" project.
 
 Layout
 ------

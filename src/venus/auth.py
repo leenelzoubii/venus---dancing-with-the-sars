@@ -3,7 +3,7 @@
 Rules of engagement:
 
 * credentials live in ``~/.netrc`` (Windows: ``C:\\Users\\<you>\\.netrc``) or are typed once into an
-  interactive prompt — **never** in the repo, code, logs or chat;
+  interactive prompt - **never** in the repo, code, logs or chat;
 * nothing here ever prints a token, a username, or a password.
 """
 
@@ -61,7 +61,7 @@ def login(interactive: bool = True):
 
 
 def https_session():
-    """An fsspec HTTPS filesystem that carries Earthdata auth — for streaming HDF5 by byte range."""
+    """An fsspec HTTPS filesystem that carries Earthdata auth - for streaming HDF5 by byte range."""
     import earthaccess
 
     session = getattr(earthaccess, "get_fsspec_https_session", None)

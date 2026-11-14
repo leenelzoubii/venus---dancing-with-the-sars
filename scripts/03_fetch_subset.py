@@ -1,4 +1,4 @@
-"""Step 3 — stream only the AOI window from NISAR GCOV, for the dates we chose.
+"""Step 3 - stream only the AOI window from NISAR GCOV, for the dates we chose.
 
 The file is ~1.9 GB; our window is a few hundred thousand pixels. We open the remote HDF5 by
 byte-range access, read the window, and save it locally as ``.npy`` plus a JSON sidecar holding the
@@ -33,7 +33,7 @@ SCENES_CSV = REPO_ROOT / "data" / "interim" / "nisar_gcov_scenes.csv"
 
 def select_scenes(args, area) -> pd.DataFrame:
     if not SCENES_CSV.exists():
-        raise SystemExit(f"{SCENES_CSV.relative_to(REPO_ROOT)} not found — run 01_search_nisar.py first.")
+        raise SystemExit(f"{SCENES_CSV.relative_to(REPO_ROOT)} not found - run 01_search_nisar.py first.")
     df = pd.read_csv(SCENES_CSV, parse_dates=["acquisition_date"])
     track, frame, direction = args.stack.split("/")
     df = df[

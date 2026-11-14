@@ -46,20 +46,33 @@ CHECKS: list[tuple[str, str]] = []
 
 
 def check_gdal_driver() -> tuple[str, str]:
-    """GDAL version shipped inside rasterio, and whether HDF5 reading is available."""
+    """GDAL version shipped inside rasterio, and whether we can read HDF5 over /vsicurl/.
+
+    NISAR encodes its CRS with netCDF CF conventions. The GDAL HDF5 driver only understands that
+    from 3.13 onwards; before that the ``NETCDF:`` prefix must be used. Knowing which branch we are
+    on saves an hour of confusing errors later.
+    """
     import rasterio
 
     gdal = rasterio.__gdal_version__
-    drivers = rasterio.drivers()
-    names = sorted({name.split(" ")[0] for name in drivers.values()}) if isinstance(drivers, dict) else []
-    have = [d for d in ("HDF5", "netCDF", "GTiff", "COG") if d in names]
     major_minor = tuple(int(p) for p in gdal.split(".")[:2])
-    note = ""
-    if "HDF5" not in names:
-        note = "  <-- WARNING: no HDF5 driver; use NETCDF: prefix for /vsicurl/ reads"
-    elif major_minor < (3, 13):
-        note = "  <-- note: GDAL < 3.13, use NETCDF: prefix for NISAR /vsicurl/ reads"
-    return f"GDAL {gdal} (rasterio {rasterio.__version__}), drivers: {', '.join(have)}{note}", ""
+
+    drivers: list[str] = []
+    try:  # rasterio 1.5 keeps drivers behind an entered Env
+        with rasterio.Env() as env:
+            drivers = sorted({name.split(" ")[0] for name in env.drivers().values()})
+    except Exception:  # noqa: BLE001 - driver enumeration is optional information
+        drivers = []
+
+    have = [d for d in ("HDF5", "netCDF", "GTiff", "COG", "PNG") if d in drivers]
+    if major_minor >= (3, 13):
+        note = "  -> NISAR .h5 readable via /vsicurl/ (HDF5 driver understands CF CRS)"
+    else:
+        note = "  -> GDAL < 3.13: prefix NISAR reads with NETCDF: when using /vsicurl/"
+    if drivers and "HDF5" not in drivers:
+        note += "  <-- WARNING: no HDF5 driver in this build"
+    detail = f"drivers: {', '.join(have)}" if have else "driver list unavailable (not needed)"
+    return f"GDAL {gdal} (rasterio {rasterio.__version__}), {detail}{note}", ""
 
 
 CHECKS.append(("gdal", ""))

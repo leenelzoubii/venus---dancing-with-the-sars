@@ -1,4 +1,4 @@
-"""Step 4 — make the first real pictures and the first change map.
+"""Step 4 - make the first real pictures and the first change map.
 
 Reads the cached AOI windows from step 3 and produces, in ``data/interim/preview/``:
 
@@ -55,7 +55,7 @@ def plot_single(db: np.ndarray, card: dict, pol: str, out: Path) -> tuple[float,
     ax.imshow(img, cmap="gray", extent=extent_km(card), origin="upper", interpolation="nearest")
     ax.set_title(
         f"NISAR GCOV {pol}  |  {card['acquisition_date']}  |  {card['maturity']}\n"
-        f"track {card['track']} frame {card['frame']:03d} {card['direction'].lower()}  ·  dB stretch {vmin:.1f} to {vmax:.1f}",
+        f"track {card['track']} frame {card['frame']:03d} {card['direction'].lower()}  |  dB stretch {vmin:.1f} to {vmax:.1f}",
         fontsize=9,
         loc="left",
     )
@@ -92,7 +92,7 @@ def plot_difference(diff: np.ndarray, first: dict, second: dict, pol: str, out: 
     cbar.set_label("dB")
     fig.text(
         0.01, 0.01,
-        "same track/frame/direction only · gamma-0 power · median-filtered before differencing",
+        "same track/frame/direction only | gamma-0 power | median-filtered before differencing",
         fontsize=6, color="#555",
     )
     fig.tight_layout(rect=(0, 0.03, 1, 1))
@@ -155,7 +155,7 @@ def main() -> int:
                 "png": out.name,
             }
         )
-        print(f"  {day}: median {rows[-1]['db_median']:>7.2f} dB   water(<{args.threshold_db} dB) {area_km2:8.2f} km²   -> {out.name}")
+        print(f"  {day}: median {rows[-1]['db_median']:>7.2f} dB   water(<{args.threshold_db} dB) {area_km2:8.2f} km2   -> {out.name}")
 
     table = pd.DataFrame(rows)
     csv_out = args.outdir / f"stats_{pol}.csv"

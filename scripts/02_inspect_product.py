@@ -1,4 +1,4 @@
-"""Step 2 — inspect one real GCOV product and report what is *actually* inside it.
+"""Step 2 - inspect one real GCOV product and report what is *actually* inside it.
 
 Never assume layer names, units or projections. This script streams the file's metadata
 (a few MB, not 1.9 GB), prints the HDF5 tree, the CRS and grid, and computes statistics on a
@@ -34,7 +34,7 @@ def choose_product(args) -> tuple[str, str]:
         return args.url, "explicit --url"
     if not SCENES_CSV.exists():
         raise SystemExit(
-            f"{SCENES_CSV.relative_to(REPO_ROOT)} not found — run scripts/01_search_nisar.py first."
+            f"{SCENES_CSV.relative_to(REPO_ROOT)} not found - run scripts/01_search_nisar.py first."
         )
     df = pd.read_csv(SCENES_CSV, parse_dates=["acquisition_date"])
     if args.date:

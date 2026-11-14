@@ -6,9 +6,9 @@ like ground change.
 
 Also handled here, because the archive really contains these:
 
-* duplicate products for the same acquisition (e.g. ``..._001`` and ``..._002``) — keep the most
+* duplicate products for the same acquisition (e.g. ``..._001`` and ``..._002``) - keep the most
   recently *processed* one;
-* data maturity levels (BETA / PROVISIONAL / VALIDATED) — they are not comparable to each other.
+* data maturity levels (BETA / PROVISIONAL / VALIDATED) - they are not comparable to each other.
 """
 
 from __future__ import annotations
