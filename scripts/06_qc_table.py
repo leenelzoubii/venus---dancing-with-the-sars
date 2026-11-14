@@ -31,6 +31,9 @@ LAND_CUT_DB = -15.0    # obvious land: above the transition zone, used for the l
 
 def probe_mask_attrs(scene: stack.Scene) -> dict:
     """Read the mask dataset's own attributes from the archive (one small remote read)."""
+    from venus import auth
+
+    auth.login()
     handle = nisar.open_h5(scene.meta["url"])
     try:
         grid = nisar.grid_group(handle)

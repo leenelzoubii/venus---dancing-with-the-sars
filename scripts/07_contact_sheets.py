@@ -1,4 +1,4 @@
-"""Step 7 - contact sheets: nine dates on one page, so a human can see the series at a glance.
+﻿"""Step 7 - contact sheets: nine dates on one page, so a human can see the series at a glance.
 
 Two jobs, and the second is the science one:
 
@@ -50,11 +50,21 @@ def caption(scene_meta: dict, extra: str) -> str:
 
 
 def grid_axes(n: int):
-    fig, axes = plt.subplots(3, 3, figsize=(13, 15), constrained_layout=False)
+    """Two rows of five: the window is 1231 x 505 px, i.e. tall and narrow, so wide rows fit better."""
+    fig, axes = plt.subplots(2, 5, figsize=(17, 9.5))
     axes = axes.ravel()
     for ax in axes[n:]:
         ax.axis("off")
     return fig, axes
+
+
+def add_colorbar(fig, image, label: str):
+    """Colourbar in its own axes, so it can never sit on top of a panel title."""
+    fig.subplots_adjust(left=0.02, right=0.90, top=0.90, bottom=0.12, wspace=0.12, hspace=0.18)
+    cax = fig.add_axes([0.92, 0.15, 0.015, 0.70])
+    bar = fig.colorbar(image, cax=cax)
+    bar.set_label(label)
+    return bar
 
 
 def main() -> int:
@@ -93,12 +103,11 @@ def main() -> int:
             image = ax.imshow(
                 db[(scene.date, pol)], cmap="gray", vmin=vmin, vmax=vmax, interpolation="nearest"
             )
-            ax.set_title(f"{scene.date}  {pol}", fontsize=10, loc="left")
+            ax.set_title(f"{scene.date}  {pol}", fontsize=8, loc="left")
             ax.set_xticks([])
             ax.set_yticks([])
-        fig.suptitle(f"Contact sheet - {pol} gamma-0 backscatter, offset NOT applied", fontsize=13)
-        cbar = fig.colorbar(image, ax=axes.tolist(), fraction=0.025, pad=0.02)
-        cbar.set_label("dB")
+        fig.suptitle(f"Contact sheet - {pol} gamma-0 backscatter, offset NOT applied", fontsize=14, y=0.97)
+        add_colorbar(fig, image, "dB")
         fig.text(
             0.01, 0.005,
             caption(scenes[0].meta, f"processing: 10*log10(power), median {SPECKLE[1]}x{SPECKLE[1]}; "
@@ -162,12 +171,11 @@ def main() -> int:
                 deltas[(scene.date, pol)], cmap=DIVERGING, vmin=-limit, vmax=limit,
                 interpolation="nearest",
             )
-            ax.set_title(f"{scene.date} minus {reference.date}", fontsize=10, loc="left")
+            ax.set_title(f"{scene.date} - {reference.date}", fontsize=8, loc="left")
             ax.set_xticks([])
             ax.set_yticks([])
-        fig.suptitle(f"Change in {pol} (dB) relative to {reference.date}, scene offset removed", fontsize=13)
-        cbar = fig.colorbar(image, ax=axes.tolist(), fraction=0.025, pad=0.02)
-        cbar.set_label("dB change (blue = less echo later, red = more)")
+        fig.suptitle(f"Change in {pol} (dB) relative to {reference.date}, scene offset removed", fontsize=14, y=0.97)
+        add_colorbar(fig, image, "dB change (blue = less echo later, red = more)")
         note = "  |  ".join(
             f"{s.date}: {offsets[(s.date, pol)]:+.2f} dB" for s in scenes if s.date != reference.date
         )
@@ -189,3 +197,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

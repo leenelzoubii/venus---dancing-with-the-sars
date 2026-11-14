@@ -142,3 +142,47 @@ it is part of being credible.
 - Sinkhole formation along the Jordanian Dead Sea shore (Ghor Haditha). **cite**
 - HH vs HV scattering behaviour, from a NASA/ASF SAR primer. **cite**
 - NISAR mission parameters (frequency, repeat cycle, resolution). **cite** (user guide / JPL)
+
+---
+
+# Hour 1 additions (2026-11-14) - thresholds, offsets and why HH fails
+
+## Backscatter in one line
+
+Radar sends a pulse and measures how much comes back. A smooth surface (open water) bounces the pulse
+away from the satellite, so the return is weak and the pixel looks dark; a rough or structured surface
+sends energy back in many directions, including toward the satellite, and looks bright. We report that
+return in decibels, 10*log10(power).
+
+## Why HV is the water channel
+
+HH (horizontal send, horizontal receive) is dominated by smooth-surface reflection and double-bounce
+off walls and salt crusts, and it is bright: on this window land runs -13 to -5 dB while water sits at
+about -13.7 dB. The two populations overlap, so no single HH threshold can separate lake from shore.
+HV (horizontal send, vertical receive) only gets a return from volume scattering and rough surfaces,
+so the whole scene is quieter: water near -20.5 dB, land -18 to -11 dB. The gap is about 7 dB, which
+is why every water number we publish is HV.
+
+## What a scene-wide offset is
+
+Compare two dates and the whole scene is a few tenths of a dB brighter or darker, water and land
+alike. Real surface change does not do that: a drying lake bed does not brighten the desert 20 km
+away. So we measure it as the median of (date minus reference) over stable land only, remove it before
+differencing, and print the value on the figure. HH and HV offsets even have opposite signs
+(+0.42 and -0.78 dB between June and October), which is further evidence that it is instrumental or
+seasonal rather than a surface process.
+
+## Why Otsu is biased here
+
+Otsu picks the split that maximises the variance between two classes, and it assumes both classes are
+roughly equally common. In this window land covers far more pixels than water, so Otsu moves the cut
+toward the land mode: it returns about -17 dB when the histogram valley is nearer -19 dB. Every extra
+0.1 dB higher costs several km2 of lake. That is why the area is quoted with a band and why we compare
+several estimators instead of trusting one.
+
+## Mask semantics (verified from the product attributes, not assumed)
+
+The GCOV ``mask`` layer is not a 0/1 validity flag: it is the **subswath number**. 0 means at least
+one radar sample in the averaging set was partially focused or invalid, 1-3 mean valid data from that
+subswath, and 255 marks pixels outside the radar acquisition. Our window sits in subswath 1, where
+99.996 percent of pixels carry mask == 1.

@@ -137,15 +137,15 @@ def main() -> int:
         highs = np.array([results[key][d]["high_km2"] for d in dates], dtype="float64")
         band = float(np.nanmedian((highs - lows) / 2.0))
         sensitivity = float(np.nanmedian(highs - series))  # km2 per +1 dB (band is +/-1.5 dB)
-        change = float(np.nanmax(series) - np.nanmin(series))
+        area_range = float(np.nanmax(series) - np.nanmin(series))
         summary[key] = {
             "area_mean_km2": round(float(np.nanmean(series)), 2),
             "area_std_km2": round(float(np.nanstd(series, ddof=1)), 2),
-            "area_range_km2": round(change, 2),
+            "area_range_km2": round(area_range, 2),
             "band_km2": round(band, 2),
             "km2_per_dB": round(sensitivity / BAND_DB, 2),
             "threshold_std_db": round(float(np.nanstd(thresholds, ddof=1)), 2),
-            "change_exceeds_band": bool(change > band),
+            "change_exceeds_band": bool(area_range > band),
         }
 
     # ---- outputs -----------------------------------------------------------------------------

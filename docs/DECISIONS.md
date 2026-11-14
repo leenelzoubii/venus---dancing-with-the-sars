@@ -157,3 +157,58 @@ library, with no backend, no API keys and no build step.
 
 **Reason.** The live demo cannot fail because of network, authentication or a processing bug; the same
 folder works on GitHub Pages and offline from disk.
+
+---
+
+## 2026-11-14 - Water threshold: compare four estimators, recommend two-step Otsu (method B)
+
+**Decision.** Compute water area four ways on offset-corrected HV and publish the comparison, not
+one number. Method A = one pooled histogram-valley threshold for the whole series (-18.35 dB).
+Method B = discard HV above -15 dB, then Otsu on the remainder, per date. Method C = two-component
+Gaussian mixture, threshold where posteriors cross, per date. Method D = the previous per-image Otsu
+on the whole window, kept for comparison only. Primary method for the app: **B**, pending Leen.
+
+**Reason.** Across nine dates (sd of area, range, and band at +/-1.5 dB):
+
+| method | mean km2 | sd km2 | range km2 | band +/- km2 | km2 per dB |
+|---|---|---|---|---|---|
+| A | 137.64 | 1.65 | 5.59 | 31.8 | 11.8 |
+| B | 138.99 | 0.77 | 2.06 | 22.7 | 12.9 |
+| C | 132.65 | 0.73 | 2.67 | 60.2 | 9.1 |
+| D | 147.17 | 1.54 | 4.95 | 20.7 | 18.3 |
+
+No method shows a change larger than its band, so we publish "not detectable yet", not a trend. B has
+the smallest range among the per-date methods and a band half the size of C's, whose threshold sits on
+the steepest part of the curve. D is worst on both range and sensitivity, which is the land-bias effect
+we predicted.
+
+**Alternatives rejected.** A single fixed threshold (too sensitive to the one-day wind state that
+produced the pooled histogram); C alone (best stability but its band is +/-60 km2, so it cannot support
+any claim); D (biased by land dominating the pixel count).
+
+---
+
+## 2026-11-14 - Offsets estimated on land only, and applied only explicitly
+
+**Decision.** The scene-wide offset is the median of (date minus reference) over pixels defined as land:
+HV > -15 dB, numberOfLooks >= 4, finite in both HH and HV. 23.9 percent of the window, 16429 pixels.
+Reference date 2026-06-24. Written to ``data/interim/offsets.json`` and applied only by scripts that
+name it in their log output.
+
+**Reason.** Water is the population that actually changes; including it would let a drying lake move the
+correction that is supposed to remove everything except change. Low-look pixels are the noisiest and are
+excluded for the same reason. HH offsets rise smoothly (+0.12 to +0.61 dB) while HV offsets are jumpy
+(-0.53 to +0.26 dB); a smooth monotonic drift is consistent with a real seasonal surface change, while
+jumpiness is more consistent with calibration. Labelled a hypothesis, not a finding.
+
+---
+
+## 2026-11-14 - The GCOV mask is a subswath number, not a 0/1 flag
+
+**Decision.** Never threshold ``mask == 1`` as if it were "valid". Read the product attribute instead:
+the mask holds the subswath number for valid GCOV samples, 0 where at least one radar sample in the
+averaging set was partially focused or invalid, and 255 outside the radar acquisition extent.
+
+**Reason.** Verified from the mask dataset's own ``description`` attribute in the archive, not from
+memory. On this AOI 99.996 percent of pixels are mask == 1, i.e. valid subswath-1 data, which matches
+the measured NaN fraction of 0.004 percent.

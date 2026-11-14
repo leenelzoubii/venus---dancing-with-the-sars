@@ -127,3 +127,22 @@ full frames.
    intersectsWith=<WKT>)`, then `.download(path=..., session=...)`.
 
 On Windows, `.netrc` lives at `C:\Users\<user>\.netrc` (some GDAL builds expect `_netrc`).
+
+---
+
+## QC summary, 9 dates 2026-06-24 to 2026-10-10 (data/interim/qc_table.csv)
+
+Verified from the cached windows, not from documentation:
+
+- All nine dates: identical window (rows 3614-4845, cols 11196-11701), shape 1231 x 505 px, 20 m
+  spacing, EPSG:32636, track 151 / frame 073 descending, CRID P05023, PROVISIONAL.
+- Nulls: 0.004 percent NaN in both HH and HV on every date.
+- Looks: mean 9.12, minimum 0.0 (a few edge pixels carry zero looks, which is why the offset masks
+  require looks >= 4).
+- Mask: 99.996 percent of pixels are mask == 1 (valid subswath-1 data).
+- HH: land median -6.19 to -5.51 dB, water median (HV < -19 dB) -13.79 to -12.62 dB. Overlap.
+- HV: land median -13.43 to -13.19 dB, water median -21.27 to -20.24 dB. About 7 dB of separation.
+- Offsets versus 2026-06-24, land median: HH +0.12 to +0.61 dB (smooth rise), HV -0.63 to +0.26 dB
+  (jumpy). MAD 0.15-0.23 dB, so the offsets themselves are known to about +/-0.2 dB.
+- Water area, method B, nine dates: 137.8 to 139.8 km2, sd 0.77, band +/-22.7 km2. The change is
+  smaller than the uncertainty.
