@@ -59,3 +59,11 @@ processing:
   # 20 m -> 60 m. Without this a two-date difference image is almost pure speckle.
   multilook: 3
   remove_scene_offset: true # subtract the median of the difference and say so on the image
+
+# --- Candidate patch detection (eastern plain) -----------------------------------
+patches:
+  threshold_db: 3.0        # |delta| above this counts as "changed" on a date
+  min_consecutive: 2       # must be changed on this many CONSECUTIVE dates (suppresses speckle)
+  min_area_px: 20          # at 60 m, 20 px is about 0.07 km2
+  min_looks_percentile: 10 # drop pixels below this percentile of numberOfLooks
+  connectivity: 8          # 8-connected components (diagonal neighbours touch)

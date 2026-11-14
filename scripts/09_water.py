@@ -129,6 +129,7 @@ def main() -> int:
 
     # ---- stability comparison ----------------------------------------------------------------
     dates = [s.date for s in scenes]
+    day_offsets = np.array([(np.datetime64(d) - np.datetime64(dates[0])).astype(int) for d in dates], dtype="float64")
     summary = {}
     for key in results:
         series = np.array([results[key][d]["area_km2"] for d in dates], dtype="float64")
@@ -146,6 +147,60 @@ def main() -> int:
             "km2_per_dB": round(sensitivity / BAND_DB, 2),
             "threshold_std_db": round(float(np.nanstd(thresholds, ddof=1)), 2),
             "change_exceeds_band": bool(area_range > band),
+            "trend_km2_per_30d": round(float(np.polyfit(day_offsets, series, 1)[0] * 30.0), 3),
+        }
+
+    # ---- change-detection limit, separate from the absolute-area band -------------------------
+    # The +/-1.5 dB band answers "how well do we know the area of one date". It does NOT answer
+    # "is the difference between two dates real". For that we ask a different question: across a
+    # narrow range of thresholds around the chosen one, does the SIGN of the difference ever flip?
+    # If it does, the ranking of the two dates is an artefact of the threshold, not a measurement.
+    tau_range = np.arange(-0.5, 0.5 + 1e-9, 0.1)
+    offset_mad = float(np.median([r["MAD_dB"] for r in offsets["offsets"] if r["pol"] == POL and r["MAD_dB"]]))
+    land_sensitivity = float(offsets.get("land_definition_sensitivity_dB", {}).get(POL, 0.0))
+    offset_uncertainty = offset_mad + land_sensitivity
+
+    detection = {}
+    for key in ("A", "B", "C", "D"):
+        baseline = float(np.nanmedian([results[key][d]["threshold_db"] for d in dates]))
+        if not np.isfinite(baseline):
+            detection[key] = {}
+            continue
+        areas = {d: [water.area_at_threshold(db[d], baseline + t, 20.0) for t in tau_range] for d in dates}
+        pairs = []
+        for i in range(len(dates)):
+            for j in range(i + 1, len(dates)):
+                diffs = np.array(areas[dates[j]]) - np.array(areas[dates[i]])
+                robust = bool(np.all(diffs > 0) or np.all(diffs < 0))
+                pairs.append({
+                    "from": dates[i],
+                    "to": dates[j],
+                    "delta_km2": round(float(np.median(diffs)), 2),
+                    "min_km2": round(float(diffs.min()), 2),
+                    "max_km2": round(float(diffs.max()), 2),
+                    "sign_robust": robust,
+                })
+        slope = float(np.nanmedian(
+            [(areas[d][-1] - areas[d][0]) / (tau_range[-1] - tau_range[0]) for d in dates]
+        ))
+        for index, d in enumerate(dates):
+            results[key][d]["km2_per_0.1db"] = round(
+                (areas[d][-1] - areas[d][0]) / (tau_range[-1] - tau_range[0]) * 0.1, 2
+            )
+        detection[key] = {
+            "baseline_threshold_db": round(baseline, 2),
+            "threshold_range_db": [round(float(tau_range[0]), 2), round(float(tau_range[-1]), 2)],
+            "km2_per_0.1db": round(slope * 0.1, 2),
+            "offset_uncertainty": {
+                "mad_db": round(offset_mad, 3),
+                "land_definition_db": round(land_sensitivity, 3),
+                "total_db": round(offset_uncertainty, 3),
+                "area_equivalent_km2": round(offset_uncertainty * slope, 2),
+            },
+            "n_pairs": len(pairs),
+            "n_sign_robust": int(sum(p["sign_robust"] for p in pairs)),
+            "largest_abs_delta_km2": round(float(max(abs(p["delta_km2"]) for p in pairs)), 2),
+            "pairs": pairs,
         }
 
     # ---- outputs -----------------------------------------------------------------------------
@@ -174,8 +229,20 @@ def main() -> int:
             "C": f"two-component Gaussian mixture on a stratified sample of {GMM_SAMPLE} px, per date",
             "D": "per-image Otsu on the whole window (previous approach, comparison only)",
         },
+        "primary_method": "B",
+        "primary_polarization": POL,
+        "band_definition": (
+            "The +/-1.5 dB band is the ABSOLUTE AREA UNCERTAINTY for a single date: how much the area "
+            "moves if the threshold is 1.5 dB too low or too high."
+        ),
+        "change_detection_definition": (
+            "The CHANGE DETECTION LIMIT is separate: for each pair of dates, the area difference is "
+            "recomputed across thresholds from the baseline -0.5 dB to +0.5 dB. If the sign of the "
+            "difference never flips, the ranking of those two dates is robust to the threshold."
+        ),
         "offset_subtracted_dB": {d: round(hv_offsets.get(d, 0.0), 3) for d in dates},
         "summary": summary,
+        "change_detection": detection,
         "dates": [
             {
                 "date": d,
@@ -185,6 +252,51 @@ def main() -> int:
         ],
     }
     (INTERIM / "water_stats.json").write_text(json.dumps(payload, indent=1), encoding="utf-8")
+
+    # ---- honest verdict: a change counts only if its sign is robust AND it clears the limit -----
+    verdicts = {}
+    for key in ("A", "B", "C", "D"):
+        det = detection.get(key) or {}
+        if not det:
+            verdicts[key] = "no finite threshold, no verdict"
+            continue
+        limit_km2 = det["offset_uncertainty"]["area_equivalent_km2"]
+        cleared = [p for p in det["pairs"] if p["sign_robust"] and abs(p["delta_km2"]) > limit_km2]
+        det["n_changes_above_limit"] = len(cleared)
+        det["change_detection_limit_km2"] = limit_km2
+        if cleared:
+            worst = max(cleared, key=lambda p: abs(p["delta_km2"]))
+            verdicts[key] = (
+                f"{len(cleared)} of {det['n_pairs']} date pairs change by more than the detection limit "
+                f"({limit_km2:.2f} km2) with a robust sign; largest {worst['from']} to {worst['to']}: "
+                f"{worst['delta_km2']:+.2f} km2. Hypothesis only, not confirmed change."
+            )
+        else:
+            verdicts[key] = (
+                f"No date-to-date change is larger than the detection limit ({limit_km2:.2f} km2). "
+                f"{det['n_sign_robust']} of {det['n_pairs']} pairs keep their sign across thresholds, "
+                f"but none is larger than the limit. Area trend {summary[key]['trend_km2_per_30d']:+.2f} km2 "
+                f"per 30 days (linear fit, not significance-tested)."
+            )
+        payload["change_detection"][key]["verdict"] = verdicts[key]
+        payload["change_detection"][key]["caption"] = (
+            f"Method {key}: area +/-{summary[key]['band_km2']:.1f} km2 absolute (threshold +/-{BAND_DB} dB); "
+            f"sensitivity {det['km2_per_0.1db']:.2f} km2 per 0.1 dB; "
+            f"change detection limit {limit_km2:.2f} km2 (offset MAD {det['offset_uncertainty']['mad_db']:.2f} dB "
+            f"+ land definition {det['offset_uncertainty']['land_definition_db']:.2f} dB); "
+            f"pairs above limit {len(cleared)}/{det['n_pairs']}"
+        )
+
+    payload["primary_verdict"] = verdicts.get("B", "")
+    payload["primary_caption"] = payload["change_detection"]["B"]["caption"]
+    (INTERIM / "water_stats.json").write_text(json.dumps(payload, indent=1), encoding="utf-8")
+    print("\nVerdict (method B, primary):")
+    print("  " + verdicts.get("B", ""))
+    for key in ("A", "B", "C", "D"):
+        det = detection[key]
+        print(f"  {key}: {det['km2_per_0.1db']:.2f} km2/0.1 dB, "
+              f"offset uncertainty {det['offset_uncertainty']['area_equivalent_km2']:.2f} km2, "
+              f"sign-robust {det['n_sign_robust']}/{det['n_pairs']}")
 
     table = pd.DataFrame(
         {key: [results[key][d]["area_km2"] for d in dates] for key in results}, index=dates

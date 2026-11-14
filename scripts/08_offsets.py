@@ -1,4 +1,4 @@
-"""Step 8 - per-date scene-wide offsets, estimated on land only.
+﻿"""Step 8 - per-date scene-wide offsets, estimated on land only.
 
 Two dates a month apart differ by a whole-scene brightness shift of a few tenths of a dB. That shift
 applies to water and land alike, so it cannot be surface change; it is either calibration or a
@@ -85,6 +85,37 @@ def main() -> int:
     table = pd.DataFrame(rows)
     table.to_csv(INTERIM / "offsets.csv", index=False, encoding="utf-8")
 
+    # ---- how much does the offset move if the land definition moves? --------------------------
+    variants = [
+        {"hv_cut_db": -14.0, "min_looks": MIN_LOOKS},
+        {"hv_cut_db": -16.0, "min_looks": MIN_LOOKS},
+        {"hv_cut_db": HV_LAND_CUT_DB, "min_looks": 3.0},
+        {"hv_cut_db": HV_LAND_CUT_DB, "min_looks": 6.0},
+    ]
+    sensitivity = {}
+    for pol in ("HH", "HV"):
+        spread = 0.0
+        for variant in variants:
+            alt = change.land_mask(
+                db[(reference.date, "HV")],
+                looks=change.multilook_power(reference.looks.astype("float32"), MULTILOOK),
+                hh_db=db[(reference.date, "HH")],
+                hv_land_cut_db=variant["hv_cut_db"],
+                min_looks=variant["min_looks"],
+            )
+            values = [
+                change.robust_offset_db(db[(s.date, pol)], db[(reference.date, pol)], alt)[0]
+                for s in scenes[1:]
+            ]
+            baseline = [
+                change.robust_offset_db(db[(s.date, pol)], db[(reference.date, pol)], land)[0]
+                for s in scenes[1:]
+            ]
+            spread = max(spread, float(np.nanmax(np.abs(np.array(values) - np.array(baseline)))))
+        sensitivity[pol] = round(spread, 3)
+        print(f"{pol}: offset moves at most {spread:.3f} dB when the land definition changes "
+              f"(4 variants: HV cut -14/-16 dB, looks 3/6)")
+
     payload = {
         "generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "aoi": area.name,
@@ -106,12 +137,14 @@ def main() -> int:
             "share_of_window_pct": round(land_pct, 2),
             "n_pixels": int(land.sum()),
         },
+        "land_definition_sensitivity_dB": sensitivity,
         "offsets": rows,
     }
     (INTERIM / "offsets.json").write_text(json.dumps(payload, indent=1), encoding="utf-8")
 
     pivot = table.pivot(index="date", columns="pol", values="offset_dB")
     print(table.to_string(index=False))
+
 
     # ---- offset versus date ------------------------------------------------------------------
     fig, ax = plt.subplots(figsize=(9, 4.6), constrained_layout=True)

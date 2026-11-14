@@ -1,4 +1,4 @@
-"""Configuration handling for the Venus NISAR pipeline.
+﻿"""Configuration handling for the Venus NISAR pipeline.
 
 One source of truth for study areas and search filters: ``config/study_area.yaml``.
 Every script accepts ``--aoi <name>`` (a key from that file) or ``--aoi-wkt "POLYGON((...))"``
@@ -28,6 +28,7 @@ class StudyArea:
     story: str = ""
     search: dict[str, Any] = field(default_factory=dict)
     processing: dict[str, Any] = field(default_factory=dict)
+    patches: dict[str, Any] = field(default_factory=dict)
 
     def as_search_kwargs(self) -> dict[str, Any]:
         """Translate the YAML search block into ``asf_search`` keyword arguments."""
@@ -60,6 +61,7 @@ def load_study_area(
     cfg = load_config(path)
     search = cfg.get("search") or {}
     processing = cfg.get("processing") or {}
+    patches = cfg.get("patches") or {}
     aois = cfg.get("aois") or []
 
     if wkt:
@@ -69,6 +71,7 @@ def load_study_area(
             title="Ad-hoc AOI",
             search=search,
             processing=processing,
+            patches=patches,
         )
 
     target = name or cfg.get("active_aoi")
@@ -81,6 +84,7 @@ def load_study_area(
                 story=(entry.get("story") or "").strip(),
                 search=search,
                 processing=processing,
+                patches=patches,
             )
 
     known = ", ".join(a.get("name", "?") for a in aois)
