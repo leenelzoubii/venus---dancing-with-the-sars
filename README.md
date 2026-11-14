@@ -46,7 +46,24 @@ Exact product names, verified layer paths, file sizes and the documented mission
 [`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md). Products are ~1.9 GB each, so the pipeline streams only
 the small window over our AOI.
 
-## How it works
+## First results (Gate 1, 2026-11-13)
+
+Two dates from the same geometry — **2026-06-24** and **2026-10-10**, descending 151/073, PROVISIONAL —
+streamed at 20 m over a 1231 × 505 pixel window (~10 × 24 km) and turned into dB imagery:
+
+| | measured |
+|---|---|
+| open water, HV | ≈ −20.5 dB (clean, ~4 dB below land) |
+| open water, HH | ≈ −13.7 dB (only ~6 dB below land — HH is not the water channel here) |
+| mapped lake area | **140 ± 15 km²** of the 249 km² window (threshold sensitivity band) |
+| change 06-24 → 10-10 | **smaller than the method's uncertainty** (≤ 2 km² net; thresholds move it by ±15 km²) |
+| scene-wide offset | ≈ −0.8 dB in HV, ≈ +0.4 dB in HH — removed before interpreting |
+
+We report the trend as **not yet detectable** rather than inventing one. See
+[`docs/SCIENCE_NOTES.md`](docs/SCIENCE_NOTES.md) for what these numbers mean and
+[`docs/DECISIONS.md`](docs/DECISIONS.md) for why the thresholds are derived per image.
+
+
 
 ```mermaid
 flowchart LR

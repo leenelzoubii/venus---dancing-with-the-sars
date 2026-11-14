@@ -5,6 +5,54 @@ Newest at the top. If a decision is reversed, add a new entry rather than editin
 
 ---
 
+## 2026-11-13 — Water thresholds are derived per image (Otsu), never taken from the literature
+
+**Decision.** The water mask uses a two-class Otsu threshold computed on each filtered dB image.
+`change.water_mask(db, threshold)` still accepts a fixed number for experiments, but the pipeline
+default is `auto`, and every reported area carries a ±1.5 dB sensitivity band.
+
+**Reason.** Measured on real data: the Dead Sea's open water sits at **−13.7 dB in HH** and **−20.5 dB
+in HV**, not the −20 dB a textbook rule suggests. A fixed −17 dB threshold found **0 km² of water** in a
+window that is visibly half lake. Worse, the June and October images differ by a scene-wide offset
+(≈ −0.8 dB in HV, ≈ +0.4 dB in HH) that shifts every mode, so one fixed number cannot serve both dates:
+the same threshold gave water areas from 34 km² to 149 km² depending on where it was placed. Per-image
+thresholds made the two dates comparable and dropped the disagreement between channels to ±2 km².
+
+**Alternatives.** Fixed literature threshold (demonstrably wrong here); fixed threshold plus a manual
+per-date fudge (not reproducible); a speckle-model (K-distribution) classifier (better science, too much
+for tonight).
+
+---
+
+## 2026-11-13 — Change maps are multi-looked in power, and the scene-wide offset is removed
+
+**Decision.** Difference products average 3×3 blocks **in linear power** before the dB conversion
+(20 m → 60 m), and the scene median of the difference is subtracted and stated in the title/JSON.
+
+**Reason.** At 20 m a raw difference image is almost pure speckle. Averaging in power is the
+radiometrically correct order — averaging dB under-estimates the mean because log is concave. Subtracting
+the scene median removes the acquisition-to-acquisition offset described above so the map shows spatial
+structure rather than a global tint. Both choices are labelled on the image and in the metadata.
+
+**Alternatives.** No filtering (unreadable); stronger 5×5 averaging (hides the very shoreline signal we
+want); Lee filter before differencing (fine, but slower and not yet justified by these two dates).
+
+---
+
+## 2026-11-13 — The shoreline trend is reported as *below detection*, not as a number
+
+**Decision.** With two dates the app says the lake area is 137–141 km² and that the change between
+2026-06-24 and 2026-10-10 is **smaller than the method's uncertainty** (±15 km² across a ±1.5 dB
+threshold band; HH and HV disagree in sign at the ±2 km² level). No retreat rate is quoted until the
+full series is processed.
+
+**Reason.** Honesty requirement in the brief, and a practical one: the Dead Sea has been dropping about
+a metre per year, so 3.5 months is roughly 0.3 m of level — metres to tens of metres of horizontal
+shoreline shift, i.e. a few 20 m pixels on gentle mudflats. A confident trend line from two dates would be
+wrong and a judge who knows the lake would catch it.
+
+---
+
 ## 2026-11-13 — Placeholder AOI: `dead_sea_east`
 
 **Decision.** Tonight's Gate-1 AOI is the Jordanian east shore between Suweimeh and Ghor Haditha:

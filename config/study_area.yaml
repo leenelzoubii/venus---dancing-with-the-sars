@@ -39,9 +39,23 @@ search:
 
 # --- Processing parameters ------------------------------------------------------
 processing:
-  polarization: HH          # primary analysis layer; HV kept for comparison
+  polarization: HH          # structural/texture layer; HV is the water-discrimination layer
   comparison_polarizations: [HH, HV]
-  db: "10*log10(power)"     # GCOV diagonal terms are gamma-0 POWER, not amplitude
+  db: "10*log10(power)"     # GCOV diagonal terms are gamma-0 POWER, not amplitude.
+                            # Confirmed by the product itself:
+                            # ceosAnalysisReadyData/outputBackscatterDecibelConversionFormula
   speckle_filter: median    # median | boxcar | lee  (document the choice and size)
   speckle_window: 5         # pixels
   clip_percentiles: [2, 98] # display stretch
+  pixel_spacing_m: 20       # verified: xCoordinateSpacing 20.0, yCoordinateSpacing -20.0
+
+  # Water mapping. Measured over the Dead Sea: open water is about -13.7 dB in HH and -20.5 dB in
+  # HV, so a textbook -20 dB rule is wrong for HH and a single fixed threshold cannot serve two
+  # dates that differ by a scene-wide radiometric offset. "auto" = Otsu, computed per image.
+  water_threshold: auto     # auto | a number in dB
+  water_band_db: 1.5        # +/- sensitivity quoted alongside every reported water area
+
+  # Speckle suppression before differencing: block-average in POWER (radiometrically correct),
+  # 20 m -> 60 m. Without this a two-date difference image is almost pure speckle.
+  multilook: 3
+  remove_scene_offset: true # subtract the median of the difference and say so on the image

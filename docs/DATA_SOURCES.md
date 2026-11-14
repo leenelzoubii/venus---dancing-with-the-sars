@@ -34,10 +34,42 @@ Verified on the GCOV page of the user guide:
   | `/science/LSAR/GCOV/grids/frequencyA/rtcGammaToSigmaFactor` | factor converting gamma-0 to sigma-0 |
 
 - **Units rule:** diagonal terms are **power**, so display dB = `10 * log10(power)`. Never `20 * log10`.
-- **Dtype:** 32-bit float (confirmed by the guide's `gdalinfo` example).
-- **TO VERIFY (tonight, script 02):** exact HDF5 tree of one real Dead Sea file, dtype/units/`long_name`
-  attributes, the UTM EPSG code and geotransform, the numeric encoding of `mask`, and whether a
-  `frequencyB` (S-band) group exists in these L-band products.
+  The product states this itself:
+  `/science/LSAR/GCOV/metadata/ceosAnalysisReadyData/outputBackscatterDecibelConversionFormula`
+  = `10*log10(<GCOV_TERM>)`.
+- **Dtype:** 32-bit float (confirmed by the guide's `gdalinfo` example, and confirmed again here).
+
+### Verified internal structure (inspected 2026-11-13, product of 2026-10-10)
+
+Read directly from a real 151/073 descending product (no full download):
+
+| Item | Verified value |
+|---|---|
+| `grids/frequencyA/HHHH`, `HVHV` shape | **16956 × 17280**, `float32`, `units='1'`, `_FillValue=nan` |
+| Pole availability | **HH and HV only** (`listOfPolarizations` = 2). No VV/VH — not a quad-pol product. |
+| `grids/frequencyB/*` | Present but coarse: **4239 × 4320** (80 m). Secondary frequency, not used in the MVP. |
+| `projection` | A **scalar `uint32` dataset whose value is the EPSG code — 32636** (WGS 84 / UTM zone 36N), *not* a group. CRS details sit in its attributes: `spatial_ref` (WKT), `grid_mapping_name='transverse_mercator'`, `utm_zone_number=36`. |
+| `xCoordinates` | 17280 values, `float64`, **513370 → 858950 m**, 20 m spacing, ascending (west → east) |
+| `yCoordinates` | 16956 values, `float64`, **3566870 → 3227770 m**, −20 m spacing, descending (north → south) |
+| `xCoordinateSpacing` / `yCoordinateSpacing` | `20.0` / `−20.0` m (scalars) |
+| `pixel_coordinate_convention` | `center` — coordinate values are pixel centres, so a bbox must be widened by half a pixel |
+| `numberOfLooks` | `float32`, mean ≈ **9.34**, max 34.2 (real averaging, not 1 look) |
+| `mask` | `uint8`, values **{0, 1}** only, `_FillValue=255` |
+| Footprint (`ceosAnalysisReadyData/boundingBox`) | `POLYGON ((513360 3566880, 513360 3227760, 858960 3227760, 858960 3566880))` — 345.6 × 339.1 km |
+| Product type | `Normalised Radar Backscatter (NRB)` |
+| `identification` group | Contains `absoluteOrbitNumber`, `frameNumber`, `orbitPassDirection`, `granuleId`, `listOfFrequencies`, … as **datasets**, not attributes |
+
+Measured values in our AOI (dead_sea_east, 1231 × 505 px, median-filtered 5×5):
+
+| | HH | HV |
+|---|---|---|
+| open water (Dead Sea) | ≈ **−13.7 dB** | ≈ **−20.5 dB** |
+| land / salt crust | −13 … −5 dB | −18 … −11 dB |
+| separation between modes | ~6 dB, water nearly touches the land tail | **~4 dB with a clean valley at ≈ −19 dB** |
+
+**Consequence:** a textbook "water is below −20 dB" threshold is *wrong* for L-band here. In HH the water
+mode at −13.7 dB overlaps the dark end of the land distribution, so HH cannot be thresholded safely; HV
+is the right channel for the water mask. Thresholds must be derived per image (Otsu), not fixed.
 
 ## Data maturity (critical — do not mix)
 
@@ -83,8 +115,8 @@ full frames.
 - **Reprocessing:** the validated reprocessing campaign for pre-2026-10-21 data is expected in **2027**;
   PROVISIONAL products will eventually be superseded. Record the exact product names used.
 - Repeated products for one date (see 2026-09-04) — always dedupe by acquisition date.
-- **TO VERIFY:** whether `frequencyB` exists in these products, and whether the SLC-derived L1 products
-  (GSLC/GUNW) are available for 151/073 — needed only for the interferometry stretch goal.
+- **TO VERIFY (needs GSLC/GUNW search):** whether the SLC-derived L1 products (GSLC/GUNW) are available
+  for 151/073 — needed only for the interferometry stretch goal. Not checked yet, not promised.
 
 ## Access recipes (documented by the guide)
 

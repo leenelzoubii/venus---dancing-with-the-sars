@@ -74,21 +74,64 @@ def polarizations(h5file: Any, frequency: str = "A") -> list[str]:
     return present
 
 
+def as_python(value: Any) -> Any:
+    """h5py hands back numpy/bytes scalars; make them readable in JSON and print statements."""
+    if isinstance(value, bytes):
+        return value.decode()
+    if isinstance(value, np.generic):
+        return value.item()
+    if isinstance(value, np.ndarray) and value.shape == ():
+        return as_python(value[()])
+    return value
+
+
+def crs_of(h5file: Any, frequency: str = "A") -> Any:
+    """The product's CRS as a pyproj CRS, taken from the file itself.
+
+    Verified shape of ``grids/frequencyA/projection`` in real NISAR GCOV products: it is a **scalar
+    uint32 dataset whose value is the EPSG code** (32636 = WGS 84 / UTM zone 36N for the Dead Sea),
+    and the CRS details live in its attributes (``spatial_ref`` WKT, ``grid_mapping_name``,
+    ``epsg_code``, ...). It is not a group, so it must never be iterated over.
+    """
+    from pyproj import CRS
+
+    grid = grid_group(h5file, frequency)
+    if "projection" not in grid:
+        raise KeyError(f"No 'projection' dataset in {GCOV_BASE}/frequency{frequency}")
+
+    proj = grid["projection"]
+    attrs = {key: as_python(value) for key, value in proj.attrs.items()}
+
+    for key in ("spatial_ref", "crs_wkt"):
+        wkt = attrs.get(key)
+        if wkt:
+            return CRS.from_user_input(wkt)
+
+    epsg = attrs.get("epsg_code")
+    if epsg is None and getattr(proj, "shape", None) == ():
+        epsg = as_python(proj[()])
+    if epsg is not None:
+        return CRS.from_epsg(int(epsg))
+
+    raise KeyError("Projection dataset has neither spatial_ref/crs_wkt nor an EPSG code.")
+
+
 def projection(h5file: Any, frequency: str = "A") -> dict[str, Any]:
     """CRS and grid coordinates, as stored by the product (no guessing)."""
     grid = grid_group(h5file, frequency)
     out: dict[str, Any] = {}
     proj = grid.get("projection")
     if proj is not None:
-        out["projection_attrs"] = dict(proj.attrs)
-        for key in ("spatial_ref", "crs_wkt", "GeoTransform", "epsg_code", "grid_mapping_name"):
-            if key in proj.attrs:
-                value = proj.attrs[key]
-                out[key] = value.decode() if isinstance(value, bytes) else value
-        for name in proj:
-            item = proj[name]
-            if hasattr(item, "shape"):
-                out[f"projection/{name}"] = {"shape": item.shape, "dtype": str(item.dtype)}
+        attrs = {key: as_python(value) for key, value in proj.attrs.items()}
+        out["projection_attrs"] = attrs
+        out["projection_value"] = as_python(proj[()]) if getattr(proj, "shape", None) == () else None
+        for key in ("spatial_ref", "crs_wkt", "grid_mapping_name", "epsg_code", "utm_zone_number"):
+            if key in attrs:
+                out[key] = attrs[key]
+        try:
+            out["crs"] = crs_of(h5file, frequency).to_string()
+        except Exception as exc:  # noqa: BLE001 - reported, not fatal
+            out["crs"] = f"unavailable ({exc.__class__.__name__}: {exc})"
     for axis in ("xCoordinates", "yCoordinates", "xCoordinateSpacing", "yCoordinateSpacing"):
         if axis in grid:
             item = grid[axis]
@@ -115,43 +158,53 @@ def read_window(
     return np.asarray(grid[dataset][row_slice, col_slice])
 
 
+def _coverage_slice(coords: np.ndarray, low: float, high: float) -> slice:
+    """Pixel slice covering [low, high] along one axis, whatever direction the axis runs.
+
+    In real NISAR products ``xCoordinates`` ascends eastwards and ``yCoordinates`` descends from
+    north to south, the values are pixel **centres**, and the spacing is 20 m. We therefore widen the
+    request by half a pixel so the box we asked for is completely inside the window we read.
+    """
+    if low > high:
+        low, high = high, low
+    ascending = coords[0] <= coords[-1]
+    axis = np.asarray(coords if ascending else coords[::-1], dtype="float64")
+    step = float(np.median(np.diff(axis))) if axis.size > 1 else 0.0
+    low -= abs(step) / 2.0
+    high += abs(step) / 2.0
+
+    start = int(np.searchsorted(axis, low, side="left"))
+    stop = int(np.searchsorted(axis, high, side="right"))
+    start = max(0, min(start, axis.size - 1))
+    stop = max(start + 1, min(stop, axis.size))
+
+    if ascending:
+        return slice(start, stop)
+    return slice(axis.size - stop, axis.size - start)
+
+
 def window_to_indices(
     h5file: Any,
     bbox_wgs84: tuple[float, float, float, float],
     frequency: str = "A",
 ) -> tuple[slice, slice]:
-    """Convert a lon/lat box into row/column slices of the UTM GCOV grid.
+    """Convert a lon/lat box into row/column slices of the projected GCOV grid.
 
-    The product grid is a regular UTM raster; we project the bbox corners into the product CRS with
-    pyproj, then convert metres to pixel indices using the stored coordinate vectors.
+    All four corners are reprojected, because a lon/lat box is a curved quadrilateral in UTM, and the
+    result is mapped to pixel indices through the product's own coordinate vectors.
     """
     from pyproj import CRS, Transformer
 
     grid = grid_group(h5file, frequency)
-    proj_attrs = dict(grid["projection"].attrs) if "projection" in grid else {}
-    wkt = proj_attrs.get("crs_wkt") or proj_attrs.get("spatial_ref")
-    if isinstance(wkt, bytes):
-        wkt = wkt.decode()
-    if not wkt:
-        raise KeyError("No CRS found in the product's projection group; cannot window by lon/lat.")
+    xs = np.asarray(grid["xCoordinates"][:], dtype="float64")
+    ys = np.asarray(grid["yCoordinates"][:], dtype="float64")
 
-    xs = np.asarray(grid["xCoordinates"][:])
-    ys = np.asarray(grid["yCoordinates"][:])
-
-    transformer = Transformer.from_crs(CRS.from_user_input("EPSG:4326"), CRS.from_user_input(wkt), always_xy=True)
+    transformer = Transformer.from_crs(
+        CRS.from_epsg(4326), crs_of(h5file, frequency), always_xy=True
+    )
     west, south, east, north = bbox_wgs84
-    lons, lats = [west, east, east, west], [south, south, north, north]
-    px, py = transformer.transform(lons, lats)
+    px, py = transformer.transform([west, east, east, west], [south, south, north, north])
 
-    # yCoordinates typically run north -> south.
-    descending_y = ys[0] > ys[-1]
-    x0 = int(np.searchsorted(xs, max(min(px), xs.min())))
-    x1 = int(np.searchsorted(xs, min(max(px), xs.max())))
-    if descending_y:
-        y0 = int(np.searchsorted(-ys, -min(max(py), max(ys[0], ys[-1]))))
-        y1 = int(np.searchsorted(-ys, -max(min(py), min(ys[0], ys[-1]))))
-    else:
-        y0 = int(np.searchsorted(ys, max(min(py), ys.min())))
-        y1 = int(np.searchsorted(ys, min(max(py), ys.max())))
-
-    return slice(min(y0, y1), max(y0, y1) + 1), slice(min(x0, x1), max(x0, x1) + 1)
+    rows = _coverage_slice(ys, min(py), max(py))
+    cols = _coverage_slice(xs, min(px), max(px))
+    return rows, cols

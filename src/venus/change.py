@@ -29,6 +29,30 @@ def power_to_db(power: np.ndarray) -> np.ndarray:
     return db
 
 
+def multilook_power(power: np.ndarray, factor: int = 1) -> np.ndarray:
+    """Average ``factor x factor`` blocks **in the power domain**, then return power.
+
+    This is the radiometrically correct order: averaging must happen on linear power, not on dB
+    (averaging dB under-estimates the mean because log is concave). Multi-looking cuts speckle
+    variance roughly with the number of looks, which is what makes a difference image readable
+    instead of pure noise.
+    """
+    arr = np.asarray(power, dtype="float32")
+    factor = int(factor)
+    if factor <= 1:
+        return arr
+
+    rows = (arr.shape[0] // factor) * factor
+    cols = (arr.shape[1] // factor) * factor
+    block = arr[:rows, :cols].reshape(rows // factor, factor, cols // factor, factor)
+    valid = np.isfinite(block)
+    summed = np.where(valid, block, 0.0).sum(axis=(1, 3), dtype="float64")
+    count = valid.sum(axis=(1, 3))
+    out = np.full((rows // factor, cols // factor), np.nan, dtype="float32")
+    np.divide(summed, count, out=out, where=count > 0)
+    return out
+
+
 def db_to_power(db: np.ndarray) -> np.ndarray:
     return np.power(10.0, np.asarray(db, dtype="float32") / 10.0)
 
@@ -86,9 +110,56 @@ def water_mask(db: np.ndarray, threshold_db: float = -17.0) -> np.ndarray:
 
     The threshold is a starting point, not a truth: it must be tuned on the data and sanity-checked
     against known open water. Wind roughening, wet salt crust and shadow all break the simple rule.
+    Use :func:`otsu_threshold` to derive one from the data instead of guessing.
     """
     arr = np.asarray(db, dtype="float32")
     return np.isfinite(arr) & (arr < threshold_db)
+
+
+def otsu_threshold(
+    db: np.ndarray, low: float = -30.0, high: float = 5.0, step: float = 0.05
+) -> float:
+    """Two-class Otsu threshold in dB: finds the valley between the dark (water) and bright modes.
+
+    Derived from the image itself, which matters because NISAR L-band backscatter over the Dead Sea
+    is *not* the textbook -20 dB: measured water sits near -13.7 dB in HH and -20.5 dB in HV. A fixed
+    literature threshold would map the lake incorrectly.
+    """
+    values = np.asarray(db, dtype="float64")
+    values = values[np.isfinite(values)]
+    if values.size == 0:
+        return float("nan")
+    counts, edges = np.histogram(values, bins=np.arange(low, high + step, step))
+    centres = (edges[:-1] + edges[1:]) / 2.0
+    weight_dark = np.cumsum(counts).astype("float64")
+    total = weight_dark[-1]
+    if total <= 0:
+        return float("nan")
+    cum_mean = np.cumsum(counts * centres)
+    mean_total = cum_mean[-1]
+    weight_bright = total - weight_dark
+    with np.errstate(divide="ignore", invalid="ignore"):
+        between = (mean_total * weight_dark / total - cum_mean) ** 2 / (
+            weight_dark * weight_bright / total**2
+        )
+    between[~np.isfinite(between)] = np.nan
+    return float(centres[int(np.nanargmax(between))])
+
+
+def threshold_sensitivity(
+    db: np.ndarray,
+    threshold_db: float,
+    half_width_db: float = 1.5,
+    step_db: float = 0.5,
+    pixel_size_m: float = 20.0,
+) -> list[tuple[float, float]]:
+    """Water area as the threshold moves, so uncertainty can be quoted instead of hidden."""
+    offsets = np.arange(-half_width_db, half_width_db + 1e-9, step_db)
+    return [
+        (float(threshold_db + o), area_km2(water_mask(db, threshold_db + o), pixel_size_m))
+        for o in offsets
+    ]
+
 
 
 def area_km2(mask: np.ndarray, pixel_size_m: float) -> float:

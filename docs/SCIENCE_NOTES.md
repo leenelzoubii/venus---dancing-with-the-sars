@@ -35,7 +35,8 @@ difference is therefore easy: −3 dB means "half as much echo came back", which
 land becomes water.
 
 **Careful:** NISAR GCOV diagonal terms are already **power** (gamma-0). If you ever feed an *amplitude*
-image, the formula changes to `20*log10`. Mixing the two silently doubles every number in dB.
+image, the formula changes to `20*log10`. Mixing the two silently doubles every number in dB. Our
+products state the rule themselves: `outputBackscatterDecibelConversionFormula = 10*log10(<GCOV_TERM>)`.
 
 ## Polarization, briefly
 
@@ -81,7 +82,46 @@ that never happened. So: **same track, same frame, same flight direction, always
   and wind ruffles the lake surface and makes open water brighten. Any water mask must be sanity-checked
   against known open-water areas before we quote an area.
 
-## The mission gap we must explain, not hide
+## What we measured (Dead Sea, 2026-06-24 and 2026-10-10)
+
+These numbers are measured, not assumed, and they contradicted the textbook on the first try — which
+makes them a good story rather than a problem.
+
+**1. Water is not as dark as the textbook says.** L-band gamma-0 over the open lake:
+
+| channel | open water | shore / salt crust | separation |
+|---|---|---|---|
+| HH | ≈ −13.7 dB | −13 … −5 dB | ~6 dB, and the water mode touches the dark end of the land mode |
+| HV | ≈ −20.5 dB | −18 … −11 dB | clean gap, valley at ≈ −19 dB |
+
+So **HV is the channel to map water with**; HH is better for texture and shoreline structure. That is
+exactly the physics the primer describes — cross-polarized returns need volume scattering, and a flat
+water surface delivers almost none — but quoting −20 dB for HH would have mapped the lake wrongly.
+
+**2. Two images are not two identical measurements.** Between June and October the *whole* scene got
+darker in HV by ≈ 0.8 dB and brighter in HH by ≈ 0.4 dB — on water and on land alike. A real surface
+change cannot brighten land and darken water in opposite directions by a constant, so we treat this as
+a **scene-wide radiometric offset** and remove it before reading the change map. Whether it is
+calibration drift across the PROVISIONAL series or genuine seasonal drying is **not decidable from two
+dates** — it is a stated limitation, not a finding.
+
+**3. The water area is stable; the trend is not yet visible.** With per-image (Otsu) thresholds:
+
+| channel | 2026-06-24 | 2026-10-10 | net |
+|---|---|---|---|
+| HH | 137.5 km² | 135.7 km² | −1.7 km² |
+| HV | 140.1 km² | 140.9 km² | +0.8 km² |
+
+The two channels disagree in sign at the ±2 km² level, and moving the threshold by 1.5 dB swings the
+area by ±15 km². **Honest conclusion: the shoreline shift over these 3.5 months is smaller than our
+method's uncertainty at 20 m resolution.** Saying that out loud is stronger than inventing a trend.
+
+**4. Multi-looking is what makes change visible.** At native 20 m, a single difference image is 90 %
+speckle. Averaging 3×3 blocks **in power** (60 m output, ~9× less variance) reveals structure: the
+lake brightens (wind roughening of the surface) while parts of the eastern plain darken. Those
+patterns still need a physical explanation before they become claims.
+
+
 
 NISAR has a documented data gap from `2026-07-27T22:03Z` to `2026-08-10T00:55Z`. Our series therefore
 skips from 2026-07-18 to 2026-08-11. The gap is a spacecraft fact, not a bug in our code — and admitting
