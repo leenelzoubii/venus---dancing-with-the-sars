@@ -54,11 +54,29 @@ Numbers above come from `data/interim/water_stats.json` and `data/interim/offset
 | Item | Value |
 |---|---|
 | Product | NISAR L2 GCOV (geocoded polarimetric covariance, gamma-0 power) |
-| Maturity | PROVISIONAL, CRID P05023 |
-| Geometry | one track/frame per place; Dead Sea is track 151, frame 073, descending |
-| Dates | 7 to 10 acquisitions per place, 2026-06-17 to 2026-10-19 |
+| Maturity | PROVISIONAL, CRID P05023 (primary); VALIDATED P05036 and BETA are separate series |
+| Geometry | one track/frame per place; the whole-lake place mosaics frames 151/072 and 151/073, descending |
+| Dates | PROVISIONAL 2026-06-24 to 2026-10-10; BETA 2025-10-27 to 2026-01-07; VALIDATED from 2026-10-22 |
 | Source | ASF DAAC, NASA Earthdata |
 | Known gap | instrument outage 2026-07-27 to 2026-08-10; the series jumps 07-18 to 08-11 |
+
+### Calibration series and maturity
+
+A **series** is (maturity, CRID, track, direction, polarizations). Series are never mixed: no change
+layer, offset, threshold, water-area number or chart line combines two of them. Each series has its own
+dates and its own fixed 2nd-98th percentile stretch, pooled over its own dates only. Browsing across
+series is a visual act, labelled "different calibration or viewing geometry: not comparable".
+
+| maturity | rule in this app |
+|---|---|
+| BETA (X05009, Oct 2025 - Jan 2026) | pre-calibration. **Browse only**; no water area, offset or change statistic. |
+| PROVISIONAL (P05023, Jun - Oct 2026) | calibrated; analysed when the series has >= 5 dates. |
+| VALIDATED (P05036, from 21 Oct 2026) | fully calibrated; browse plus "n dates so far"; analysed only with >= 5 dates. |
+
+Maturity definitions follow the ASF NISAR Data User Guide availability page (read 15 Nov 2026). A 2027
+reprocessing campaign will supersede earlier versions. The Dead Sea's three series are deliberately
+kept apart, and the mission timeline shows them as separate lanes with the documented instrument gap
+shaded.
 
 VALIDATED products (CRID P05036) were **not** mixed into any series. The validator fails the build if a
 layer carries another CRID.

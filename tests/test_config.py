@@ -14,7 +14,8 @@ from venus.config import StudyArea, load_study_area, short_wkt  # noqa: E402
 
 def test_active_aoi_loads_by_default():
     area = load_study_area()
-    assert area.name == "dead_sea_east"
+    # v3 makes the whole-lake window the default place; the east-shore strip remains available.
+    assert area.name == "dead_sea_full"
     assert area.wkt.startswith("POLYGON((")
     assert area.search["processing_level"] == "GCOV"
 

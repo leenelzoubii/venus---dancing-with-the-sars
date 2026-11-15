@@ -919,3 +919,27 @@ body::after { z-index: -1; }
   .story-strip { display: none; }
   .story-strip:has(#story-run:not([hidden])) { display: block; bottom: 268px; top: auto; }
 }
+
+/* v3 mobile compaction */
+@media (max-width: 1100px) {
+  .site-header { left: 10px; right: 10px; width: auto; max-width: none; justify-content: space-between; }
+  .place-card { top: 86px; padding: 10px 12px; }
+  .place-story { display: none; }
+  .timebar { bottom: 8px; left: 10px; right: 10px; width: auto; padding: 8px 12px 10px; }
+  .timebar #date-field { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .timebar #date-field .field-label, .timebar .field-label[for="time-range"] { display: none; }
+  .timebar #time-ticks { display: none; }
+  .timebar .range { flex: 1 1 160px; }
+  .timebar .play-row { gap: 6px; }
+  .timebar .play-row .choice { display: none; }
+  .mission-timeline { bottom: 118px; }
+  .series-row { bottom: 182px; }
+  .context-note { left: 10px; right: auto; bottom: 200px; transform: none; max-width: 72vw; font-size: 11px; }
+  .cursor-readout { bottom: 118px; }
+}
+
+/* the NASA absence note belongs in the legend, not over the lake */
+.legend-inset .context-note {
+  position: static; transform: none; max-width: none; margin-top: 6px; padding: 0;
+  background: none; border: 0; color: var(--muted); font-size: 10.5px; line-height: 1.35;
+}

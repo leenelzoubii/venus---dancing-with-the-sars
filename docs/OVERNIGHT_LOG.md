@@ -149,3 +149,31 @@ from 0.691 (frame 73) to 0.999 (mosaic) over the AOI window, so the whole lake f
 `scripts/17_build_series_site.py` builds a multi-series place with per-series stretch limits,
 browse-only BETA/VALIDATED, and analysis only for PROVISIONAL >= 5 dates. Longest display side is
 capped at 3600 px.
+
+## PHASE 2 - FETCH AND BUILD
+
+PHASE 2 IN PROGRESS: fetching the whole-lake window date by date (both frames per date, atomic
+writes) so an interrupted run still has complete mosaics. PROVISIONAL 151 has 9 dates; 5+ completed
+with the 0.999 valid mosaic. BETA X05009 (5 dates, Oct 2025 - Jan 2026) and VALIDATED P05036
+(2 dates) are queued as browse-only series. Display chain changed for this place: longest side
+capped at 3600 px and pixel budget 4.5 M, which lands at 28.3 m for the whole lake (budget-driven);
+analysis stays at 60 m / 20 m and is unchanged in method.
+
+## PHASE 3 - NASA CONTEXT LAYER
+
+PHASE 3 DONE (with an honest limit): GetCapabilities on the GIBS EPSG:3857 WMS lists exactly one
+NISAR layer, `NISAR_L2_Geocoded_Polarimetric_Covariance`, with a time extent of 2026-11-12..2026-11-14
+(no 12-day variant exists). The app therefore draws the GIBS mosaic beneath our imagery only when the
+selected date is inside that window, and otherwise says so in the legend: "NASA publishes this NISAR
+mosaic only for ...; no mosaic exists for this date. Context is never used for any number." The layer
+never feeds a statistic. scripts/14_compare_gibs.py requests one GetMap and writes
+docs/GIBS_COMPARISON.md with a neutral sentence.
+
+## PHASE 4-5 - DESIGN, MOTION, SERIES UI
+
+DONE: Void and Aurora themes (CSS variables, two swatches, localStorage), Venus orbit intro (skipped
+on repeat visits and reduced motion), cross-fade loading, series chips, mission timeline with per-series
+lanes, documented-gap and >=20-day gap shading, maturity badge (BETA/PROVISIONAL/VALIDATED),
+series explainer panel, Shift+arrows to change series, reduce-motion toggle, count of dates per series.
+The existing date slider remains the keyboard scrubber. Cut for budget: sweep reveal, count-up
+numbers, per-series chart colours (charts remain the analysed series only, labelled as such).

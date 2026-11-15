@@ -204,11 +204,6 @@
     seriesList().forEach(function (series) {
       var lane = document.createElement("div");
       lane.className = "timeline-lane";
-      var label = document.createElement("span");
-      label.className = "lane-label";
-      label.textContent = series.track + " " + String(series.direction).slice(0, 4).toLowerCase() +
-        " " + String(series.maturity).slice(0, 4);
-      lane.appendChild(label);
 
       function gap(a, b, title) {
         var element = document.createElement("div");
@@ -295,7 +290,10 @@
       map.getPane(p[0]).style.zIndex = String(p[1]);
     });
     map.getPane("labels").style.pointerEvents = "none";
-    map.fitBounds(aoi, { padding: [24, 24] });
+    var small = window.matchMedia("(max-width: 1100px)").matches;
+    map.fitBounds(aoi, small
+      ? { paddingTopLeft: [10, 150], paddingBottomRight: [10, 215] }
+      : { padding: [24, 24] });
     L.control.scale({ metric: true, imperial: false, position: "bottomleft" }).addTo(map);
     overlays = L.layerGroup().addTo(map);
     map.on("move zoom resize moveend", applyClip);
@@ -1297,6 +1295,8 @@
     var legendHome = document.getElementById("legend-inset");
     var legendCard = document.getElementById("legend-card");
     if (legendHome && legendCard) legendHome.appendChild(legendCard);
+    var contextNote = document.getElementById("context-note");
+    if (legendHome && contextNote) legendHome.appendChild(contextNote);
 
     initMap();
     initBasemap();
