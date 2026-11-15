@@ -180,7 +180,9 @@
     var maturity = String(series.maturity || M.maturity || "PROVISIONAL").toUpperCase();
     el.textContent = UI.t("badge_" + maturity.toLowerCase(), { n: series.dates.length });
     el.className = "badge " + (maturity === "BETA" ? "badge-beta"
-      : maturity === "VALIDATED" ? "badge-validated" : "badge-provisional");
+      : maturity === "VALIDATED" ? "badge-validated"
+      : maturity === "OPERATIONAL" ? "badge-operational"
+      : "badge-provisional");
   }
 
   function renderSeriesChips() {
@@ -218,7 +220,10 @@
     var max = Math.max.apply(null, times.concat([Date.now()]));
     var span = Math.max(max - min, 1);
     var pos = function (day) { return (toTime(day) - min) / span * 100; };
-    var gapStart = "2026-07-27", gapEnd = "2026-08-10";
+
+    // NISAR instrument gap (only show if the series spans this period)
+    var nisarGapStart = "2026-07-27", nisarGapEnd = "2026-08-10";
+    var showNisarGap = toTime(nisarGapStart) >= min && toTime(nisarGapEnd) <= max;
 
     seriesList().forEach(function (series) {
       var lane = document.createElement("div");
@@ -232,7 +237,7 @@
         element.title = title;
         lane.appendChild(element);
       }
-      if (toTime(gapEnd) > min) gap(gapStart, gapEnd, UI.t("gap_instrument"));
+      if (showNisarGap) gap(nisarGapStart, nisarGapEnd, UI.t("gap_instrument"));
 
       series.dates.forEach(function (day, index) {
         if (index > 0 && (toTime(day) - toTime(series.dates[index - 1])) / 86400000 >= 20) {

@@ -43,6 +43,10 @@ MIN_VALID_FRACTION = 0.995
 DISPLAY_KINDS = ("rgb", "backscatter")
 MAX_DISPLAY_PX_M = 30.0
 MIN_DISPLAY_PX_M = 9.0
+# S1 native resolution is 30m; NISAR is 20m
+NATIVE_PX_M = {"OPERA": 30.0, "P05023": 20.0, "P05036": 20.0}
+# CRIDs that are valid for this project
+VALID_CRIDS = {"OPERA", "P05023", "P05036"}
 REQUIRED_FIELDS = [
     "id", "label", "file", "format", "preview", "kind", "polarization", "date", "bounds", "coverage",
     "crop_bounds_3857", "px_size_m_3857", "native_px_m", "colormap",
@@ -118,8 +122,11 @@ def validate_place(report: Report, name: str) -> None:
             px_size = layer.get("px_size_m_3857") or 99
             if (px_size > MAX_DISPLAY_PX_M or px_size < MIN_DISPLAY_PX_M) and not layer.get("resolution_fallback"):
                 big_px.append(f"{layer['id']} {layer['px_size_m_3857']}")
-            if layer.get("native_px_m") != 20.0:
-                big_px.append(f"{layer['id']} native {layer.get('native_px_m')}")
+            native = layer.get("native_px_m")
+            crid = layer.get("crid")
+            expected_native = NATIVE_PX_M.get(crid, 20.0)
+            if native != expected_native:
+                big_px.append(f"{layer['id']} native {native} (expected {expected_native} for CRID {crid})")
 
     report.check(not bad_image, f"{name}: every image opens with transparency ({len(layers)} checked)")
     report.check(not wrong_format, f"{name}: every layer is WebP ({', '.join(wrong_format[:3]) or 'all ok'})")
@@ -176,8 +183,8 @@ def validate_place(report: Report, name: str) -> None:
                       if layer.get("crid") != series_by_id.get(layer.get("series"), {}).get("crid")]
         report.check(not wrong_crid, f"{name}: no layer mixes CRIDs across series")
     else:
-        wrong_crid = [layer["id"] for layer in layers if layer.get("crid") != "P05023"]
-        report.check(not wrong_crid, f"{name}: every layer is CRID P05023 (legacy single-series)")
+        wrong_crid = [layer["id"] for layer in layers if layer.get("crid") not in VALID_CRIDS]
+        report.check(not wrong_crid, f"{name}: every layer has a valid CRID ({VALID_CRIDS})")
 
     # A multi-series place legitimately contains BETA/VALIDATED layers, each inside its own series.
     # The rule is not "no VALIDATED anywhere" but "no layer belongs to a series it does not match".

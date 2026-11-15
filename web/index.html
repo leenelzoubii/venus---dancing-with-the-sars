@@ -36,7 +36,7 @@
   <main class="layout" id="main">
 
     <section class="map-region" aria-labelledby="map-heading">
-      <h2 id="map-heading" class="visually-hidden" data-i18n="map_label">Map of the Dead Sea east shore showing NISAR radar layers</h2>
+      <h2 id="map-heading" class="visually-hidden" data-i18n="map_label">Map of the Dead Sea east shore showing radar layers</h2>
       <div id="map" class="map" role="region" aria-labelledby="map-heading" tabindex="0"></div>
 
       <section class="place-card" aria-labelledby="place-name">
@@ -127,10 +127,10 @@
       <fieldset class="field">
         <legend class="field-label" data-i18n="layer_group">Layer</legend>
         <div class="choice-group">
-          <label class="choice"><input type="radio" name="layer" value="rgb" checked><span data-i18n="layer_rgb">False colour (HH, HV)</span></label>
+          <label class="choice"><input type="radio" name="layer" value="rgb" checked><span data-i18n="layer_rgb">False colour composite</span></label>
           <label class="choice"><input type="radio" name="layer" value="backscatter"><span data-i18n="layer_backscatter">Radar backscatter</span></label>
           <label class="choice"><input type="radio" name="layer" value="change"><span data-i18n="layer_change">Change map</span></label>
-          <label class="choice"><input type="radio" name="layer" value="water"><span data-i18n="layer_water">Water mask (HV)</span></label>
+          <label class="choice"><input type="radio" name="layer" value="water"><span data-i18n="layer_water">Water mask</span></label>
         </div>
         <label class="choice choice-check" id="band-toggle-wrap" hidden>
           <input type="checkbox" id="band-toggle"><span data-i18n="band_toggle">Show detection limit (amber band)</span>
@@ -142,8 +142,10 @@
 
       <fieldset class="field">
         <legend class="field-label" data-i18n="pol_group">Polarization</legend>
-        <div class="seg">
-          <label class="choice"><input type="radio" name="pol" value="HV" checked><span data-i18n="pol_hv">HV</span></label>
+        <div class="seg" id="pol-options">
+          <label class="choice"><input type="radio" name="pol" value="VH"><span data-i18n="pol_vh">VH</span></label>
+          <label class="choice"><input type="radio" name="pol" value="VV"><span data-i18n="pol_vv">VV</span></label>
+          <label class="choice"><input type="radio" name="pol" value="HV"><span data-i18n="pol_hv">HV</span></label>
           <label class="choice"><input type="radio" name="pol" value="HH"><span data-i18n="pol_hh">HH</span></label>
         </div>
         <p class="hint" id="pol-hint"></p>
@@ -173,10 +175,10 @@
           <select id="left-date" class="select" aria-label="Left (before) date"></select>
           <label class="field-label" for="left-layer" data-i18n="swipe_left_layer">Left (before): layer</label>
           <select id="left-layer" class="select" aria-label="Left (before) layer">
-            <option value="rgb">False colour (HH, HV)</option>
+            <option value="rgb">False colour composite</option>
             <option value="backscatter">Radar backscatter</option>
             <option value="change">Change map</option>
-            <option value="water">Water mask (HV)</option>
+            <option value="water">Water mask</option>
           </select>
           <label class="field-label" for="swipe-range" data-i18n="swipe_divider">Swipe divider position</label>
           <input type="range" id="swipe-range" class="range" min="0" max="100" step="1" value="50">
@@ -223,7 +225,7 @@
           <summary data-i18n="chart_table_caption">Values behind the chart</summary>
           <table class="data-table" id="area-table">
             <caption data-i18n="chart_table_caption">Water area values behind the chart</caption>
-            <thead><tr><th scope="col" data-i18n="chart_th_date">Date</th><th scope="col" data-i18n="chart_th_hv">HV km2 (low to high)</th><th scope="col" data-i18n="chart_th_hh">HH km2 (not reliable)</th></tr></thead>
+            <thead><tr><th scope="col" data-i18n="chart_th_date">Date</th><th scope="col" data-i18n="chart_th_hv">VH km2 (low to high)</th><th scope="col" data-i18n="chart_th_vv">VV km2 (not reliable)</th></tr></thead>
             <tbody></tbody>
           </table>
         </details>

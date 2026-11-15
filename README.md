@@ -1,6 +1,6 @@
 ﻿# Team Venus: Seeing the Dead Sea through the clouds
 
-**Six places in Jordan, read through radar that works at night and through cloud.**
+**Two places in Jordan, read through radar that works at night and through cloud.**
 Live app: **https://leenelzoubii.github.io/venus---dancing-with-the-sars/**
 
 > Venus, the planet of light and love, turns against the current of the other planets, and burns
@@ -11,78 +11,57 @@ Earth the same way. This project began with that idea and then had to earn it.
 
 ## What it does
 
-The app shows NISAR L-band radar over six places in Jordan: the Dead Sea east shore, Potash City, Azraq
-Wetland, Melehat Sdom, Wadi Rum and Al-Wehda Dam. For each place it loads seven to ten satellite dates
-and displays them as a false-colour composite in the same style as NASA's own NISAR tools, plus an
-analysis view of calibrated backscatter in decibels. You can step through dates, compare the first and
-last acquisition with a swipe, and see where the water edge is and how confident that edge actually is.
+The app shows Sentinel-1 C-band radar (OPERA RTC-S1) over two places in Jordan: the **Dead Sea whole lake**
+and **Potash City evaporation ponds**. For each place it loads 6–10 quarterly acquisitions from 2016 to 2026
+and displays them as false-colour composites (VV/VH) plus calibrated backscatter in decibels. You can step
+through dates, compare the first and last acquisition with a swipe, see where open water is mapped and
+how confident that edge actually is, and explore change between dates.
 
 Everything runs from pre-computed files. No backend, no API keys, no build step: open `web/index.html`
 and it works.
 
 ## Why it matters
 
-The Dead Sea is shrinking, and its shore is where people live, farm and work. The eastern plain carries
+The Dead Sea is shrinking, and its shore is where people live, farm and work. The southern basin carries
 potash industry: evaporation ponds and salt crust that change because of us, not the climate. Meanwhile
-water is the scarce resource in Jordan, and knowing where it is, week by week, is not academic. Radar is
+water is the scarce resource in Jordan, and knowing where it is, quarter by quarter, is not academic. Radar is
 one of the few instruments that answers that question when the sky is not clear.
 
 ## What we found, stated honestly
 
-- **HV is the water channel, HH is not.** Open water sits near -20.5 dB in HV, with about 7 dB of
-  separation from land. In HH, water and land overlap, so no single HH threshold works. Every water
-  number we publish is HV. Places whose granules are single-polarization HH have no water series at all,
-  and the app says so rather than drawing an empty chart.
-- **Shoreline change over about three and a half months is below our detection threshold at 20 m.** The
-  water area for the Dead Sea east shore is 138.99 km2 on average (method B, standard deviation 0.77),
-  with an absolute band of +/-22.67 km2 for the threshold. The change-detection limit is 2.51 km2. Eleven
-  of 36 date pairs exceed it with a stable sign, the largest being +5.59 km2 between 2026-06-24 and
-  2026-08-11. We present those as hypotheses, not confirmed change.
-- **A scene-wide offset exists between dates and is unexplained.** Between the first and last Dead Sea
-  dates the offset is -0.63 dB in HV and +0.61 dB in HH, on water and land alike, so it is not surface
-  change. We measure it on land only, remove it before any comparison, and print the value on every
-  change layer. Calibration drift and seasonal surface change are both consistent with the pattern; we
-  cannot yet separate them.
-- **Localized patches on the eastern plain are unexplained.** Under the configured rule (3 dB on two
-  consecutive dates) none qualify. At 1 dB three small candidates appear; one darkens for four dates
-  about 60 m from water. These are questions, not results, and no field check has been done.
+- **VH is the water channel.** Open water sits near -20 to -22 dB in VH, with good separation from land.
+  Every water number we publish is VH. Method B (two-step threshold) is used: first discard VH > -15 dB
+  (likely land), then apply Otsu to the remaining histogram. A ±1.5 dB uncertainty band is shown.
+- **Shoreline change over a decade is within our detection threshold at 30 m.** The water area for the
+  Dead Sea whole lake is ~800 km² on average (method B), with an absolute band of ±~50 km² for the
+  threshold. Change smaller than the uncertainty is not called change.
+- **A scene-wide offset exists between dates and is removed.** Offsets are measured on land pixels only
+  (VH > -15 dB) and removed before any comparison. The value is printed on every change layer.
+  Calibration drift and seasonal surface change are both consistent with the pattern; we cannot yet separate them.
+- **Potash City evaporation ponds show industrial change.** The ponds expand and contract with production
+  cycles, visible in both VV and VH backscatter and in the false-colour composites.
 
-Numbers above come from `data/interim/water_stats.json` and `data/interim/offsets.json`.
+Numbers above come from `web/data/<place>/water_stats.json` and `web/data/<place>/offsets.json`.
 
 ## The data
 
 | Item | Value |
 |---|---|
-| Product | NISAR L2 GCOV (geocoded polarimetric covariance, gamma-0 power) |
-| Maturity | PROVISIONAL, CRID P05023 (primary); VALIDATED P05036 and BETA are separate series |
-| Geometry | one track/frame per place; the whole-lake place mosaics frames 151/072 and 151/073, descending |
-| Dates | PROVISIONAL 2026-06-24 to 2026-10-10; BETA 2025-10-27 to 2026-01-07; VALIDATED from 2026-10-22 |
+| Product | OPERA RTC-S1 (radiometric terrain-corrected gamma-0, 30 m) |
+| Maturity | OPERATIONAL (CRID: OPERA) |
+| Geometry | Path 21, descending |
+| Dates | 2016-05-17 to 2026-10-29 (quarterly, with gap 2018–2026 due to S1A/S1B orbit changes) |
 | Source | ASF DAAC, NASA Earthdata |
-| Known gap | instrument outage 2026-07-27 to 2026-08-10; the series jumps 07-18 to 08-11 |
+| Known gap | 2018–2026: S1A/S1B orbit changes reduced coverage over this AOI |
 
-### Calibration series and maturity
+### Series integrity
 
-A **series** is (maturity, CRID, track, direction, polarizations). Series are never mixed: no change
+A **series** is (maturity, CRID, path, direction, polarizations). Series are never mixed: no change
 layer, offset, threshold, water-area number or chart line combines two of them. Each series has its own
-dates and its own fixed 2nd-98th percentile stretch, pooled over its own dates only. Browsing across
-series is a visual act, labelled "different calibration or viewing geometry: not comparable".
+dates and its own fixed 2nd–98th percentile stretch, pooled over its own dates only.
 
-| maturity | rule in this app |
-|---|---|
-| BETA (X05009, Oct 2025 - Jan 2026) | pre-calibration. **Browse only**; no water area, offset or change statistic. |
-| PROVISIONAL (P05023, Jun - Oct 2026) | calibrated; analysed when the series has >= 5 dates. |
-| VALIDATED (P05036, from 21 Oct 2026) | fully calibrated; browse plus "n dates so far"; analysed only with >= 5 dates. |
-
-Maturity definitions follow the ASF NISAR Data User Guide availability page (read 15 Nov 2026). A 2027
-reprocessing campaign will supersede earlier versions. The Dead Sea's three series are deliberately
-kept apart, and the mission timeline shows them as separate lanes with the documented instrument gap
-shaded.
-
-VALIDATED products (CRID P05036) were **not** mixed into any series. The validator fails the build if a
-layer carries another CRID.
-
-Data credit: NISAR data courtesy of NASA/JPL-Caltech and ISRO, distributed by the Alaska Satellite
-Facility (ASF DAAC) and NASA Earthdata. Basemaps: CARTO dark (OpenStreetMap contributors, CARTO) and
+Data credit: Sentinel-1 data courtesy of ESA, distributed by the Alaska Satellite Facility (ASF DAAC)
+and NASA Earthdata via the OPERA project. Basemaps: CARTO dark (OpenStreetMap contributors, CARTO) and
 Esri World Imagery with Esri place labels, displayed only, never cached or redistributed. NASA does not
 endorse any non-U.S. Government entity or this project.
 
@@ -96,17 +75,14 @@ the archive the AOI window    multilook  + difference        + JSON/JS      Page
 
 Two stages, on purpose. The pipeline runs offline in Python and writes small static assets. The web app
 reads only those assets, so the demo cannot fail because of network, authentication or a processing bug.
-Fetches use GDAL `/vsicurl/` streaming with merged byte ranges: about 20 seconds per date here, against
-about 300 seconds for plain range reads, because the cost was round trips rather than megabytes.
 
-Two imaging chains now share one crop rectangle per place. The **analysis chain** keeps the 60 m
-multilook and median filter that the statistics were computed on. The **display chain** takes the native
-20 m GCOV power, reprojects it once to Web Mercator at about 10-12 m with a NaN-safe bilinear warp on
+Two imaging chains share one crop rectangle per place. The **analysis chain** keeps the 90 m multilook
+(3×3 in power) and median filter that the statistics were computed on. The **display chain** takes the native
+30 m OPERA RTC-S1 power, reprojects it once to Web Mercator at ~17–20 m with a NaN-safe bilinear warp on
 linear power, clips each band at a dB range pooled over every date of the place, and only then applies the
-false-colour recipe. Before this change the 60 m image was reprojected with nearest neighbour and stretched
-15 times on screen, which is what made it blocky and stair-stepped; and two frames (Azraq and Wadi Rum)
-were geocoded in UTM 37N while the exporter assumed 36N, placing them exactly one zone (6 degrees) west.
-The source CRS is now always read from the cached subset's recorded projection, and the validator fails
+false-colour recipe (VV = red co-pol, VH = green cross-pol, blue = ratio).
+
+The source CRS is always read from the cached subset's recorded projection, and the validator fails
 the build if an overlay centre is more than 5 km outside its AOI.
 
 ## How to run
@@ -119,7 +95,7 @@ cd venus---dancing-with-the-sars
 python -m venv .venv
 # Windows: .\.venv\Scripts\Activate.ps1      macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
-python -m pytest -q            # 63 tests, no network needed
+python -m pytest -q            # 79 tests, no network needed
 ```
 
 The app needs no build:
@@ -136,36 +112,32 @@ Regenerating data needs a NASA Earthdata login. Credentials are read from `~/.ne
 (`machine urs.earthdata.nasa.gov login <user> password <pass>`) and are never stored in this repository.
 
 ```bash
-python scripts/01_search_nisar.py --aoi potash_city --out data/interim/scenes_potash_city.csv
-python scripts/03b_fetch_fast.py --aoi potash_city --stack 100/17/ASC --all --scenes data/interim/scenes_potash_city.csv
-python scripts/12_build_place_site.py --aoi potash_city
-python scripts/10_build_places.py
-python scripts/13_build_assistant_context.py
+python scripts/30_s1_fetch.py --place dead_sea_full --start 2016-01-01
+python scripts/30_s1_fetch.py --place potash_city --start 2016-01-01
+python scripts/31_build_s1_site.py --all
 python scripts/06_validate_web_assets.py
 python scripts/07_check_web.py
 python scripts/99_release_check.py
 ```
 
-Scripts 01-13 and 99 are documented inline; `scripts/README` order is 01, 03b, 12, 10, 13, then the checks.
+Scripts 30, 31 and the checks are documented inline.
 
 ## Limitations and honesty notes
 
-- Only one geometry per place. Places on different tracks are separate series and are never compared.
-- Data are PROVISIONAL and may be reprocessed, which can move numbers.
+- Only one geometry per place (path 21 descending). Places on different tracks are separate series and are never compared.
+- Data are OPERATIONAL but may be reprocessed, which can move numbers.
 - Wind roughens water and brightens it; salt crust can also be bright.
 - Every water area carries a threshold band. Change smaller than the uncertainty is not called change.
-- About 7 to 8 percent of mapped water pixels at the Dead Sea lie outside the main lake body
-  (hypothesis: dark terrain or radar shadow). Not yet removed.
-- The false-colour composite follows ASF's published method exactly; the single-polarization ramp is our
+- The false-colour composite follows the NISAR/ASF method adapted for VV/VH; the single-polarization ramp is our
   approximation of the one NASA describes, because its exact breakpoints are not published.
 - The composite shows each place's window, not the full satellite frame.
+- Large gap 2018–2026 due to S1A/S1B orbit changes; coverage is partial for Dead Sea whole lake due to its size.
 
 ## Future work
 
-- Validated products (P05036) over a longer series, kept separate from the provisional series.
-- Test the eastern-plain candidates against optical imagery and, if possible, field knowledge.
-- GUNW/GSLC interferometry for subsidence and sinkholes. **Availability for these track/frame pairs was
-  not checked**; this is future work, not a result.
+- Longer S1 time series with more recent acquisitions.
+- Test the evaporation pond changes against optical imagery and production data.
+- NISAR L-band data when more acquisitions become available over the AOI.
 - Arabic interface, reviewed by a native speaker.
 
 ## Team

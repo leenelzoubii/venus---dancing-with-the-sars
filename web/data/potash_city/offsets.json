@@ -1,104 +1,412 @@
 {
  "aoi": "potash_city",
- "reference_date": "2026-07-15",
+ "reference_date": "2016-05-17",
  "offsets": [
   {
-   "date": "2026-07-15",
-   "pol": "HH",
+   "date": "2016-05-17",
+   "pol": "VH",
    "offset_dB": 0.0,
-   "n_pixels": 4372,
+   "n_pixels": 11386,
    "MAD_dB": 0.0
   },
   {
-   "date": "2026-07-15",
-   "pol": "HV",
+   "date": "2016-05-17",
+   "pol": "VV",
    "offset_dB": 0.0,
-   "n_pixels": 4372,
+   "n_pixels": 11386,
    "MAD_dB": 0.0
   },
   {
-   "date": "2026-07-27",
-   "pol": "HH",
-   "offset_dB": 0.003,
-   "n_pixels": 4372,
-   "MAD_dB": 0.164
+   "date": "2016-08-21",
+   "pol": "VH",
+   "offset_dB": 0.158,
+   "n_pixels": 11386,
+   "MAD_dB": 0.284
   },
   {
-   "date": "2026-07-27",
-   "pol": "HV",
-   "offset_dB": 0.156,
-   "n_pixels": 4372,
-   "MAD_dB": 0.203
+   "date": "2016-08-21",
+   "pol": "VV",
+   "offset_dB": 0.009,
+   "n_pixels": 11386,
+   "MAD_dB": 0.224
   },
   {
-   "date": "2026-08-20",
-   "pol": "HH",
-   "offset_dB": 0.571,
-   "n_pixels": 4372,
-   "MAD_dB": 0.194
+   "date": "2016-11-19",
+   "pol": "VH",
+   "offset_dB": -0.58,
+   "n_pixels": 11381,
+   "MAD_dB": 0.327
   },
   {
-   "date": "2026-08-20",
-   "pol": "HV",
-   "offset_dB": 0.2,
-   "n_pixels": 4372,
-   "MAD_dB": 0.219
+   "date": "2016-11-19",
+   "pol": "VV",
+   "offset_dB": -0.092,
+   "n_pixels": 11381,
+   "MAD_dB": 0.213
   },
   {
-   "date": "2026-09-01",
-   "pol": "HH",
-   "offset_dB": 0.502,
-   "n_pixels": 4372,
-   "MAD_dB": 0.194
+   "date": "2017-02-17",
+   "pol": "VH",
+   "offset_dB": -1.522,
+   "n_pixels": 11381,
+   "MAD_dB": 0.728
   },
   {
-   "date": "2026-09-01",
-   "pol": "HV",
-   "offset_dB": 0.122,
-   "n_pixels": 4372,
-   "MAD_dB": 0.225
+   "date": "2017-02-17",
+   "pol": "VV",
+   "offset_dB": -0.499,
+   "n_pixels": 11381,
+   "MAD_dB": 0.478
   },
   {
-   "date": "2026-09-13",
-   "pol": "HH",
-   "offset_dB": 0.431,
-   "n_pixels": 4372,
-   "MAD_dB": 0.189
+   "date": "2017-05-18",
+   "pol": "VH",
+   "offset_dB": -0.183,
+   "n_pixels": 11386,
+   "MAD_dB": 0.27
   },
   {
-   "date": "2026-09-13",
-   "pol": "HV",
-   "offset_dB": 0.008,
-   "n_pixels": 4372,
-   "MAD_dB": 0.225
+   "date": "2017-05-18",
+   "pol": "VV",
+   "offset_dB": -0.012,
+   "n_pixels": 11386,
+   "MAD_dB": 0.191
   },
   {
-   "date": "2026-10-07",
-   "pol": "HH",
-   "offset_dB": 0.439,
-   "n_pixels": 4372,
-   "MAD_dB": 0.19
+   "date": "2017-08-16",
+   "pol": "VH",
+   "offset_dB": 0.034,
+   "n_pixels": 11386,
+   "MAD_dB": 0.306
   },
   {
-   "date": "2026-10-07",
-   "pol": "HV",
-   "offset_dB": 0.124,
-   "n_pixels": 4372,
+   "date": "2017-08-16",
+   "pol": "VV",
+   "offset_dB": 0.238,
+   "n_pixels": 11386,
+   "MAD_dB": 0.229
+  },
+  {
+   "date": "2017-11-14",
+   "pol": "VH",
+   "offset_dB": -0.059,
+   "n_pixels": 11382,
+   "MAD_dB": 0.282
+  },
+  {
+   "date": "2017-11-14",
+   "pol": "VV",
+   "offset_dB": 0.161,
+   "n_pixels": 11382,
+   "MAD_dB": 0.222
+  },
+  {
+   "date": "2018-02-18",
+   "pol": "VH",
+   "offset_dB": -2.197,
+   "n_pixels": 11386,
+   "MAD_dB": 0.781
+  },
+  {
+   "date": "2018-02-18",
+   "pol": "VV",
+   "offset_dB": -0.803,
+   "n_pixels": 11386,
+   "MAD_dB": 0.625
+  },
+  {
+   "date": "2018-05-19",
+   "pol": "VH",
+   "offset_dB": -0.318,
+   "n_pixels": 11386,
+   "MAD_dB": 0.348
+  },
+  {
+   "date": "2018-05-19",
+   "pol": "VV",
+   "offset_dB": -0.317,
+   "n_pixels": 11386,
+   "MAD_dB": 0.266
+  },
+  {
+   "date": "2018-08-17",
+   "pol": "VH",
+   "offset_dB": -0.626,
+   "n_pixels": 11386,
+   "MAD_dB": 0.375
+  },
+  {
+   "date": "2018-08-17",
+   "pol": "VV",
+   "offset_dB": -0.141,
+   "n_pixels": 11386,
+   "MAD_dB": 0.261
+  },
+  {
+   "date": "2018-11-21",
+   "pol": "VH",
+   "offset_dB": -1.497,
+   "n_pixels": 11386,
+   "MAD_dB": 0.357
+  },
+  {
+   "date": "2018-11-21",
+   "pol": "VV",
+   "offset_dB": -0.72,
+   "n_pixels": 11386,
+   "MAD_dB": 0.265
+  },
+  {
+   "date": "2019-02-13",
+   "pol": "VH",
+   "offset_dB": -2.84,
+   "n_pixels": 11381,
+   "MAD_dB": 0.593
+  },
+  {
+   "date": "2019-02-13",
+   "pol": "VV",
+   "offset_dB": -1.468,
+   "n_pixels": 11381,
+   "MAD_dB": 0.405
+  },
+  {
+   "date": "2019-05-14",
+   "pol": "VH",
+   "offset_dB": -0.436,
+   "n_pixels": 11386,
+   "MAD_dB": 0.298
+  },
+  {
+   "date": "2019-05-14",
+   "pol": "VV",
+   "offset_dB": -0.119,
+   "n_pixels": 11386,
+   "MAD_dB": 0.205
+  },
+  {
+   "date": "2019-08-18",
+   "pol": "VH",
+   "offset_dB": -0.524,
+   "n_pixels": 11386,
+   "MAD_dB": 0.354
+  },
+  {
+   "date": "2019-08-18",
+   "pol": "VV",
+   "offset_dB": -0.004,
+   "n_pixels": 11386,
+   "MAD_dB": 0.248
+  },
+  {
+   "date": "2019-11-16",
+   "pol": "VH",
+   "offset_dB": -1.168,
+   "n_pixels": 11386,
+   "MAD_dB": 0.42
+  },
+  {
+   "date": "2019-11-16",
+   "pol": "VV",
+   "offset_dB": -0.416,
+   "n_pixels": 11386,
+   "MAD_dB": 0.276
+  },
+  {
+   "date": "2020-02-14",
+   "pol": "VH",
+   "offset_dB": -2.311,
+   "n_pixels": 11381,
+   "MAD_dB": 0.564
+  },
+  {
+   "date": "2020-02-14",
+   "pol": "VV",
+   "offset_dB": -1.261,
+   "n_pixels": 11381,
+   "MAD_dB": 0.38
+  },
+  {
+   "date": "2020-05-14",
+   "pol": "VH",
+   "offset_dB": -0.884,
+   "n_pixels": 11380,
+   "MAD_dB": 0.356
+  },
+  {
+   "date": "2020-05-14",
+   "pol": "VV",
+   "offset_dB": -0.184,
+   "n_pixels": 11380,
+   "MAD_dB": 0.243
+  },
+  {
+   "date": "2020-08-18",
+   "pol": "VH",
+   "offset_dB": -0.193,
+   "n_pixels": 11386,
+   "MAD_dB": 0.443
+  },
+  {
+   "date": "2020-08-18",
+   "pol": "VV",
+   "offset_dB": 0.311,
+   "n_pixels": 11386,
+   "MAD_dB": 0.334
+  },
+  {
+   "date": "2020-11-16",
+   "pol": "VH",
+   "offset_dB": -1.347,
+   "n_pixels": 11386,
+   "MAD_dB": 0.778
+  },
+  {
+   "date": "2020-11-16",
+   "pol": "VV",
+   "offset_dB": -0.497,
+   "n_pixels": 11386,
+   "MAD_dB": 0.396
+  },
+  {
+   "date": "2021-02-14",
+   "pol": "VH",
+   "offset_dB": -2.344,
+   "n_pixels": 11386,
+   "MAD_dB": 0.529
+  },
+  {
+   "date": "2021-02-14",
+   "pol": "VV",
+   "offset_dB": -1.045,
+   "n_pixels": 11386,
+   "MAD_dB": 0.377
+  },
+  {
+   "date": "2021-05-15",
+   "pol": "VH",
+   "offset_dB": -0.23,
+   "n_pixels": 11386,
+   "MAD_dB": 0.294
+  },
+  {
+   "date": "2021-05-15",
+   "pol": "VV",
+   "offset_dB": 0.091,
+   "n_pixels": 11386,
    "MAD_dB": 0.24
   },
   {
-   "date": "2026-10-19",
-   "pol": "HH",
-   "offset_dB": 0.389,
-   "n_pixels": 4372,
-   "MAD_dB": 0.208
+   "date": "2021-08-19",
+   "pol": "VH",
+   "offset_dB": -0.154,
+   "n_pixels": 11386,
+   "MAD_dB": 0.372
   },
   {
-   "date": "2026-10-19",
-   "pol": "HV",
-   "offset_dB": 0.015,
-   "n_pixels": 4372,
-   "MAD_dB": 0.244
+   "date": "2021-08-19",
+   "pol": "VV",
+   "offset_dB": 0.142,
+   "n_pixels": 11386,
+   "MAD_dB": 0.264
+  },
+  {
+   "date": "2021-11-17",
+   "pol": "VH",
+   "offset_dB": -0.49,
+   "n_pixels": 11386,
+   "MAD_dB": 0.435
+  },
+  {
+   "date": "2021-11-17",
+   "pol": "VV",
+   "offset_dB": 0.206,
+   "n_pixels": 11386,
+   "MAD_dB": 0.265
+  },
+  {
+   "date": "2025-08-16",
+   "pol": "VH",
+   "offset_dB": -0.696,
+   "n_pixels": 11386,
+   "MAD_dB": 0.386
+  },
+  {
+   "date": "2025-08-16",
+   "pol": "VV",
+   "offset_dB": 0.08,
+   "n_pixels": 11386,
+   "MAD_dB": 0.267
+  },
+  {
+   "date": "2025-11-14",
+   "pol": "VH",
+   "offset_dB": -0.734,
+   "n_pixels": 11381,
+   "MAD_dB": 0.397
+  },
+  {
+   "date": "2025-11-14",
+   "pol": "VV",
+   "offset_dB": -0.231,
+   "n_pixels": 11381,
+   "MAD_dB": 0.26
+  },
+  {
+   "date": "2026-03-20",
+   "pol": "VH",
+   "offset_dB": -2.44,
+   "n_pixels": 11386,
+   "MAD_dB": 0.778
+  },
+  {
+   "date": "2026-03-20",
+   "pol": "VV",
+   "offset_dB": -0.714,
+   "n_pixels": 11386,
+   "MAD_dB": 0.511
+  },
+  {
+   "date": "2026-05-31",
+   "pol": "VH",
+   "offset_dB": -0.814,
+   "n_pixels": 11386,
+   "MAD_dB": 0.354
+  },
+  {
+   "date": "2026-05-31",
+   "pol": "VV",
+   "offset_dB": -0.178,
+   "n_pixels": 11386,
+   "MAD_dB": 0.262
+  },
+  {
+   "date": "2026-08-18",
+   "pol": "VH",
+   "offset_dB": -0.646,
+   "n_pixels": 11386,
+   "MAD_dB": 0.425
+  },
+  {
+   "date": "2026-08-18",
+   "pol": "VV",
+   "offset_dB": -0.024,
+   "n_pixels": 11386,
+   "MAD_dB": 0.302
+  },
+  {
+   "date": "2026-10-29",
+   "pol": "VH",
+   "offset_dB": -2.775,
+   "n_pixels": 11386,
+   "MAD_dB": 0.794
+  },
+  {
+   "date": "2026-10-29",
+   "pol": "VV",
+   "offset_dB": -1.112,
+   "n_pixels": 11386,
+   "MAD_dB": 0.465
   }
  ]
 }

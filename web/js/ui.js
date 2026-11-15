@@ -131,7 +131,11 @@ window.VENUS_UI = (function () {
   }
 
   function setPolHint(pol) {
-    document.getElementById("pol-hint").textContent = t(pol === "HV" ? "pol_hv_hint" : "pol_hh_hint");
+    var hintKey = "pol_hv_hint";
+    if (pol === "HH") hintKey = "pol_hh_hint";
+    else if (pol === "VH") hintKey = "pol_vh_hint";
+    else if (pol === "VV") hintKey = "pol_vv_hint";
+    document.getElementById("pol-hint").textContent = t(hintKey);
   }
 
   function setPlaying(playing) {
@@ -327,15 +331,15 @@ window.VENUS_UI = (function () {
 
   /* ------------------------------------------------------ water area chart */
 
-  // Area series for the primary method (B) and HH, read from the water statistics file.
+  // Area series for the primary method (B) and comparison polarization (HH for NISAR, VV for S1).
   function areaSeries(stats, dates) {
     var byDate = {};
     stats.dates.forEach(function (d) { byDate[d.date] = d; });
     return dates.map(function (day) {
       var entry = byDate[day] || {};
       var b = (entry.methods || {}).B || {};
-      var hh = entry.hh_comparison || {};
-      return { date: day, area: b.area_km2, low: b.low_km2, high: b.high_km2, hh: hh.area_km2 };
+      var cmp = entry.hh_comparison || entry.vv_comparison || {};
+      return { date: day, area: b.area_km2, low: b.low_km2, high: b.high_km2, cmp: cmp.area_km2 };
     });
   }
 
@@ -360,7 +364,7 @@ window.VENUS_UI = (function () {
     }
     var all = [];
     rows.forEach(function (r) {
-      [r.low, r.high, r.area, r.hh].forEach(function (v) { if (isFinite(v)) all.push(v); });
+      [r.low, r.high, r.area, r.cmp].forEach(function (v) { if (isFinite(v)) all.push(v); });
     });
     // Non-zero baseline, chosen from the data, and labelled as such.
     var yMin = Math.floor(Math.min.apply(null, all) / 10) * 10 - 10;
@@ -375,7 +379,7 @@ window.VENUS_UI = (function () {
       yFormat: function (x) { return String(x); },
       series: [
         { values: rows.map(function (r) { return r.area; }), color: "#E2B862", width: 2.4 },
-        { values: rows.map(function (r) { return r.hh; }), color: "#A9B8DA", dashed: true, width: 1.6 }
+        { values: rows.map(function (r) { return r.cmp; }), color: "#A9B8DA", dashed: true, width: 1.6 }
       ],
       band: {
         low: rows.map(function (r) { return isFinite(r.low) ? r.low : r.area; }),
@@ -392,14 +396,17 @@ window.VENUS_UI = (function () {
     host.appendChild(svg);
 
     document.getElementById("area-axis-note").textContent = t("chart_axis_note", { baseline: yMin });
+    // Determine comparison polarization label from stats
+    var cmpPol = (stats.primary_polarization === "VH") ? "VV" : "HH";
+    var cmpLegendKey = cmpPol === "VV" ? "chart_vv_legend" : "chart_hh_legend";
     document.getElementById("area-legend").textContent =
-      t("chart_band_legend", { band: fmt(bandDb, 1) }) + ". " + t("chart_hh_legend") + ". " + t("chart_reliability_note");
+      t("chart_band_legend", { band: fmt(bandDb, 1) }) + ". " + t(cmpLegendKey) + ". " + t("chart_reliability_note");
 
     var tbody = document.querySelector("#area-table tbody");
     tbody.innerHTML = "";
     rows.forEach(function (r) {
       var tr = document.createElement("tr");
-      [fmtDate(r.date), fmt(r.area, 1) + " (" + fmt(r.low, 1) + " to " + fmt(r.high, 1) + ")", fmt(r.hh, 1)].forEach(function (text) {
+      [fmtDate(r.date), fmt(r.area, 1) + " (" + fmt(r.low, 1) + " to " + fmt(r.high, 1) + ")", fmt(r.cmp, 1)].forEach(function (text) {
         var td = document.createElement("td");
         td.textContent = text;
         tr.appendChild(td);
@@ -433,33 +440,60 @@ window.VENUS_UI = (function () {
       return;
     }
     var dates = manifest.dates;
+    // Detect polarizations from the offsets data
+    var pols = [...new Set(offsets.offsets.map(function (r) { return r.pol; }))];
+    // Default order: co-pol first (HH or VV), then cross-pol (HV or VH)
+    pols.sort(function (a, b) {
+      var aIsCross = a.endsWith("V") && !a.endsWith("HV") && !a.endsWith("VH");
+      var bIsCross = b.endsWith("V") && !b.endsWith("HV") && !b.endsWith("VH");
+      // Actually, just use the order they appear in the data
+      return 0;
+    });
+    // Sort so co-pol (HH, VV) comes first, cross-pol (HV, VH) second
+    pols.sort(function (a, b) {
+      var aIsCo = (a === "HH" || a === "VV");
+      var bIsCo = (b === "HH" || b === "VV");
+      if (aIsCo && !bIsCo) return -1;
+      if (!aIsCo && bIsCo) return 1;
+      return 0;
+    });
+
     var series = function (pol) {
       return dates.map(function (day) {
         var row = offsets.offsets.filter(function (r) { return r.date === day && r.pol === pol; })[0];
         return row && row.offset_dB !== null ? Number(row.offset_dB) : null;
       });
     };
-    var hh = series("HH"), hv = series("HV");
-    var all = hh.concat(hv).filter(function (v) { return v !== null; });
+    var seriesData = pols.map(function (pol) { return series(pol); });
+    var all = seriesData.flat().filter(function (v) { return v !== null; });
     var lim = Math.max.apply(null, all.map(Math.abs).concat([0.5]));
     var yMax = Math.ceil(lim * 10) / 10;
     var ticks = [-yMax, -yMax / 2, 0, yMax / 2, yMax];
     var gap = outageIndices(dates);
+    var colors = ["#A9B8DA", "#E2B862", "#C084FC", "#FCD34D"]; // co-pol, cross-pol, etc.
+    var chartSeries = seriesData.map(function (vals, i) {
+      var isCoPol = (pols[i] === "HH" || pols[i] === "VV");
+      return { values: vals, color: colors[i % colors.length], dashed: isCoPol };
+    });
     host.appendChild(window.VENUS_CHARTS.lineChart({
       width: 320, height: 220, labels: dates.map(fmtShort), yMin: -yMax, yMax: yMax,
       yTicks: ticks, yFormat: function (x) { return x.toFixed(1); }, baselineZero: true,
-      series: [
-        { values: hh, color: "#A9B8DA", dashed: true },
-        { values: hv, color: "#E2B862" }
-      ],
+      series: chartSeries,
       shade: gap ? { from: gap.from, to: gap.to, color: "#33466f", label: t("chart_outage_label") } : null
     }));
     var svg = host.querySelector("svg");
     svg.setAttribute("role", "img");
     svg.setAttribute("aria-label", t("offset_aria"));
-    document.getElementById("offset-legend").textContent = t("offset_hh_legend") + " / " + t("offset_hv_legend") + " (" + t("units_db") + ")";
-    var hvRow = offsets.offsets.filter(function (r) { return r.pol === "HV" && r.MAD_dB; })[0];
-    document.getElementById("offset-mad").textContent = hvRow ? t("offset_mad_note", { mad: fmt(hvRow.MAD_dB, 2) }) : "";
+    // Build legend from detected polarizations
+    var legendParts = pols.map(function (pol, i) {
+      var key = "offset_" + pol.toLowerCase() + "_legend";
+      return t(key, { defaultValue: pol + " offset (dB)" });
+    });
+    document.getElementById("offset-legend").textContent = legendParts.join(" / ") + " (" + t("units_db") + ")";
+    // MAD note for the cross-pol channel (HV or VH)
+    var crossPol = pols.find(function (p) { return p === "HV" || p === "VH"; });
+    var crossRow = crossPol ? offsets.offsets.filter(function (r) { return r.pol === crossPol && r.MAD_dB; })[0] : null;
+    document.getElementById("offset-mad").textContent = crossRow ? t("offset_mad_note", { mad: fmt(crossRow.MAD_dB, 2) }) : "";
   }
 
   /* -------------------------------------------------------------- places */
@@ -553,9 +587,19 @@ window.VENUS_UI = (function () {
     row(list, t("patch_sign"), props.sign === "brighter" ? t("patch_sign_brighter") : t("patch_sign_darker"));
     body.appendChild(list);
 
-    // Sparkline of median change per date, HH and HV, from the patch time series.
+    // Sparkline of median change per date from the patch time series (polarizations from data).
     var ts = props.timeseries || [];
     var dates = manifest.dates;
+    // Detect polarizations from timeseries
+    var tsPols = [...new Set(ts.map(function (x) { return x.pol; }))];
+    // Sort: co-pol first (HH, VV), cross-pol second (HV, VH)
+    tsPols.sort(function (a, b) {
+      var aIsCo = (a === "HH" || a === "VV");
+      var bIsCo = (b === "HH" || b === "VV");
+      if (aIsCo && !bIsCo) return -1;
+      if (!aIsCo && bIsCo) return 1;
+      return 0;
+    });
     var values = function (pol) {
       return dates.map(function (day) {
         if (day === manifest.reference_date) return 0;
@@ -563,17 +607,22 @@ window.VENUS_UI = (function () {
         return r && r.delta_db !== null && r.delta_db !== undefined ? Number(r.delta_db) : null;
       });
     };
-    var hhV = values("HH"), hvV = values("HV");
-    var all = hhV.concat(hvV).filter(function (v) { return v !== null; });
+    var seriesData = tsPols.map(function (pol) { return values(pol); });
+    var all = seriesData.flat().filter(function (v) { return v !== null; });
     var lim = Math.max.apply(null, all.map(Math.abs).concat([1]));
     var yMax = Math.ceil(lim);
     var gap = outageIndices(dates);
+    var colors = ["#A9B8DA", "#E2B862", "#C084FC", "#FCD34D"];
+    var chartSeries = seriesData.map(function (vals, i) {
+      var isCoPol = (tsPols[i] === "HH" || tsPols[i] === "VV");
+      return { values: vals, color: colors[i % colors.length], dashed: isCoPol };
+    });
     var wrap = document.createElement("div");
     wrap.className = "chart-wrap";
     wrap.appendChild(window.VENUS_CHARTS.sparkline({
       labels: dates.map(fmtShort), yMin: -yMax, yMax: yMax, yTicks: [-yMax, 0, yMax],
       yFormat: function (x) { return String(x); },
-      series: [{ values: hhV, color: "#A9B8DA", dashed: true }, { values: hvV, color: "#E2B862" }],
+      series: chartSeries,
       shade: gap ? { from: gap.from, to: gap.to, color: "#33466f" } : null
     }));
     var svg = wrap.querySelector("svg");
@@ -582,7 +631,12 @@ window.VENUS_UI = (function () {
     body.appendChild(wrap);
     var legend = document.createElement("p");
     legend.className = "muted";
-    legend.textContent = t("patch_sparkline") + " (" + t("units_db") + "): HH dashed, HV solid.";
+    // Build legend from detected polarizations
+    var legendParts = tsPols.map(function (pol, i) {
+      var style = (pol === "HH" || pol === "VV") ? "dashed" : "solid";
+      return pol + " " + style;
+    });
+    legend.textContent = t("patch_sparkline") + " (" + t("units_db") + "): " + legendParts.join(", ") + ".";
     body.appendChild(legend);
 
     // Human fields: always labelled; a hypothesis always carries the word "Hypothesis:" and a confidence.

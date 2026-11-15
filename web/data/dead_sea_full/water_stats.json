@@ -1,121 +1,211 @@
 {
- "generated_utc": "2026-11-15T03:51:03Z",
- "series": "151-DESC-P05023-HHHV",
+ "generated_utc": "2026-11-15T14:20:33Z",
  "primary_method": "B",
- "primary_polarization": "HV",
+ "primary_polarization": "VH",
  "band_db": 1.5,
  "primary_verdict": "Differences exist; check the band before calling any of them change.",
+ "primary_caption": "",
+ "series": "S1-RTC-21-DESC-VHVV",
  "dates": [
   {
-   "date": "2026-06-24",
+   "date": "2016-05-17",
    "methods": {
     "B": {
-     "threshold_db": -17.92,
-     "area_km2": 814.32,
-     "low_km2": 432.37,
-     "high_km2": 1159.13
+     "threshold_db": -21.22,
+     "area_km2": 812.29,
+     "low_km2": 722.57,
+     "high_km2": 905.19
     }
    }
   },
   {
-   "date": "2026-07-06",
+   "date": "2016-08-21",
    "methods": {
     "B": {
-     "threshold_db": -16.87,
-     "area_km2": 830.99,
-     "low_km2": 73.19,
-     "high_km2": 1233.94
+     "threshold_db": -21.02,
+     "area_km2": 824.35,
+     "low_km2": 725.77,
+     "high_km2": 919.22
     }
    }
   },
   {
-   "date": "2026-07-18",
+   "date": "2016-11-19",
    "methods": {
     "B": {
-     "threshold_db": -18.12,
-     "area_km2": 804.68,
-     "low_km2": 468.41,
-     "high_km2": 1125.19
+     "threshold_db": -21.52,
+     "area_km2": 809.19,
+     "low_km2": 736.32,
+     "high_km2": 885.44
     }
    }
   },
   {
-   "date": "2026-08-11",
+   "date": "2017-02-17",
    "methods": {
     "B": {
-     "threshold_db": -17.27,
-     "area_km2": 872.76,
-     "low_km2": 201.45,
-     "high_km2": 1194.95
+     "threshold_db": -20.42,
+     "area_km2": 690.64,
+     "low_km2": 625.55,
+     "high_km2": 787.84
     }
    }
   },
   {
-   "date": "2026-08-23",
+   "date": "2017-05-18",
    "methods": {
     "B": {
-     "threshold_db": -18.17,
-     "area_km2": 724.51,
-     "low_km2": 427.74,
-     "high_km2": 1037.74
+     "threshold_db": -21.02,
+     "area_km2": 795.25,
+     "low_km2": 695.95,
+     "high_km2": 893.21
     }
    }
   },
   {
-   "date": "2026-09-04",
+   "date": "2017-08-16",
    "methods": {
     "B": {
-     "threshold_db": -16.92,
-     "area_km2": 830.94,
-     "low_km2": 82.2,
-     "high_km2": 1216.88
+     "threshold_db": -21.27,
+     "area_km2": 831.36,
+     "low_km2": 745.88,
+     "high_km2": 916.23
     }
    }
   },
   {
-   "date": "2026-09-16",
+   "date": "2017-11-20",
    "methods": {
     "B": {
-     "threshold_db": -18.72,
-     "area_km2": 803.88,
-     "low_km2": 542.1,
-     "high_km2": 1111.77
+     "threshold_db": -21.17,
+     "area_km2": 834.53,
+     "low_km2": 748.77,
+     "high_km2": 922.33
     }
    }
   },
   {
-   "date": "2026-09-28",
+   "date": "2018-02-18",
    "methods": {
     "B": {
-     "threshold_db": -17.07,
-     "area_km2": 842.45,
-     "low_km2": 118.43,
-     "high_km2": 1215.96
+     "threshold_db": -20.07,
+     "area_km2": 714.84,
+     "low_km2": 641.19,
+     "high_km2": 811.1
     }
    }
   },
   {
-   "date": "2026-10-10",
+   "date": "2018-05-19",
    "methods": {
     "B": {
-     "threshold_db": -18.72,
-     "area_km2": 696.38,
-     "low_km2": 471.19,
-     "high_km2": 952.25
+     "threshold_db": -21.17,
+     "area_km2": 777.61,
+     "low_km2": 673.45,
+     "high_km2": 881.22
+    }
+   }
+  },
+  {
+   "date": "2018-08-17",
+   "methods": {
+    "B": {
+     "threshold_db": -21.77,
+     "area_km2": 809.14,
+     "low_km2": 727.04,
+     "high_km2": 889.46
+    }
+   }
+  },
+  {
+   "date": "2018-11-21",
+   "methods": {
+    "B": {
+     "threshold_db": -21.72,
+     "area_km2": 756.19,
+     "low_km2": 681.9,
+     "high_km2": 851.87
+    }
+   }
+  },
+  {
+   "date": "2019-02-13",
+   "methods": {
+    "B": {
+     "threshold_db": -21.22,
+     "area_km2": 730.64,
+     "low_km2": 660.85,
+     "high_km2": 821.61
+    }
+   }
+  },
+  {
+   "date": "2019-05-14",
+   "methods": {
+    "B": {
+     "threshold_db": -21.62,
+     "area_km2": 804.2,
+     "low_km2": 729.2,
+     "high_km2": 881.34
+    }
+   }
+  },
+  {
+   "date": "2019-08-18",
+   "methods": {
+    "B": {
+     "threshold_db": -21.67,
+     "area_km2": 801.92,
+     "low_km2": 725.69,
+     "high_km2": 879.85
+    }
+   }
+  },
+  {
+   "date": "2019-11-16",
+   "methods": {
+    "B": {
+     "threshold_db": -22.22,
+     "area_km2": 795.44,
+     "low_km2": 728.6,
+     "high_km2": 864.94
+    }
+   }
+  },
+  {
+   "date": "2020-02-14",
+   "methods": {
+    "B": {
+     "threshold_db": -20.67,
+     "area_km2": 729.8,
+     "low_km2": 659.5,
+     "high_km2": 825.27
+    }
+   }
+  },
+  {
+   "date": "2020-05-14",
+   "methods": {
+    "B": {
+     "threshold_db": -22.12,
+     "area_km2": 771.17,
+     "low_km2": 703.54,
+     "high_km2": 845.52
+    }
+   }
+  },
+  {
+   "date": "2026-10-29",
+   "methods": {
+    "B": {
+     "threshold_db": -22.02,
+     "area_km2": 702.17,
+     "low_km2": 648.63,
+     "high_km2": 778.6
     }
    }
   }
  ],
  "summary": {},
- "change_detection": {},
- "change_limits": {
-  "HH": 1.54,
-  "HV": 4.0
- },
- "scales": {
-  "change_db_symmetric": {
-   "HH": 1.54,
-   "HV": 4.0
-  }
- }
+ "change_detection": {}
 }

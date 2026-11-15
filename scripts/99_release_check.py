@@ -32,7 +32,7 @@ BUDGET_MB = 220.0
 FORBIDDEN_TRACKED = re.compile(
     r"(\.netrc$|_netrc$|\.venv/|\.env$|\.h5$|\.hdf5$|\.npy$|\.tif$|\.tiff$|data/raw/|data/interim/)"
 )
-CRID = "P05023"
+VALID_CRIDS = {"P05023", "P05036", "OPERA"}
 
 
 def run(cmd: list[str]) -> tuple[int, str]:
@@ -95,14 +95,14 @@ def main() -> int:
     check(not missing, f"README local links resolve ({missing[:3] or 'all ok'})")
     check((REPO_ROOT / "LICENSE").exists(), "LICENSE present")
 
-    # 9. provisional only
+    # 9. valid CRID
     wrong = []
     for manifest in (WEB / "data").glob("*/manifest.json"):
         import json
         data = json.loads(manifest.read_text(encoding="utf-8"))
-        if data.get("crid") != CRID:
+        if data.get("crid") not in VALID_CRIDS:
             wrong.append(f"{manifest.parent.name}:{data.get('crid')}")
-    check(not wrong, f"every place manifest is CRID {CRID} ({wrong or 'all ok'})")
+    check(not wrong, f"every place manifest has valid CRID ({VALID_CRIDS}) ({wrong or 'all ok'})")
 
     for item in passes:
         print(f"PASS  {item}")

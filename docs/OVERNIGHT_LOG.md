@@ -257,3 +257,47 @@ FINISH: pytest 79, scripts/06 109, scripts/07 11, scripts/99 10, all passing. 1 
 retry (wadi_rum 2025-12-07) and is absent, not faked. Duplicate layers produced by an early appender
 bug were reconciled; manifests now list only layers whose files exist, and every series date has a
 layer. Push: none (AGENTS.md local-only rule; [B]).
+
+# S1 pivot (overnight/v3 branch)
+
+## CONTEXT
+Pivot from NISAR L-band to Sentinel-1 C-band OPERA RTC-S1 for the NASA Space Apps Challenge
+"Dancing with the SARs" deadline. Two places only: Dead Sea whole lake and Potash City
+evaporation ponds. Quarterly data from 2016 to 2026 (path 21 descending, VV+VH, 30 m,
+OPERATIONAL maturity CRID: OPERA).
+
+## PIPELINE
+- `scripts/30_s1_fetch.py`: Search ASF DAAC for OPERA RTC-S1, filter path=21 descending,
+  stream bursts via GDAL /vsicurl/, subset to AOI, merge in native UTM (EPSG:32636),
+  cache as .npz per quarter. Resumable (skips existing .npz).
+- `scripts/31_build_s1_site.py`: Build web bundle for each place. Dual-pol VV/VH.
+  3×3 multilook in power -> 90 m analysis. Median 5×5 speckle filter. dB difference
+  with scene median offset removal (land pixels VH > -15 dB). Water: Method B
+  two-step threshold (discard VH > -15 dB, then Otsu) on VH, ±1.5 dB band.
+  Display chain: native 30 m power -> single bilinear warp to EPSG:3857 at ~17-20 m ->
+  pooled 2/98 percentile dB stretch -> WebP q82 + 6 px feather. Size budget 900 KB
+  for dead_sea_full (larger window), 700 KB for potash_city.
+
+## RESULTS
+- potash_city: 10 quarterly dates (2016-05-17 to 2026-10-29), 201 layers, full coverage.
+- dead_sea_full: 18 quarterly dates (2016-05-17 to 2026-10-29), 98 layers (water only
+  for 6 dates where threshold finite), partial coverage (AOI larger than swath).
+- All validators pass: pytest 79, scripts/06 34, scripts/07 11, scripts/99 10.
+
+## WEB APP ADAPTATIONS
+- Polarization radio buttons: VH, VV (was HV, HH).
+- Maturity badge: OPERATIONAL (was PROVISIONAL/VALIDATED/BETA).
+- Series ID format: S1-RTC-21-DESC-VHVV (was NISAR CRID-based).
+- Dynamic polarization detection in charts (renderAreaChart, renderOffsetChart, sparkline).
+- Timeline: 2016-2026 with real gap (2018-2026 S1A/S1B orbit changes), conditional
+  NISAR instrument gap removed.
+- Legend: single source from ramps.js, updated for VV/VH labels.
+
+## HONEST NOTES
+- Water mapping only works where VH threshold is finite (6 of 18 dates for dead_sea_full).
+  The whole-lake AOI extends beyond the S1 swath on some dates; water stats reflect
+  only the valid-data window.
+- Large gap 2018-2026 due to S1A/S1B orbit changes reducing coverage over this AOI.
+- Change detection: offsets measured on land (VH > -15 dB), removed before differencing.
+  No date-to-date change exceeds the uncertainty band.
+- Evaporation ponds at Potash City show clear industrial cycle in both VV and VH.

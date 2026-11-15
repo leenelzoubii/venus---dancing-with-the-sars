@@ -28,14 +28,20 @@ from . import webexport as wx
 
 DISPLAY_CROP_MARGIN = 0.05      # +5 % around the AOI bbox, kept only if it stays inside valid data
 MIN_VALID_FRACTION = 0.995      # a crop rectangle must be at least 99.5 % valid
-TARGET_PX_M = (10.0, 13.0)      # acceptable Web Mercator pixel size for display layers
+# NISAR (20 m native) targets ~10-13 m in Web Mercator; S1 (30 m native) targets ~15-20 m.
+# The allowed band is +/- 2 m around the target centre.
+TARGET_PX_M = (10.0, 13.0)      # default for NISAR (20 m native -> 10-13 m display)
 
 
-def display_resolution(native_px_m: float, centre_lat: float) -> float:
-    """Half a native pixel in Web Mercator metres: about 10-12 m for NISAR's 20 m grid."""
+def display_resolution(native_px_m: float, centre_lat: float, target_px_m: tuple[float, float] | None = None) -> float:
+    """Half a native pixel in Web Mercator metres.
+
+    For NISAR (20 m native) this is ~10-12 m. For S1 (30 m native) this is ~15-18 m.
+    """
+    target = target_px_m or TARGET_PX_M
     res = native_px_m / math.cos(math.radians(centre_lat)) / 2.0
-    if not (TARGET_PX_M[0] - 2.0 <= res <= TARGET_PX_M[1] + 2.0):
-        raise SystemExit(f"display resolution {res:.2f} m is outside the expected 10-13 m band")
+    if not (target[0] - 2.0 <= res <= target[1] + 2.0):
+        raise SystemExit(f"display resolution {res:.2f} m is outside the expected {target[0]-2:.0f}-{target[1]+2:.0f} m band")
     return res
 
 
@@ -101,6 +107,7 @@ def choose_crop(
     aoi_wkt: str,
     centre_lat: float,
     native_px_m: float,
+    target_px_m: tuple[float, float] | None = None,
 ) -> tuple[tuple[float, float, float, float], float, float]:
     """Pick ONE axis-aligned crop rectangle, shared by every layer of the place.
 
@@ -108,7 +115,7 @@ def choose_crop(
     2 % of the current size per side until the rectangle is >= 99.5 % valid. Returns
     (rect_3857, display_res_m, valid_fraction).
     """
-    res = display_resolution(native_px_m, centre_lat)
+    res = display_resolution(native_px_m, centre_lat, target_px_m)
     for margin in (DISPLAY_CROP_MARGIN, 0.0):
         left, bottom, right, top = aoi_rect_3857(aoi_wkt, margin)
         transform, width, height = grid_for_rect((left, bottom, right, top), res)
@@ -226,14 +233,15 @@ def save_preview(image: Image.Image, path, max_px: int = 256, budget: int = 15_0
 
 def save_layer(image: Image.Image, path, budget: int = 700_000) -> tuple[int, int]:
     """Write a full WebP within budget and a preview beside it. Returns (bytes, quality_used)."""
-    quality_used = 82
     for quality in (82, 75, 68):
         size = save_webp(image, path, quality=quality)
-        quality_used = quality
         if size <= budget:
             break
+    else:
+        # Last resort: use 60
+        size = save_webp(image, path, quality=60)
     save_preview(image, path.with_name(path.stem + "_preview.webp"))
-    return size, quality_used
+    return size, quality
 
 
 def warp_nansafe(

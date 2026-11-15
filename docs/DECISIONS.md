@@ -5,6 +5,92 @@ Newest at the top. If a decision is reversed, add a new entry rather than editin
 
 ---
 
+## 2026-11-15 — Pivot to Sentinel-1 OPERA RTC-S1 for the challenge deadline
+
+**Decision.** Replace NISAR L-band with Sentinel-1 C-band OPERA RTC-S1 (CRID: OPERA, OPERATIONAL
+maturity) for two places: Dead Sea whole lake (`dead_sea_full`) and Potash City evaporation ponds
+(`potash_city`). Quarterly acquisitions 2016-05-17 to 2026-10-29, path 21 descending, VV+VH
+polarizations, 30 m native resolution.
+
+**Reason.** NISAR PROVISIONAL data over the Dead Sea has a 12-day cadence but a permanent instrument
+gap (2026-07-27 to 2026-08-10) and only 9 dates on one geometry. Sentinel-1 OPERA RTC-S1 provides
+a decade of quarterly data on a single geometry (path 21 descending), enabling a true time series
+with 10-18 dates per place. The challenge requires "one or more types of surface change" and an
+"interactive medium" — a decade of S1 data shows shoreline change and industrial evaporation pond
+cycles far better than 9 NISAR dates. OPERATIONAL maturity means the data is fully calibrated.
+
+**Alternatives.** Stay with NISAR (too few dates, instrument gap, only 2 VALIDATED dates on one
+track); use S1 but mix geometries (violates same-geometry rule); use S1 GRD instead of OPERA RTC-S1
+(not analysis-ready, needs terrain correction).
+
+---
+
+## 2026-11-15 — Two places only: dead_sea_full and potash_city
+
+**Decision.** Trim the 14 configured places to exactly two for the challenge submission:
+`dead_sea_full` (whole Dead Sea lake, both shores, including southern evaporation ponds) and
+`potash_city` (industrial evaporation ponds near the southern basin).
+
+**Reason.** The challenge asks to "pick a study area" and "track and visualise one or more types of
+surface change". Two places give two distinct stories: (1) whole-lake water area and shoreline
+change over a decade, and (2) human-driven evaporation pond expansion/contraction. Adding more
+places dilutes the narrative and increases data volume. The config remains a named list so places
+can be re-enabled later.
+
+**Alternatives.** Keep all 14 places (too much data, unfocused story); add Azraq wetland (third
+story but different geometry, would need separate series).
+
+---
+
+## 2026-11-15 — Water method B on VH only; change offsets on land (VH > -15 dB)
+
+**Decision.** Water mapping uses Method B (two-step: discard VH > -15 dB, then Otsu) on VH
+polarization only. Scene-wide offset is the median of (date - reference) over land pixels
+defined as VH > -15 dB (and finite in both VV and VH), applied per polarization before
+differencing.
+
+**Reason.** For S1 C-band, VH is the water-sensitive polarization (open water ~ -20 to -22 dB).
+The two-step threshold excludes bright land/salt crust before finding the water mode. Offsets
+measured on land avoid bias from the changing water area itself. Per-polarization offsets account
+for VV/VH calibration differences.
+
+**Alternatives.** Fixed threshold (fails on seasonal roughness); Method B on VV (poorer water
+separation); offset on all pixels (water change biases the correction).
+
+---
+
+## 2026-11-15 — Display chain: native 30 m -> ~17-20 m Web Mercator, pooled 2/98 stretch
+
+**Decision.** Display chain takes native 30 m OPERA RTC-S1 gamma-0 power, reprojects once to
+EPSG:3857 with NaN-safe bilinear warp at ~17-20 m (2× native at 31.5° latitude), applies a
+pooled 2nd-98th percentile dB stretch over all dates of the place, then false-colour (VV=red,
+VH=green, blue=ratio) or grey ramp. 6 px inward edge feather. WebP q82 with alpha.
+
+**Reason.** One warp preserves geometry exactly for Leaflet overlays. Pooled stretch makes every
+date directly comparable (same dB = same colour). 2× native keeps layer sizes under budget while
+showing more detail than the 90 m analysis grid. The 900 KB budget for dead_sea_full accommodates
+its larger window (30×60 km vs 15×30 km for potash_city).
+
+**Alternatives.** Keep analysis resolution for display (90 m, blurry); per-date stretch (breaks
+comparison); WebP q60 baseline (quality loss visible).
+
+---
+
+## 2026-11-15 — Size budget 900 KB for dead_sea_full, 700 KB for potash_city
+
+**Decision.** Per-layer WebP budget is 900 KB for dead_sea_full (whole lake, larger window) and
+700 KB for potash_city. Quality falls back from q82 -> q75 -> q68 -> q60 to meet budget.
+
+**Reason.** dead_sea_full's display window is ~30×60 km at ~17 m = ~1760×3500 px (~6 M pixels);
+even at q82 it exceeds 700 KB. potash_city is ~15×30 km = ~880×1750 px (~1.5 M pixels), well
+inside 700 KB at q82. The budget increase is documented in the layer metadata
+(`resolution_fallback` or `webp_quality`).
+
+**Alternatives.** Downsample display resolution for dead_sea_full (loses detail); split into tiles
+(adds complexity, not static-file-friendly).
+
+---
+
 ## 2026-11-13 — Water thresholds are derived per image (Otsu), never taken from the literature
 
 **Decision.** The water mask uses a two-class Otsu threshold computed on each filtered dB image.
