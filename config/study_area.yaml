@@ -9,7 +9,7 @@
 # below carries a "coord_note" saying it was corrected, and the correction is a plain +360 with no
 # reshaping. Verify against the printed map before trusting any AOI.
 
-active_aoi: dead_sea_east
+active_aoi: dead_sea_full
 
 aois:
   # --- the original Gate 1 area: the only one with a full processed series -----------------
@@ -29,6 +29,11 @@ aois:
       The whole Dead Sea outline, both shores. Shows the lake as one object, including the
       evaporation ponds in the south, but at a coarser effective resolution per screen.
     wkt: "POLYGON((35.2897 31.2872, 35.6384 31.2872, 35.6494 31.5223, 35.6384 31.7754, 35.5696 31.8795, 35.2897 31.7754, 35.2897 31.2872))"
+    # Display layers may cover the AOI plus this buffer; analysis layers always stay inside the AOI.
+    # Zero here: the lake polygon already includes its margin, and a 5 km buffer would fall outside
+    # the NISAR frame. The default for places without this key is 5 km.
+    display_buffer_km: 0
+    # display_window: [west, south, east, north]   # optional explicit bbox instead of the WKT
 
   - name: azraq_wetland
     title: "Azraq Wetland Reserve"

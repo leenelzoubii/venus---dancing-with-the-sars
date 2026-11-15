@@ -134,6 +134,8 @@ def main() -> int:
     ap.add_argument("--out", type=Path, default=REPO_ROOT / "data" / "interim" / "nisar_gcov_scenes.csv")
     ap.add_argument("--stack", help="Restrict the date table to one geometry, e.g. 151/73/DESC.")
     ap.add_argument("--max-results", type=int, default=None)
+    ap.add_argument("--start", help="First acquisition date, YYYY-MM-DD (overrides config).")
+    ap.add_argument("--end", help="Last acquisition date, YYYY-MM-DD (overrides config).")
     args = ap.parse_args()
 
     area = load_study_area(args.aoi, args.aoi_wkt)
@@ -142,6 +144,10 @@ def main() -> int:
         kwargs["dataMaturity"] = args.maturity.upper()
     if args.processing_level:
         kwargs["processingLevel"] = args.processing_level.upper()
+    if args.start:
+        kwargs["start"] = args.start
+    if args.end:
+        kwargs["end"] = args.end
 
     print("=" * 78)
     print(f"AOI      : {area.name} - {area.title}")

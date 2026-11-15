@@ -127,3 +127,25 @@ Protection is on for previews, so it returns the Vercel login page (text/html) i
 logged-out visitor. The public production alias https://venus-sars.vercel.app serves the first upload,
 whose web/data was excluded by the old ignore pattern; promoting the fixed deployment would need a
 production action, which the brief forbids, so it was left for the morning.
+
+# v3 run (whole lake, series, design)
+
+## PHASE 0 - ORIENT
+
+v2 DONE per this log: CRS-from-subset fix + G0 gate, display chain (native 20 m, WebP), labels and
+locator, dark UI, Vercel config. Georeferencing still passes pytest (overlay centre inside AOI +5 km).
+Baselines already exist in docs/baseline_hashes.txt, so they were not rewritten.
+
+## PHASE 1 - SERIES CATALOG AND WHOLE-LAKE WINDOW
+
+PHASE 1 DONE: `scripts/01_search_nisar.py` gained --start/--end; searched `dead_sea_full` with no
+maturity filter and wrote scenes_dead_sea_full{,_beta,_validated}.csv. Catalog script
+`scripts/15_series_catalog.py` groups products into series (maturity, CRID, track, direction, pols):
+BETA X05009 from 2025-10-27 (5 dates on 151), PROVISIONAL P05023 9 dates on 151, VALIDATED P05036
+2 dates so far on 151. `dead_sea_full` already existed in the YAML; it is now the active place with
+display_buffer_km 0 (the lake polygon is its own margin). New `src/venus/mosaic.py` unions the two
+adjacent frames (151/072 + 151/073) of one acquisition in native UTM: measured valid fraction rises
+from 0.691 (frame 73) to 0.999 (mosaic) over the AOI window, so the whole lake fits without clipping.
+`scripts/17_build_series_site.py` builds a multi-series place with per-series stretch limits,
+browse-only BETA/VALIDATED, and analysis only for PROVISIONAL >= 5 dates. Longest display side is
+capped at 3600 px.
