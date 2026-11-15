@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
-  <link rel="stylesheet" href="css/app.css?v=20261115p">
+  <link rel="stylesheet" href="css/app.css?v=20261116a">
 </head>
 <body>
   <a class="skip-link" href="#map">Skip to the map</a>
@@ -33,10 +33,9 @@
           <circle cx="8" cy="8" r="2.1" fill="none" stroke="currentColor" stroke-width="1"/>
           <ellipse cx="8" cy="8" rx="7" ry="2.5" fill="none" stroke="currentColor" stroke-width=".8" transform="rotate(-22 8 8)"/>
         </svg>
-        <span data-i18n="echo_trigger">Echo</span>
+        <span data-i18n="echo_trigger">Ask Echo</span>
       </button>
-      <button type="button" class="theme-swatch" data-theme-set="void" aria-label="Void theme" title="Void"></button>
-      <button type="button" class="theme-swatch theme-swatch-aurora" data-theme-set="aurora" aria-label="Aurora theme" title="Aurora"></button>
+      <button type="button" class="tour-trigger" id="tour-trigger" data-i18n="header_tour">Tour</button>
     </div>
   </header>
 
@@ -125,9 +124,9 @@
         <label class="choice choice-check"><input type="checkbox" id="labels-toggle" checked><span data-i18n="labels_toggle">Place labels</span></label>
         <label class="choice choice-check"><input type="checkbox" id="dim-toggle" checked><span data-i18n="dim_toggle">Dim satellite under the radar</span></label>
         <label class="choice choice-check"><input type="checkbox" id="aoi-toggle" checked><span data-i18n="aoi_toggle">NISAR analysis area</span></label>
-        <label class="choice choice-check"><input type="checkbox" id="context-toggle" checked><span data-i18n="context_toggle">NASA Worldview context</span></label>
-        <label class="field-label" for="context-opacity" data-i18n="context_opacity">Context opacity</label>
-        <input type="range" id="context-opacity" class="range" min="0" max="100" step="5" value="60">
+        <label class="choice choice-check" hidden><input type="checkbox" id="context-toggle" checked><span data-i18n="context_toggle">NASA Worldview context</span></label>
+        <label class="field-label" for="context-opacity" data-i18n="context_opacity" hidden>Context opacity</label>
+        <input type="range" id="context-opacity" class="range" min="0" max="100" step="5" value="60" hidden>
         <label class="choice choice-check"><input type="checkbox" id="motion-toggle"><span data-i18n="motion_toggle">Reduce motion</span></label>
       </fieldset>
 
@@ -142,7 +141,7 @@
         <label class="choice choice-check" id="band-toggle-wrap" hidden>
           <input type="checkbox" id="band-toggle"><span data-i18n="band_toggle">Show detection limit (amber band)</span>
         </label>
-        <label class="choice choice-check">
+        <label class="choice choice-check" hidden>
           <input type="checkbox" id="patches-toggle"><span data-i18n="patches_toggle">Show candidate patches</span>
         </label>
       </fieldset>
@@ -207,15 +206,15 @@
         <p id="legend-pixel-note" class="legend-caption legend-pixel-note"></p>
       </section>
 
-      <details class="card" open>
-        <summary data-i18n="info_title">Layer information</summary>
+      <details class="card" id="layer-info-card">
+        <summary class="card-button" data-i18n="info_title">Layer information</summary>
         <p class="muted" data-i18n="info_intro">Everything below is read from the data manifest.</p>
         <dl id="layer-info" class="info-list"></dl>
         <h3 class="sub-title" data-i18n="info_steps">Processing steps</h3>
         <ol id="layer-steps" class="steps"></ol>
       </details>
 
-      <details class="card" id="patch-panel">
+      <details class="card" id="patch-panel" hidden>
         <summary data-i18n="patches_toggle">Candidate patches</summary>
         <h3 class="sub-title" data-i18n="featured_title">Featured patches</h3>
         <ul id="featured-list" class="featured-list"></ul>
@@ -318,6 +317,35 @@
     </svg>
   </div>
 
+  <!-- First-visit welcome: offers the tour or Echo. Dismissed once, never nagging. -->
+  <div class="welcome" id="welcome" hidden>
+    <div class="welcome-head">
+      <p class="welcome-kicker" data-i18n="welcome_kicker">Venus Echo</p>
+      <button type="button" class="welcome-close" id="welcome-close" aria-label="Dismiss" data-i18n-label="welcome_dismiss">✕</button>
+    </div>
+    <h2 class="welcome-title" data-i18n="welcome_title">Welcome to Venus Echo</h2>
+    <p class="welcome-body" data-i18n="welcome_body">A radar guide to the Dead Sea. Take the 60-second tour, or ask Echo about what is on screen.</p>
+    <div class="welcome-actions">
+      <button type="button" class="btn" id="welcome-tour" data-i18n="welcome_tour">Start the tour</button>
+      <button type="button" class="btn btn-quiet" id="welcome-ask" data-i18n="welcome_ask">Ask Echo</button>
+    </div>
+  </div>
+
+  <!-- Optional guided tour. Skip, quit or finish; it never comes back on its own. -->
+  <div class="tour" id="tour" hidden>
+    <div class="tour-shade" id="tour-shade" aria-hidden="true"></div>
+    <div class="tour-card" id="tour-card" role="dialog" aria-labelledby="tour-title">
+      <p class="tour-kicker" id="tour-kicker"></p>
+      <h2 class="tour-title" id="tour-title" tabindex="-1"></h2>
+      <p class="tour-body" id="tour-body"></p>
+      <div class="tour-actions">
+        <button type="button" class="btn btn-quiet" id="tour-back" data-i18n="tour_back">Back</button>
+        <button type="button" class="btn" id="tour-next" data-i18n="tour_next">Next</button>
+        <button type="button" class="tour-exit" id="tour-exit" data-i18n="tour_exit">Exit tour</button>
+      </div>
+    </div>
+  </div>
+
   <noscript>
     <p class="notice">This page needs JavaScript to draw the map.</p>
   </noscript>
@@ -356,7 +384,7 @@
   </aside>
 
   <!-- Classic scripts only, in dependency order. No modules, no fetch(): works from file://. -->
-  <script src="js/strings.js?v=20261116c"></script>
+  <script src="js/strings.js?v=20261116d"></script>
   <script src="data/ramps.js"></script>
   <script src="data/patches.js"></script>
   <script src="data/places.js"></script>
@@ -365,8 +393,9 @@
   <script src="js/charts.js?v=20261115e"></script>
   <script src="js/ui.js?v=20261115e"></script>
   <script src="js/legend.js?v=20261116a"></script>
-  <script src="js/app.js?v=20261116a"></script>
-  <script src="js/echo.js?v=20261116a"></script>
+  <script src="js/app.js?v=20261116b"></script>
+  <script src="js/echo.js?v=20261116c"></script>
+  <script src="js/tour.js?v=20261116a"></script>
   <dialog id="legend-guide" class="legend-guide" aria-labelledby="legend-guide-title">
     <h2 id="legend-guide-title" data-i18n="legend_guide_title">Legend guide</h2>
     <dl id="legend-guide-body"></dl>
@@ -375,3 +404,4 @@
 
 </body>
 </html>
+

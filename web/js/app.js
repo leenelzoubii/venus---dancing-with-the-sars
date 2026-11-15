@@ -42,7 +42,7 @@
     band: false, patches: false,
     playing: false, loop: false,
     basemap: "dark", labels: true, aoiFrame: true, dim: true,
-    seriesId: null, context: true, contextOpacity: 0.6
+    seriesId: null, context: false, contextOpacity: 0.6
   };
   var map = null, bounds = null, overlays = null, patchLayer = null, selectedPatch = null;
   var slots = {

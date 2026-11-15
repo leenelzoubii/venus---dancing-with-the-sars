@@ -301,14 +301,13 @@ window.VENUS_ECHO = (function () {
     panel.classList.toggle("is-busy", value);
   }
 
-  function hideSuggestions() {
-    if (suggestions) suggestions.hidden = true;
+  function showSuggestions() {
+    if (suggestions) suggestions.hidden = false;
   }
 
   function ask(question) {
     question = String(question || "").trim();
     if (!question || busy) return;
-    hideSuggestions();
     addMessage("user", question);
     history.push({ role: "user", content: question });
     setBusy(true);
@@ -344,7 +343,7 @@ window.VENUS_ECHO = (function () {
       input.value = "";
       input.focus();
     }
-    if (suggestions && history.length === 0) suggestions.hidden = false;
+    showSuggestions();
     scrollToEnd();
   }
 
