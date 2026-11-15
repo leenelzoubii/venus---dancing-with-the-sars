@@ -107,6 +107,29 @@ def main() -> int:
         + (f": unknown {', '.join(unknown)}" if unknown else "")
     )
 
+    # v4: every layer kind that exists in any manifest must have a legend entry and a ramp source.
+    ramps_path = DATA / "ramps.json"
+    if ramps_path.exists():
+        ramps = json.loads(ramps_path.read_text(encoding="utf-8"))
+        kinds = set(ramps.get("kinds", []))
+        manifest_kinds = set()
+        for manifest_path in DATA.glob("*/manifest.json"):
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest_kinds.update(layer["kind"] for layer in manifest.get("layers", []))
+        missing_kinds = sorted(manifest_kinds - kinds)
+        (failures if missing_kinds else passes).append(
+            "every layer kind has a legend entry and ramp"
+            + (f": missing {', '.join(missing_kinds)}" if missing_kinds else "")
+        )
+        legend = (WEB / "js" / "legend.js").read_text(encoding="utf-8")
+        unsupported = [kind for kind in kinds if f'"{kind}"' not in legend]
+        (failures if unsupported else passes).append(
+            "legend.js implements every declared kind"
+            + (f": missing {', '.join(unsupported)}" if unsupported else "")
+        )
+    else:
+        failures.append("web/data/ramps.json is missing (run scripts/22_export_ramps.py)")
+
     for item in passes:
         print(f"PASS  {item}")
     for item in failures:

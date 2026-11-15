@@ -1,0 +1,119 @@
+{
+ "version": 1,
+ "change": {
+  "stops": [
+   {
+    "value": 0.0,
+    "rgb": [
+     59,
+     130,
+     246
+    ]
+   },
+   {
+    "value": 0.5,
+    "rgb": [
+     217,
+     222,
+     232
+    ]
+   },
+   {
+    "value": 1.0,
+    "rgb": [
+     245,
+     158,
+     11
+    ]
+   }
+  ],
+  "hex": [
+   "#3B82F6",
+   "#D9DEE8",
+   "#F59E0B"
+  ]
+ },
+ "single_pol": {
+  "stops": [
+   {
+    "value": -24.0,
+    "rgb": [
+     30,
+     60,
+     150
+    ]
+   },
+   {
+    "value": -18.0,
+    "rgb": [
+     40,
+     150,
+     90
+    ]
+   },
+   {
+    "value": -12.0,
+    "rgb": [
+     230,
+     140,
+     40
+    ]
+   },
+   {
+    "value": -6.0,
+    "rgb": [
+     240,
+     220,
+     60
+    ]
+   }
+  ],
+  "hex": [
+   "#1E3C96",
+   "#28965A",
+   "#E68C28",
+   "#F0DC3C"
+  ]
+ },
+ "grey": {
+  "min": "#05070D",
+  "max": "#F4F6FB",
+  "unit": "dB"
+ },
+ "water": {
+  "rgb": [
+   34,
+   211,
+   238
+  ],
+  "hex": "#22D3EE",
+  "alpha": 170
+ },
+ "band": {
+  "rgb": [
+   250,
+   204,
+   21
+  ],
+  "hex": "#FACC15",
+  "alpha": 200
+ },
+ "patches": {
+  "outline": "#E2B862",
+  "hypothesis_label": true
+ },
+ "context": {
+  "hex": "#8899AA",
+  "source": "NASA GIBS / Worldview"
+ },
+ "kinds": [
+  "rgb",
+  "single_pol",
+  "backscatter",
+  "change",
+  "water",
+  "band",
+  "patches",
+  "context"
+ ]
+}

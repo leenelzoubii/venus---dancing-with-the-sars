@@ -52,7 +52,7 @@
       <button type="button" id="open-controls" class="floating-btn" aria-controls="controls-body">Controls</button>
       <button type="button" id="open-panel" class="floating-btn floating-btn-right" aria-controls="panel-heading">Panel</button>
 
-      <div id="legend-inset" class="legend-inset"></div>
+      <div id="legend-inset" class="legend-inset"><button type="button" id="legend-guide-button" class="legend-guide-btn" data-i18n="legend_guide_button">Guide</button><div id="legend-v4"></div></div>
       <div id="series-row" class="series-row" role="group" aria-label="Calibration series"></div>
       <div id="mission-timeline" class="mission-timeline" aria-label="Acquisition timeline"></div>
       <p id="context-note" class="notice context-note" role="status" hidden></p>
@@ -314,13 +314,21 @@
   </noscript>
 
   <!-- Classic scripts only, in dependency order. No modules, no fetch(): works from file://. -->
-  <script src="js/strings.js?v=20261115e"></script>
+  <script src="js/strings.js?v=20261116a"></script>
+  <script src="data/ramps.js"></script>
   <script src="data/patches.js"></script>
   <script src="data/places.js"></script>
   <script src="data/license_and_attribution.js"></script>
   <script src="vendor/leaflet/leaflet.js"></script>
   <script src="js/charts.js?v=20261115e"></script>
   <script src="js/ui.js?v=20261115e"></script>
-  <script src="js/app.js?v=20261115e"></script>
+  <script src="js/legend.js?v=20261116a"></script>
+  <script src="js/app.js?v=20261116a"></script>
+  <dialog id="legend-guide" class="legend-guide" aria-labelledby="legend-guide-title">
+    <h2 id="legend-guide-title" data-i18n="legend_guide_title">Legend guide</h2>
+    <dl id="legend-guide-body"></dl>
+    <button type="button" id="legend-guide-close" class="btn" data-i18n="legend_guide_close">Close</button>
+  </dialog>
+
 </body>
 </html>

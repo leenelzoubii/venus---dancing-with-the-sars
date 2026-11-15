@@ -135,7 +135,15 @@
 
   function selectSeries(id, index) {
     if (!id) return;
+    var previous = activeSeries();
     state.seriesId = id;
+    var next = activeSeries();
+    if (previous && next && (previous.track !== next.track ||
+        String(previous.direction).slice(0, 4) !== String(next.direction).slice(0, 4))) {
+      UI.setLayerNote(UI.t("geometry_changed", {
+        track: next.track, direction: String(next.direction).slice(0, 4).toLowerCase()
+      }));
+    }
     applySeriesDates();
     state.index = index === undefined ? M.dates.length - 1 : Math.max(0, Math.min(M.dates.length - 1, index));
     state.leftIndex = 0;
@@ -187,10 +195,11 @@
       var dot = document.createElement("span");
       dot.className = "dot";
       button.appendChild(dot);
+      var polNote = series.polarization_note ? " - " + series.polarization_note : "";
       button.appendChild(document.createTextNode(UI.t("series_chip", {
         track: series.track, direction: String(series.direction).slice(0, 4).toLowerCase(),
         maturity: series.maturity, n: series.dates.length
-      })));
+      }) + polNote));
       button.addEventListener("click", function () { selectSeries(series.id); });
       host.appendChild(button);
     });
@@ -231,7 +240,9 @@
         }
         var dot = document.createElement("button");
         dot.type = "button";
-        dot.className = "timeline-dot " + String(series.maturity).toLowerCase();
+        var partial = series.coverage && series.coverage[day] === "partial";
+        dot.className = "timeline-dot " + String(series.maturity).toLowerCase() +
+          (partial ? " is-partial" : "");
         dot.style.left = pos(day) + "%";
         dot.title = UI.fmtDate(day) + " - " + series.label;
         dot.setAttribute("aria-label", UI.fmtDate(day) + ", " + series.label);
@@ -955,6 +966,7 @@
     setSlot("band", band, "radarBand");
 
     var note = r.note || (leftR && leftR.note) || null;
+    if (!note && r.def && r.def.coverage === "partial") note = UI.t("partial_coverage_note");
     UI.setLayerNote(note);
     UI.setPolHint(state.pol);
     UI.setBandAvailable(state.layer === "water");
@@ -987,6 +999,9 @@
     if (band) extra.bandText = bandCaption(band.date);
     var changeScale = (M.scales && M.scales.change_db_symmetric) ? M.scales.change_db_symmetric[state.pol] : 1;
     UI.renderLegend(r.def, changeScale, extra);
+    if (window.VENUS_LEGEND) {
+      window.VENUS_LEGEND.render(r.def, M, V.place_water_stats, V.place_offsets, state);
+    }
     UI.renderInfo(r.def, M, leftR ? leftR.def : null);
     setPatchesVisible(state.patches);
     updateBadge();
@@ -1002,6 +1017,15 @@
   function renderCharts() {
     var stats = V.place_water_stats;
     if (!stats) return;
+    var series = activeSeries();
+    if (series && !series.analysis) {
+      // Browse-only series must never appear under a chart that carries another series' numbers.
+      var area = document.getElementById("area-chart");
+      if (area) area.innerHTML = '<p class="muted">' + UI.t("series_no_stats") + "</p>";
+      var offset = document.getElementById("offset-chart");
+      if (offset) offset.innerHTML = '<p class="muted">' + UI.t("series_no_stats") + "</p>";
+      return;
+    }
     var chartManifest = Object.assign({}, M);
     chartManifest.dates = (stats.dates || []).map(function (entry) { return entry.date; });
     UI.renderAreaChart(stats, chartManifest, bandDb());
@@ -1233,6 +1257,7 @@
 
   function boot() {
     UI.applyStrings();
+    if (window.VENUS_LEGEND) window.VENUS_LEGEND.init();
     if (typeof L === "undefined") {
       UI.showNotice(UI.t("error_no_data"));
       return;

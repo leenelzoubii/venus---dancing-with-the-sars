@@ -226,3 +226,14 @@ statistics cover exactly that window and the app outlines it as the analysis are
 6. Vercel: previous run's first deployment became production; previews are login-protected. Promote or
    recreate the project by hand.
 '@; "log finish written"
+
+# v4 run (old vs new dates, every place, partial coverage, legends)
+
+PHASE 1 DONE: `scripts/20_discover_series.py` searched every place in web/data/places.json with no
+maturity filter (2025-10-01 onward): every place has BETA dates from Oct 2025, plus PROVISIONAL and
+VALIDATED series; several places also have a second track. `scripts/21_fetch_tier1.py` fetched tier 1
+for all 7 processed places with 3 workers, one line per date in data/interim/fetch.log: 46 tasks,
+45 ok, 1 failed after one retry (wadi_rum 2025-12-07). Atomic writes, HV only for new dual-pol dates,
+HH for HH-only places. `src/venus/ramps.py` + `scripts/22_export_ramps.py` now export the single source
+of truth for every ramp to web/data/ramps.js; `web/js/legend.js` renders one labelled entry per visible
+kind with a "?" sentence and a Guide dialog. scripts/07 asserts every manifest kind has a legend entry.

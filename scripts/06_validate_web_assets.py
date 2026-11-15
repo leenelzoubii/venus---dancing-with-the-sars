@@ -44,7 +44,7 @@ DISPLAY_KINDS = ("rgb", "backscatter")
 MAX_DISPLAY_PX_M = 30.0
 MIN_DISPLAY_PX_M = 9.0
 REQUIRED_FIELDS = [
-    "id", "label", "file", "format", "preview", "kind", "polarization", "date", "bounds",
+    "id", "label", "file", "format", "preview", "kind", "polarization", "date", "bounds", "coverage",
     "crop_bounds_3857", "px_size_m_3857", "native_px_m", "colormap",
     "description", "display_chain", "product", "crid", "maturity", "track", "frame",
     "direction", "native_crs", "display_crs", "processing",
