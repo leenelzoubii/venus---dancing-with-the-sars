@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
-  <link rel="stylesheet" href="css/app.css?v=20261116a">
+  <link rel="stylesheet" href="css/app.css?v=20261116b">
 </head>
 <body>
   <a class="skip-link" href="#map">Skip to the map</a>
@@ -35,6 +35,7 @@
         </svg>
         <span data-i18n="echo_trigger">Ask Echo</span>
       </button>
+      <button type="button" class="data-toggle" id="data-toggle" aria-expanded="false" aria-controls="panel-body" data-i18n="header_data">Data</button>
       <button type="button" class="tour-trigger" id="tour-trigger" data-i18n="header_tour">Tour</button>
     </div>
   </header>
@@ -384,7 +385,7 @@
   </aside>
 
   <!-- Classic scripts only, in dependency order. No modules, no fetch(): works from file://. -->
-  <script src="js/strings.js?v=20261116d"></script>
+  <script src="js/strings.js?v=20261116e"></script>
   <script src="data/ramps.js"></script>
   <script src="data/patches.js"></script>
   <script src="data/places.js"></script>
@@ -393,9 +394,9 @@
   <script src="js/charts.js?v=20261115e"></script>
   <script src="js/ui.js?v=20261115e"></script>
   <script src="js/legend.js?v=20261116a"></script>
-  <script src="js/app.js?v=20261116b"></script>
+  <script src="js/app.js?v=20261116c"></script>
   <script src="js/echo.js?v=20261116c"></script>
-  <script src="js/tour.js?v=20261116a"></script>
+  <script src="js/tour.js?v=20261116c"></script>
   <dialog id="legend-guide" class="legend-guide" aria-labelledby="legend-guide-title">
     <h2 id="legend-guide-title" data-i18n="legend_guide_title">Legend guide</h2>
     <dl id="legend-guide-body"></dl>
@@ -404,4 +405,6 @@
 
 </body>
 </html>
+
+
 

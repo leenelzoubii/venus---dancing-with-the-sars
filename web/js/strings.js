@@ -294,6 +294,7 @@ window.VENUS_STRINGS = {
 
     echo_trigger: "Ask Echo",
     header_tour: "Tour",
+    header_data: "Data",
     welcome_kicker: "Venus Echo",
     welcome_title: "Welcome to Venus Echo",
     welcome_body: "A radar guide to the Dead Sea. Take the 60-second tour, or ask Echo about whatever is on screen.",

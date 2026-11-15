@@ -744,6 +744,20 @@
       button.setAttribute("aria-pressed", String(button.getAttribute("data-theme-set") === state.theme));
       button.addEventListener("click", function () { applyTheme(button.getAttribute("data-theme-set")); });
     });
+
+    // Right-hand data rail: closed on load, one header button toggles it.
+    var dataToggle = document.getElementById("data-toggle");
+    if (dataToggle) {
+      var setDataOpen = function (open) {
+        document.body.classList.toggle("data-open", open);
+        dataToggle.setAttribute("aria-expanded", String(open));
+      };
+      dataToggle.addEventListener("click", function () {
+        setDataOpen(!document.body.classList.contains("data-open"));
+      });
+      setDataOpen(false);
+    }
+
     if (window.matchMedia("(max-width: 1100px)").matches) {
       document.querySelector(".controls").classList.add("is-collapsed");
       document.querySelector(".panel").classList.add("is-collapsed");

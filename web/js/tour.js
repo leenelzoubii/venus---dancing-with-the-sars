@@ -29,6 +29,7 @@ window.VENUS_TOUR = (function () {
   var index = 0;
   var steps = [];
   var openedEcho = false;
+  var openedData = false;
 
   function t(key, vars) { return UI.t(key, vars); }
   function byId(id) { return document.getElementById(id); }
@@ -69,8 +70,23 @@ window.VENUS_TOUR = (function () {
       key: "legend",
       title: "tour_legend_title",
       body: "tour_legend_body",
+      always: true,
       resolve: function () {
         return isMobile() ? byId("open-panel") : byId("legend-inset");
+      },
+      enter: function () {
+        if (isMobile()) return;
+        var toggle = byId("data-toggle");
+        if (toggle && toggle.getAttribute("aria-expanded") === "false") {
+          toggle.click();
+          openedData = true;
+        }
+      },
+      leave: function () {
+        if (!openedData) return;
+        var toggle = byId("data-toggle");
+        if (toggle) toggle.click();
+        openedData = false;
       }
     },
     {
