@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
-  <link rel="stylesheet" href="css/app.css?v=20261115o">
+  <link rel="stylesheet" href="css/app.css?v=20261115p">
 </head>
 <body>
   <a class="skip-link" href="#map">Skip to the map</a>
@@ -28,6 +28,13 @@
     </div>
     <div class="header-tools">
       <span id="maturity-badge" class="badge badge-provisional" data-i18n="badge_provisional">PROVISIONAL DATA</span>
+      <button type="button" class="echo-trigger" id="echo-trigger" aria-expanded="false" aria-controls="echo-panel">
+        <svg class="echo-glyph" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" focusable="false">
+          <circle cx="8" cy="8" r="2.1" fill="none" stroke="currentColor" stroke-width="1"/>
+          <ellipse cx="8" cy="8" rx="7" ry="2.5" fill="none" stroke="currentColor" stroke-width=".8" transform="rotate(-22 8 8)"/>
+        </svg>
+        <span data-i18n="echo_trigger">Echo</span>
+      </button>
       <button type="button" class="theme-swatch" data-theme-set="void" aria-label="Void theme" title="Void"></button>
       <button type="button" class="theme-swatch theme-swatch-aurora" data-theme-set="aurora" aria-label="Aurora theme" title="Aurora"></button>
     </div>
@@ -315,8 +322,41 @@
     <p class="notice">This page needs JavaScript to draw the map.</p>
   </noscript>
 
+  <!-- Echo: the in-app guide. Live answers via /api/chat; built-in answers offline. -->
+  <aside class="echo-panel" id="echo-panel" hidden aria-labelledby="echo-title">
+    <header class="echo-head">
+      <div class="echo-head-text">
+        <p class="echo-kicker" data-i18n="echo_kicker">Ask about this view</p>
+        <h2 class="echo-title" id="echo-title" data-i18n="echo_title">Echo</h2>
+      </div>
+      <button type="button" class="echo-close" id="echo-close" data-i18n-label="echo_close" aria-label="Close Echo">✕</button>
+    </header>
+
+    <p class="echo-context" id="echo-context"></p>
+
+    <div class="echo-messages" id="echo-messages" role="log" aria-live="polite"></div>
+
+    <div class="echo-suggest" id="echo-suggest">
+      <p class="echo-suggest-label" data-i18n="echo_suggest_label">Try one</p>
+      <button type="button" class="echo-chip" data-q="echo_q1" data-i18n="echo_q1">What am I looking at?</button>
+      <button type="button" class="echo-chip" data-q="echo_q2" data-i18n="echo_q2">Why is the lake dark?</button>
+      <button type="button" class="echo-chip" data-q="echo_q3" data-i18n="echo_q3">What do VV and VH show?</button>
+      <button type="button" class="echo-chip" data-q="echo_q4" data-i18n="echo_q4">Is the shoreline really changing?</button>
+      <button type="button" class="echo-chip" data-q="echo_q5" data-i18n="echo_q5">Can this show subsidence?</button>
+      <button type="button" class="echo-chip" data-q="echo_q6" data-i18n="echo_q6">Where does the data come from?</button>
+    </div>
+
+    <form class="echo-form" id="echo-form">
+      <input type="text" id="echo-input" class="echo-input" maxlength="600" autocomplete="off"
+             placeholder="Ask about this map…" data-i18n-label="echo_placeholder" aria-label="Ask about this map">
+      <button type="submit" class="echo-send" id="echo-send" data-i18n="echo_send">Send</button>
+    </form>
+
+    <p class="echo-foot" data-i18n="echo_foot">Answers use this view's metadata. Every number is read from the panel, never invented.</p>
+  </aside>
+
   <!-- Classic scripts only, in dependency order. No modules, no fetch(): works from file://. -->
-  <script src="js/strings.js?v=20261116a"></script>
+  <script src="js/strings.js?v=20261116c"></script>
   <script src="data/ramps.js"></script>
   <script src="data/patches.js"></script>
   <script src="data/places.js"></script>
@@ -326,6 +366,7 @@
   <script src="js/ui.js?v=20261115e"></script>
   <script src="js/legend.js?v=20261116a"></script>
   <script src="js/app.js?v=20261116a"></script>
+  <script src="js/echo.js?v=20261116a"></script>
   <dialog id="legend-guide" class="legend-guide" aria-labelledby="legend-guide-title">
     <h2 id="legend-guide-title" data-i18n="legend_guide_title">Legend guide</h2>
     <dl id="legend-guide-body"></dl>

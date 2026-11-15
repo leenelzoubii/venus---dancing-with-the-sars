@@ -122,6 +122,35 @@ python scripts/99_release_check.py
 
 Scripts 30, 31 and the checks are documented inline.
 
+## Echo, the in-app guide
+
+The **Echo** button in the header opens a panel that answers questions about whatever is on screen.
+It has two answering paths:
+
+- **Live.** `api/chat.js` is a Vercel serverless function. It holds the OpenAI key server-side, receives
+  only the facts of the current view (place, date, layer, polarization, thresholds, water numbers,
+  resolution), and returns a short answer. The key never reaches the browser.
+- **Built-in.** If the function is missing, offline, rate-limited or slow, Echo answers from a small
+  set of hand-written answers in `js/strings.js`. Those cover what the layer shows, why water is dark,
+  VV vs VH, the change map, the uncertainty band, resolution, dates, data provenance, deformation
+  (not in this app) and limits. The answer is labelled "Offline answer" so nobody mistakes it for the
+  model.
+
+To enable the live path on Vercel:
+
+```text
+Project → Settings → Environment Variables → OPENAI_API_KEY = sk-...
+Optional: OPENAI_MODEL (default gpt-4o-mini), CHAT_ALLOWED_ORIGINS (comma-separated hosts)
+```
+
+Redeploy after adding it. `GET /api/chat` reports `{ ok, configured }`, so you can check whether the
+key was picked up without spending a token. Per-instance rate limit: 12 requests per minute per IP;
+answers are capped at 340 output tokens.
+
+Echo sends metadata only — never the map image, never any user identity, never anything typed outside
+the chat box. The browser sends the transcript of the current conversation (last 8 turns) so follow-up
+questions work.
+
 ## Limitations and honesty notes
 
 - Only one geometry per place (path 21 descending). Places on different tracks are separate series and are never compared.

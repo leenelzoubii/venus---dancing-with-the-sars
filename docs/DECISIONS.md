@@ -5,6 +5,31 @@ Newest at the top. If a decision is reversed, add a new entry rather than editin
 
 ---
 
+## 2026-11-15 - Echo: live answers through a server-side key, offline answers always available
+
+**Decision.** Ship the in-app guide as two paths. Live: `api/chat.js`, a Vercel serverless function that
+holds `OPENAI_API_KEY` and calls `gpt-4o-mini` with a server-owned system prompt plus the *facts of the
+current view* (place, date, layer, polarization, thresholds, water area and band, resolution). Offline:
+a keyword-matched answer set in `js/strings.js`, shown with an explicit "Offline answer" note whenever
+the function is absent, unreachable, rate-limited or slow (25 s).
+
+**Reason.** Judges ask unpredictable questions; a rule-only bot dead-ends in front of them, while an LLM
+degrades gracefully. A key in the client is not acceptable, and the app already deploys on Vercel, so a
+function costs nothing extra. The risk of an LLM on a science app is invented numbers, so the model only
+receives verified facts and is told, in a prompt the caller cannot edit, never to produce a number that
+is not in them, never to claim deformation (no InSAR here), and to separate observation from hypothesis.
+The offline set keeps the demo working on bad Wi-Fi, which the brief's "demo must not fail" rule asks for.
+
+**Guardrails.** Origin check (`*.vercel.app`, localhost, or `CHAT_ALLOWED_ORIGINS`), 12 requests/minute
+per IP, 8 turns and 800 characters per message, 340 output tokens, 25 s timeout, whitelist of context
+fields, and `no-store` responses. No image, no user identifier, nothing typed outside the chat box is sent.
+
+**Alternatives.** Client-side OpenAI call (rejected: key exposure and abuse); rule-based only (rejected:
+fails the "judges will try it" test); screenshot + vision model (rejected for now: doubles cost and adds a
+canvas-to-image path that can fail on stage; the facts answer more questions than a JPEG).
+
+---
+
 ## 2026-11-15 - "Echo" visual language: editorial ground, HUD frame
 
 **Decision.** Restyle the web app with one design language built from two references supplied by the

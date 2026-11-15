@@ -1,0 +1,10 @@
+{
+  "name": "venus-echo",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Static Sentinel-1 radar explorer (web/) and the Echo chat function (api/). No build step.",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20"
+  }
+}
