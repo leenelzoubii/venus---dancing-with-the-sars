@@ -198,8 +198,10 @@ def fetch_one(row, area, outdir: Path, pols: list[str]) -> None:
             "dtype": "float32",
             "finite_fraction": float(np.isfinite(arr).mean()),
         }
-    save_npy(outdir / f"{stem}_looks.npy", looks)
-    save_npy(outdir / f"{stem}_mask.npy", mask)
+    if looks is not None:
+        save_npy(outdir / f"{stem}_looks.npy", looks)
+    if mask is not None:
+        save_npy(outdir / f"{stem}_mask.npy", mask)
     payload["polarizations_present"] = sorted(arrays)
     if looks is not None:
         save_npy(outdir / f"{stem}_looks.npy", looks)

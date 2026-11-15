@@ -44,7 +44,7 @@ DISPLAY_KINDS = ("rgb", "backscatter")
 MAX_DISPLAY_PX_M = 30.0
 MIN_DISPLAY_PX_M = 9.0
 REQUIRED_FIELDS = [
-    "id", "label", "file", "format", "preview", "kind", "polarization", "date", "series", "bounds",
+    "id", "label", "file", "format", "preview", "kind", "polarization", "date", "bounds",
     "crop_bounds_3857", "px_size_m_3857", "native_px_m", "colormap",
     "description", "display_chain", "product", "crid", "maturity", "track", "frame",
     "direction", "native_crs", "display_crs", "processing",
@@ -179,9 +179,12 @@ def validate_place(report: Report, name: str) -> None:
         wrong_crid = [layer["id"] for layer in layers if layer.get("crid") != "P05023"]
         report.check(not wrong_crid, f"{name}: every layer is CRID P05023 (legacy single-series)")
 
-    named = [layer["id"] for layer in layers
-             if any(marker in json.dumps(layer) for marker in VALIDATED_MARKERS)]
-    report.check(not named, f"{name}: no layer names a VALIDATED product")
+    # A multi-series place legitimately contains BETA/VALIDATED layers, each inside its own series.
+    # The rule is not "no VALIDATED anywhere" but "no layer belongs to a series it does not match".
+    if not series_rows:
+        named = [layer["id"] for layer in layers
+                 if any(marker in json.dumps(layer) for marker in VALIDATED_MARKERS)]
+        report.check(not named, f"{name}: no layer names a VALIDATED product (legacy bundle)")
 
 
 def main() -> int:

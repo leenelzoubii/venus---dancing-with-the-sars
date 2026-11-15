@@ -58,14 +58,16 @@ def mosaic_items(items: list[dict]) -> dict:
             valid = np.isfinite(array)
             block[valid] += array[valid]
             counts[valid] += 1
+        # A missing mask (an interrupted product or an unreadable dataset) must not void that whole
+        # frame: fall back to "valid wherever the data is finite", which is stricter than ignoring it.
         if item.get("mask") is not None:
             m = np.asarray(item["mask"], dtype="uint8")
-            h, w = m.shape
             good = (m != 0) & (m != 255)
-            mask_any[row0:row0 + h, col0:col0 + w] |= good
-            mask_sum[row0:row0 + h, col0:col0 + w] = np.where(
-                good, 1, mask_sum[row0:row0 + h, col0:col0 + w]
-            )
+        else:
+            first = next(iter(item["arrays"].values()))
+            good = np.isfinite(np.asarray(first))
+        h, w = good.shape
+        mask_any[row0:row0 + h, col0:col0 + w] |= good
 
     arrays = {}
     for pol in pols:

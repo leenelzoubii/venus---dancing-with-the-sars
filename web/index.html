@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap">
   <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
-  <link rel="stylesheet" href="css/app.css?v=20261115d">
+  <link rel="stylesheet" href="css/app.css?v=20261115e">
 </head>
 <body>
   <a class="skip-link" href="#map">Skip to the map</a>
@@ -153,7 +153,7 @@
         <label class="field-label" for="date-select" data-i18n="date_label">Acquisition date</label>
         <select id="date-select" class="select" aria-label="Acquisition date"></select>
         <label class="field-label" for="time-range" data-i18n="time_label">Step through the series</label>
-        <input type="range" id="time-range" class="range" min="0" max="0" step="1" value="0">
+        <input type="range" id="time-range" class="range" min="0" max="0" step="1" value="0" aria-label="Step through the series">
         <ol id="time-ticks" class="time-ticks" aria-hidden="true"></ol>
         <div class="play-row">
           <button type="button" id="play-btn" class="btn" aria-pressed="false" data-i18n="play">Play</button>
@@ -314,13 +314,13 @@
   </noscript>
 
   <!-- Classic scripts only, in dependency order. No modules, no fetch(): works from file://. -->
-  <script src="js/strings.js?v=20261115d"></script>
+  <script src="js/strings.js?v=20261115e"></script>
   <script src="data/patches.js"></script>
   <script src="data/places.js"></script>
   <script src="data/license_and_attribution.js"></script>
   <script src="vendor/leaflet/leaflet.js"></script>
-  <script src="js/charts.js?v=20261115d"></script>
-  <script src="js/ui.js?v=20261115d"></script>
-  <script src="js/app.js?v=20261115d"></script>
+  <script src="js/charts.js?v=20261115e"></script>
+  <script src="js/ui.js?v=20261115e"></script>
+  <script src="js/app.js?v=20261115e"></script>
 </body>
 </html>

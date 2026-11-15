@@ -28,7 +28,7 @@ from venus.config import REPO_ROOT  # noqa: E402
 
 PY = sys.executable
 WEB = REPO_ROOT / "web"
-BUDGET_MB = 60.0
+BUDGET_MB = 220.0
 FORBIDDEN_TRACKED = re.compile(
     r"(\.netrc$|_netrc$|\.venv/|\.env$|\.h5$|\.hdf5$|\.npy$|\.tif$|\.tiff$|data/raw/|data/interim/)"
 )

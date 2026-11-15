@@ -507,3 +507,26 @@ returns tiles stamped "API KEY REQUIRED" without an account, so it is not used. 
 method 4, not 6: method 6 took 87 s per layer and method 4 stays far inside budget. Wadi Rum's
 display resolution uses the documented 1.5x-native fallback (17.2 m) to keep its layers under
 700 KB; every other place is at 2x native (11.7 m).
+
+## 2026-11-15 - Whole lake, series, context and themes (v3)
+
+**Series is the unit of comparison.** (maturity, CRID, track, direction, polarizations). Layers carry
+their series id; the validator refuses a layer whose CRID differs from its series. BETA (X05009) is
+browse-only, PROVISIONAL (P05023) is analysed with >= 5 dates, VALIDATED (P05036) is browse until it has
+5 dates. Statistics are computed once, for one series, and `water_stats.json` names it.
+
+**Whole-lake window.** dead_sea_full (the configured lake polygon) is the default place. One frame
+leaves ~31 % of the AOI outside the swath; frames 151/072 and 151/073 of the same acquisition are
+mosaicked in native UTM (mean where both valid), which raises valid coverage to 99.9 %. The display
+chain caps the longest side at 3600 px and the pixel budget at 4.5 M, landing at 28.3 m for this place;
+analysis stays at 60 m / 20 m with the unchanged method. Display and analysis-derived layers now share
+the SAME rectangle so swipe and compare cannot drift.
+
+**NASA context.** GIBS publishes one NISAR GCOV layer, a 3-day best-available mosaic (2026-11-12..14 at
+the time of writing). The context layer is drawn only inside that window and never feeds a number; for
+any other date the legend says so plainly. No historical GIBS mosaic exists to compare against our
+series.
+
+**Themes and motion.** Void (amber/cyan) and Aurora (mint/violet) via CSS variables with localStorage;
+prefers-reduced-motion and an explicit toggle disable the intro, cross-fade sweep, fly-to and twinkle.
+The mission timeline is one lane per series with the documented instrument gap shaded.

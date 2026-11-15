@@ -847,14 +847,15 @@ body[data-theme="aurora"] {
   pointer-events: none;
 }
 .timeline-dot {
-  position: absolute; top: 4px; width: 8px; height: 8px; margin-left: -4px;
-  border-radius: 50%; border: 1px solid var(--hairline); cursor: pointer;
+  position: absolute; top: -4px; width: 24px; height: 24px; margin-left: -12px;
+  border-radius: 50%; border: 0; background: transparent; cursor: pointer;
   transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
 }
 .timeline-dot:hover { transform: scale(1.35); }
-.timeline-dot.beta { background: #B69CFF; }
-.timeline-dot.provisional { background: var(--accent); }
-.timeline-dot.validated { background: var(--accent-2); }
+.timeline-dot::after { content: ""; position: absolute; inset: 8px; border-radius: 50%; background: var(--dot, var(--accent-2)); }
+.timeline-dot.beta { --dot: #B69CFF; }
+.timeline-dot.provisional { --dot: var(--accent); }
+.timeline-dot.validated { --dot: var(--accent-2); }
 .timeline-dot[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--glow); transform: scale(1.3); }
 .timeline-gap {
   position: absolute; top: 0; bottom: 0; background:

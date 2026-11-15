@@ -162,9 +162,11 @@ def main() -> int:
     while disp_w * disp_h > 4_500_000:
         display_res *= 1.15
         disp_t, disp_w, disp_h = dx.grid_for_rect(crop, display_res)
-    analysis_crop = dx.aoi_rect_3857(area.wkt, 0.0)
-    g60_t, g60_w, g60_h = dx.grid_for_rect(analysis_crop, 60.0)
-    g20_t, g20_w, g20_h = dx.grid_for_rect(analysis_crop, 20.0)
+    # Analysis-derived layers use the SAME rectangle as the display layers (at 60 m / 20 m), so a
+    # swipe between the false colour and the change/water masks lines up exactly. The numbers come
+    # from the native arrays and are unaffected by this choice.
+    g60_t, g60_w, g60_h = dx.grid_for_rect(crop, 60.0)
+    g20_t, g20_w, g20_h = dx.grid_for_rect(crop, 20.0)
     bounds = wx.web_bounds_lonlat(disp_t, disp_h, disp_w)
     print(f"{name:16s} series {len(series)}  crop {crop_fraction:.3f}  res {display_res:.1f} m  "
           f"grid {disp_w}x{disp_h}")

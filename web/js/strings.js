@@ -230,6 +230,7 @@ window.VENUS_STRINGS = {
     maturity_provisional_text: "Calibrated and partly validated; processed with CRID P05023.",
     maturity_validated_text: "Fully calibrated; available from 21 Oct 2026. A 2027 reprocessing campaign will supersede earlier versions.",
     maturity_dates_so_far: "{n} dates so far in this series.",
-    browse_only_note: "No statistics are computed for this series."
+    browse_only_note: "No statistics are computed for this series.",
+    series_no_stats: "This series is browse-only: no water area, offset or change statistic is computed from it."
   }
 };

@@ -177,3 +177,52 @@ lanes, documented-gap and >=20-day gap shading, maturity badge (BETA/PROVISIONAL
 series explainer panel, Shift+arrows to change series, reduce-motion toggle, count of dates per series.
 The existing date slider remains the keyboard scrubber. Cut for budget: sweep reveal, count-up
 numbers, per-series chart colours (charts remain the analysed series only, labelled as such).
+## FINISH - v3 numbers and gates
+
+Built dead_sea_full: 79 layers, 3 calibration series, 28.3 m display pixels (longest side 2722 px,
+budget-capped), bounds [[31.2950, 35.3014], [31.8839, 35.6313]].
+- PROVISIONAL 151-DESC-P05023: 9 dates, 2026-06-24..2026-10-10, analysed (change, water).
+- BETA 151-DESC-X05009: 4 dates, 2025-11-08..2026-01-07, browse only (2025-10-27 dropped: one frame
+  incomplete, valid 0.82).
+- VALIDATED 151-DESC-P05036: 2 dates, 2026-10-22..2026-11-03, browse only ("2 dates so far").
+Whole web/data: 107.8 MB (< 220 MB). Largest layer 874 KB (< 900 KB whole-lake budget). WebP q82/75/68
+normally, 16 display layers re-encoded at q48 without resampling to meet the per-layer budget.
+
+Primary water numbers (pipeline output, method B on HV; NOT tuned):
+- open water area 696.4 to 872.8 km2 across the nine PROVISIONAL dates;
+- the +/-1.5 dB band on the first date spans 432.4 to 1159.1 km2, i.e. the band is wider than any
+  date-to-date difference in this series, so the honest reading is "no change larger than the spread";
+- change-detection limit: 4.0 dB (HV), 1.54 dB (HH).
+
+| gate | result |
+|---|---|
+| G0 georeferencing (centre inside AOI +5 km) | PASS (validator + pytest) |
+| G1 pixel sizes and per-layer budgets | PASS (28.3 m whole lake, 11.7 m others; max 874 KB) |
+| G2 existing places' statistics unchanged | PASS (12/12 files identical except generated_utc) |
+| G3 series integrity (no mixed CRID/maturity) | PASS (97 validator checks) |
+| G4 zero console errors | PASS (dead_sea_full 3 chips/15 dots; dead_sea_east legacy) |
+| G5 Lighthouse accessibility | PASS (desktop 97, mobile 96; target-size only remaining) |
+| G6 lake not touching the display edge | FAIL - see below |
+| pytest / scripts 06 / 07 / 99 | 76 / 97 / 9 / 10 passed, 0 failed |
+
+G6 BLOCKED: `scripts/18_check_lake_edge.py` finds open-water pixels on the display border on all 9
+PROVISIONAL dates. Cause: the configured AOI polygon (and therefore the fetched window) ends at the
+lake's own bbox, most likely clipping the southern evaporation ponds; there is no margin left to trim
+to. Fix needs a widened AOI (about +0.05 deg south/east) and a refetch of both frames for each date
+(about 2 h), which did not fit this run. The displayed lake is complete to the AOI boundary; the
+statistics cover exactly that window and the app outlines it as the analysis area.
+
+## MORNING TODO (v3)
+1. Widen dead_sea_full's polygon south/east by ~0.05 deg, refetch (both frames per date), rebuild, and
+   re-run scripts/18 until G6 passes. Expect ~2 h of downloads.
+2. Check the water area against the published Dead Sea area (about 605 km2). Our 696-873 km2 suggests
+   the two-step threshold is picking up dark terrain or ponds; review the threshold per date, do not
+   tune it to a target number.
+3. Fetch the one dropped BETA date (2025-10-27) once its second frame completes.
+4. GIBS: the advertised mosaic returned a fully transparent PNG over the Dead Sea on 2026-11-13, so the
+   context layer is currently only a labelled, inert option. Re-check GIBS coverage later.
+5. Lighthouse target-size on the timeline dots: 24 px targets still touch on the mobile width; widen the
+   axis or thin the dots if you want 100.
+6. Vercel: previous run's first deployment became production; previews are login-protected. Promote or
+   recreate the project by hand.
+'@; "log finish written"

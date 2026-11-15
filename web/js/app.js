@@ -73,6 +73,9 @@
   // What the controls ask for at one date. Returns {def, note}; note explains an empty result.
   function resolve(layerKind, pol, index) {
     var date = M.dates[index];
+    if ((layerKind === "water" || layerKind === "change") && !activeSeries().analysis) {
+      return { def: null, note: UI.t("series_no_stats") };
+    }
     if (layerKind === "rgb") {
       return { def: find("rgb", "HH+HV", date), note: null };
     }
@@ -136,6 +139,12 @@
     applySeriesDates();
     state.index = index === undefined ? M.dates.length - 1 : Math.max(0, Math.min(M.dates.length - 1, index));
     state.leftIndex = 0;
+    // A browse-only series has no water or change layers; switch to the false colour instead of
+    // leaving an empty map under a control the reader cannot use.
+    if (!activeSeries().analysis && (state.layer === "water" || state.layer === "change")) {
+      state.layer = "rgb";
+      UI.setLayer("rgb");
+    }
     preload.generation += 1;
     UI.initDates(M.dates, state.index, M.reference_date, UI.outageIndices(M.dates));
     render();
@@ -145,6 +154,7 @@
     renderContext();
     renderCharts();
     updateSeriesNote();
+    renderPlaceCard();
   }
 
   function updateSeriesNote() {
