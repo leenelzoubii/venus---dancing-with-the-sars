@@ -1,8 +1,8 @@
 {
- "generated_utc": "2026-11-14T18:57:44Z",
- "active": "dead_sea_east",
+ "generated_utc": "2026-11-15T01:04:23Z",
+ "active": "dead_sea_full",
  "processing_note": "Only processed places are listed. Each has radar dates, change products and a water series where the polarization exists.",
- "default_wkt": "POLYGON((35.500 31.340, 35.600 31.340, 35.600 31.560, 35.500 31.560, 35.500 31.340))",
+ "default_wkt": "POLYGON((35.2897 31.2872, 35.6384 31.2872, 35.6494 31.5223, 35.6384 31.7754, 35.5696 31.8795, 35.2897 31.7754, 35.2897 31.2872))",
  "places": [
   {
    "name": "dead_sea_east",
@@ -24,6 +24,33 @@
    "bundle": "data/dead_sea_east/",
    "coverage": {
     "products": 41,
+    "stack": "100/17/ASCENDING",
+    "dates": 9,
+    "first": "2026-06-21",
+    "last": "2026-10-19",
+    "note": ""
+   }
+  },
+  {
+   "name": "dead_sea_full",
+   "title": "Dead Sea - whole lake",
+   "story": "The whole Dead Sea outline, both shores. Shows the lake as one object, including the evaporation ponds in the south, but at a coarser effective resolution per screen.",
+   "coord_note": "Supplied by the team; valid as given. Large area (~30 x 60 km), so a subset window will be much bigger.",
+   "bounds": [
+    [
+     31.2872,
+     35.2897
+    ],
+    [
+     31.8795,
+     35.6494
+    ]
+   ],
+   "wkt": "POLYGON((35.2897 31.2872, 35.6384 31.2872, 35.6494 31.5223, 35.6384 31.7754, 35.5696 31.8795, 35.2897 31.7754, 35.2897 31.2872))",
+   "processed": true,
+   "bundle": "data/dead_sea_full/",
+   "coverage": {
+    "products": 45,
     "stack": "100/17/ASCENDING",
     "dates": 9,
     "first": "2026-06-21",

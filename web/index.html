@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap">
   <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
-  <link rel="stylesheet" href="css/app.css?v=20261115a">
+  <link rel="stylesheet" href="css/app.css?v=20261115c">
 </head>
 <body>
   <a class="skip-link" href="#map">Skip to the map</a>
@@ -26,7 +26,11 @@
       <span class="mark" data-i18n="app_mark">Team Venus</span>
       <h1 class="title" data-i18n="app_title">Seeing the Dead Sea through the clouds</h1>
     </div>
-    <span class="badge badge-provisional" data-i18n="badge_provisional">PROVISIONAL DATA</span>
+    <div class="header-tools">
+      <span id="maturity-badge" class="badge badge-provisional" data-i18n="badge_provisional">PROVISIONAL DATA</span>
+      <button type="button" class="theme-swatch" data-theme-set="void" aria-label="Void theme" title="Void"></button>
+      <button type="button" class="theme-swatch theme-swatch-aurora" data-theme-set="aurora" aria-label="Aurora theme" title="Aurora"></button>
+    </div>
   </header>
 
   <main class="layout" id="main">
@@ -49,6 +53,9 @@
       <button type="button" id="open-panel" class="floating-btn floating-btn-right" aria-controls="panel-heading">Panel</button>
 
       <div id="legend-inset" class="legend-inset"></div>
+      <div id="series-row" class="series-row" role="group" aria-label="Calibration series"></div>
+      <div id="mission-timeline" class="mission-timeline" aria-label="Acquisition timeline"></div>
+      <p id="context-note" class="notice context-note" role="status" hidden></p>
       <div id="timebar" class="timebar"></div>
 
       <div class="locator" id="locator">
@@ -111,6 +118,10 @@
         <label class="choice choice-check"><input type="checkbox" id="labels-toggle" checked><span data-i18n="labels_toggle">Place labels</span></label>
         <label class="choice choice-check"><input type="checkbox" id="dim-toggle" checked><span data-i18n="dim_toggle">Dim satellite under the radar</span></label>
         <label class="choice choice-check"><input type="checkbox" id="aoi-toggle" checked><span data-i18n="aoi_toggle">NISAR analysis area</span></label>
+        <label class="choice choice-check"><input type="checkbox" id="context-toggle" checked><span data-i18n="context_toggle">NASA Worldview context</span></label>
+        <label class="field-label" for="context-opacity" data-i18n="context_opacity">Context opacity</label>
+        <input type="range" id="context-opacity" class="range" min="0" max="100" step="5" value="60">
+        <label class="choice choice-check"><input type="checkbox" id="motion-toggle"><span data-i18n="motion_toggle">Reduce motion</span></label>
       </fieldset>
 
       <fieldset class="field">
@@ -238,6 +249,17 @@
         </ul>
       </details>
 
+      <details class="card" id="series-panel">
+        <summary data-i18n="series_explain_title">Calibration series</summary>
+        <p class="muted" data-i18n="series_rule">Series are never mixed: no change, offset or water number combines two of them.</p>
+        <dl class="info-list">
+          <dt>BETA</dt><dd data-i18n="maturity_beta_text"></dd>
+          <dt>PROVISIONAL</dt><dd data-i18n="maturity_provisional_text"></dd>
+          <dt>VALIDATED</dt><dd data-i18n="maturity_validated_text"></dd>
+        </dl>
+        <p class="muted" id="series-dates-note"></p>
+      </details>
+
       <details class="card">
         <summary data-i18n="whatis_title">What am I looking at?</summary>
         <p data-i18n="whatis_body"></p>
@@ -278,18 +300,27 @@
     <p class="credit" data-i18n="basemap_attribution">Basemap attribution.</p>
   </footer>
 
+  <div id="intro" class="intro" aria-hidden="true">
+    <svg viewBox="0 0 120 120" width="120" height="120" focusable="false">
+      <circle class="intro-orbit" cx="60" cy="60" r="34" fill="none" stroke="var(--accent)" stroke-width="1"/>
+      <ellipse class="intro-orbit intro-orbit-2" cx="60" cy="60" rx="52" ry="16" fill="none"
+               stroke="var(--accent)" stroke-width=".8" transform="rotate(-24 60 60)"/>
+      <circle class="intro-dot" cx="60" cy="60" r="7" fill="var(--accent)"/>
+    </svg>
+  </div>
+
   <noscript>
     <p class="notice">This page needs JavaScript to draw the map.</p>
   </noscript>
 
   <!-- Classic scripts only, in dependency order. No modules, no fetch(): works from file://. -->
-  <script src="js/strings.js?v=20261115a"></script>
+  <script src="js/strings.js?v=20261115c"></script>
   <script src="data/patches.js"></script>
   <script src="data/places.js"></script>
   <script src="data/license_and_attribution.js"></script>
   <script src="vendor/leaflet/leaflet.js"></script>
-  <script src="js/charts.js?v=20261115a"></script>
-  <script src="js/ui.js?v=20261115a"></script>
-  <script src="js/app.js?v=20261115a"></script>
+  <script src="js/charts.js?v=20261115c"></script>
+  <script src="js/ui.js?v=20261115c"></script>
+  <script src="js/app.js?v=20261115c"></script>
 </body>
 </html>

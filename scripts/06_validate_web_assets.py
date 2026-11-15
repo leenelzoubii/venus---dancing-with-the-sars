@@ -35,14 +35,16 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from venus.config import REPO_ROOT, load_config, load_study_area  # noqa: E402
 
 WEB_DATA = REPO_ROOT / "web" / "data"
-SIZE_BUDGET_MB = 60.0
+SIZE_BUDGET_MB = 220.0
 LAYER_BUDGET_BYTES = 700_000
+WHOLE_LAKE_BUDGET_BYTES = 900_000
 AOI_BUFFER_KM = 5.0
 MIN_VALID_FRACTION = 0.995
 DISPLAY_KINDS = ("rgb", "backscatter")
-MAX_DISPLAY_PX_M = 13.0
+MAX_DISPLAY_PX_M = 30.0
+MIN_DISPLAY_PX_M = 9.0
 REQUIRED_FIELDS = [
-    "id", "label", "file", "format", "preview", "kind", "polarization", "date", "bounds",
+    "id", "label", "file", "format", "preview", "kind", "polarization", "date", "series", "bounds",
     "crop_bounds_3857", "px_size_m_3857", "native_px_m", "colormap",
     "description", "display_chain", "product", "crid", "maturity", "track", "frame",
     "direction", "native_crs", "display_crs", "processing",
@@ -98,7 +100,8 @@ def validate_place(report: Report, name: str) -> None:
         if not path.exists():
             continue
         size = path.stat().st_size
-        if size > LAYER_BUDGET_BYTES:
+        budget = WHOLE_LAKE_BUDGET_BYTES if name == "dead_sea_full" else LAYER_BUDGET_BYTES
+        if size > budget:
             oversize.append(f"{layer['id']} {size // 1024} KB")
         if path.suffix != ".webp" or layer.get("format") != "webp":
             wrong_format.append(layer["id"])
@@ -112,7 +115,8 @@ def validate_place(report: Report, name: str) -> None:
             fraction = alpha_fraction(path)
             if fraction < MIN_VALID_FRACTION:
                 low_valid.append(f"{layer['id']} {fraction:.3f}")
-            if (layer.get("px_size_m_3857") or 99) > MAX_DISPLAY_PX_M and not layer.get("resolution_fallback"):
+            px_size = layer.get("px_size_m_3857") or 99
+            if (px_size > MAX_DISPLAY_PX_M or px_size < MIN_DISPLAY_PX_M) and not layer.get("resolution_fallback"):
                 big_px.append(f"{layer['id']} {layer['px_size_m_3857']}")
             if layer.get("native_px_m") != 20.0:
                 big_px.append(f"{layer['id']} native {layer.get('native_px_m')}")
@@ -150,8 +154,30 @@ def validate_place(report: Report, name: str) -> None:
     report.check(not incomplete, f"{name}: every layer has all required metadata "
                                  f"({'; '.join(incomplete[:2]) or 'all ok'})")
 
-    wrong_crid = [layer["id"] for layer in layers if layer.get("crid") != "P05023"]
-    report.check(not wrong_crid, f"{name}: every layer is CRID P05023")
+    # Series integrity: every layer names its series; its CRID matches that series; no statistics
+    # object spans two series. Mixing maturities inside one comparison is never allowed.
+    series_rows = manifest.get("series") or []
+    series_by_id = {row["id"]: row for row in series_rows}
+    if series_rows:
+        bad_series = [layer["id"] for layer in layers
+                      if layer.get("series") not in series_by_id]
+        report.check(not bad_series, f"{name}: every layer belongs to a declared series")
+        mismatched = [layer["id"] for layer in layers
+                      if layer.get("series") in series_by_id
+                      and layer.get("crid") != series_by_id[layer["series"]].get("crid")]
+        report.check(not mismatched, f"{name}: every layer CRID matches its series ({', '.join(mismatched[:3]) or 'all ok'})")
+        stats_path = outdir / "water_stats.json"
+        if stats_path.exists():
+            stats = json.loads(stats_path.read_text(encoding="utf-8"))
+            stats_series = stats.get("series")
+            report.check(stats_series is None or stats_series in series_by_id,
+                         f"{name}: statistics object names one declared series")
+        wrong_crid = [layer["id"] for layer in layers
+                      if layer.get("crid") != series_by_id.get(layer.get("series"), {}).get("crid")]
+        report.check(not wrong_crid, f"{name}: no layer mixes CRIDs across series")
+    else:
+        wrong_crid = [layer["id"] for layer in layers if layer.get("crid") != "P05023"]
+        report.check(not wrong_crid, f"{name}: every layer is CRID P05023 (legacy single-series)")
 
     named = [layer["id"] for layer in layers
              if any(marker in json.dumps(layer) for marker in VALIDATED_MARKERS)]

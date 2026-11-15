@@ -100,7 +100,7 @@ def main() -> int:
         for pattern in KEY_PATTERNS:
             used.update(pattern.findall(text))
     # Dynamic keys are built from a step number ("story_" + key + "_title"), so the bare prefix is allowed.
-    dynamic = {"story_", "story_title_", "story_body_"}
+    dynamic = {"story_", "story_title_", "story_body_", "badge_"}
     unknown = sorted(k for k in used if k not in keys and k not in dynamic)
     (failures if unknown else passes).append(
         f"every string key used in code is in strings.js ({len(used)} used)"

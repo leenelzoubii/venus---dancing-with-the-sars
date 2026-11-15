@@ -53,6 +53,13 @@ def gdal_env() -> Env:
     )
 
 
+def save_npy(path: Path, array) -> None:
+    """Write atomically: a reader must never see a half-written array."""
+    temporary = path.with_name(path.stem + ".tmp.npy")
+    np.save(temporary, array)
+    os.replace(temporary, path)
+
+
 def sub(url: str, name: str) -> str:
     return 'HDF5:"/vsicurl/' + url + '"://' + GCOV.strip("/") + "/" + name
 
@@ -184,21 +191,21 @@ def fetch_one(row, area, outdir: Path, pols: list[str]) -> None:
         "layers": {},
     }
     for pol, arr in arrays.items():
-        np.save(outdir / f"{stem}_{pol}.npy", arr)
+        save_npy(outdir / f"{stem}_{pol}.npy", arr)
         payload["layers"][pol] = {
             "dataset": f"{GCOV}/{ {'HH': 'HHHH', 'HV': 'HVHV'}[pol] }",
             "shape": list(arr.shape),
             "dtype": "float32",
             "finite_fraction": float(np.isfinite(arr).mean()),
         }
-    np.save(outdir / f"{stem}_looks.npy", looks)
-    np.save(outdir / f"{stem}_mask.npy", mask)
+    save_npy(outdir / f"{stem}_looks.npy", looks)
+    save_npy(outdir / f"{stem}_mask.npy", mask)
     payload["polarizations_present"] = sorted(arrays)
     if looks is not None:
-        np.save(outdir / f"{stem}_looks.npy", looks)
+        save_npy(outdir / f"{stem}_looks.npy", looks)
         payload["layers"]["numberOfLooks"] = {"shape": list(looks.shape), "dtype": "float32"}
     if mask is not None:
-        np.save(outdir / f"{stem}_mask.npy", mask)
+        save_npy(outdir / f"{stem}_mask.npy", mask)
         payload["layers"]["mask"] = {"shape": list(mask.shape), "dtype": "uint8"}
     sidecar.write_text(json.dumps(payload, indent=1), encoding="utf-8")
 

@@ -75,10 +75,24 @@ def group_dates(items: list[dict]) -> list[dict]:
                int(meta.get("track", 0)), str(meta.get("direction", "")), pol_token)
         by_key[key].append(item)
     cards = []
+    dropped = []
     for key, group in sorted(by_key.items()):
         card = mosaic_items(group)
         card["series_key"] = key[1:]
+        valid = None
+        for pol, array in card["arrays"].items():
+            v = dx.valid_native(array, card["mask"])
+            valid = v if valid is None else (valid & v)
+        fraction = float(valid.mean()) if valid is not None else 0.0
+        if fraction < 0.90:
+            # A date whose second frame is not cached yet covers only part of the lake. Never draw it:
+            # a half-swath image would look like a shoreline that is not there.
+            dropped.append(f"{key[0]}({fraction:.2f})")
+            continue
+        card["valid_fraction"] = fraction
         cards.append(card)
+    if dropped:
+        print(f"  dropped {len(dropped)} incomplete date(s): {', '.join(dropped[:8])}")
     return cards
 
 
@@ -291,6 +305,7 @@ def main() -> int:
         "dates": [c["meta"]["acquisition_date"] for c in primary_group],
         "polarizations": sorted(set.intersection(*[set(c["arrays"]) for c in primary_group])),
         "series": series_meta, "primary_series": primary,
+        "scales": {"change_db_symmetric": (stats_payload or {}).get("change_limits", {})},
         "layers": layers, "bounds": bounds,
         "notes": [f"{len(series)} calibration series; dates are never mixed across series.",
                   "BETA is browse-only; no statistics are computed from it."],
@@ -414,6 +429,11 @@ def build_analysis(name, sid, group, pols, src_crs, native_px, outdir, layers, b
                  description=f"Pixels that change water status within +/-{BAND_DB} dB of the threshold.",
                  offset_applied_db=offset_of.get((day, "HV"), 0.0), display_multilook=1,
                  processing=["as water", f"band = threshold +/-{BAND_DB} dB"])
+            edge = np.zeros(centre.shape, dtype=bool)
+            edge[0, :] = edge[-1, :] = True
+            edge[:, 0] = edge[:, -1] = True
+            if int((centre & edge).sum()) > 0:
+                print(f"  G6 note {day}: open-water pixels touch the analysis rectangle edge")
             water_rows.append({"date": day, "methods": {PRIMARY: {
                 "threshold_db": round(float(threshold), 2), "area_km2": round(water_km2, 2),
                 "low_km2": round(low_area, 2), "high_km2": round(high_area, 2)}}})

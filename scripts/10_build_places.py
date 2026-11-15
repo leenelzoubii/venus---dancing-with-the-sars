@@ -27,7 +27,7 @@ from venus.config import REPO_ROOT, load_config  # noqa: E402
 
 INTERIM = REPO_ROOT / "data" / "interim"
 WEB_DATA = REPO_ROOT / "web" / "data"
-PROCESSED_AOI = "dead_sea_east"   # kept for the coverage note; real flags come from the folders
+PROCESSED_AOI = "dead_sea_full"   # default place; overridden by config.active_aoi below
 
 
 def main() -> int:
@@ -62,12 +62,12 @@ def main() -> int:
 
     payload = {
         "generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "active": PROCESSED_AOI,
+        "active": config.get("active_aoi", PROCESSED_AOI),
         "processing_note": (
             "Only processed places are listed. Each has radar dates, change products and a water "
             "series where the polarization exists."
         ),
-        "default_wkt": wkt_of(config, PROCESSED_AOI),
+        "default_wkt": wkt_of(config, config.get("active_aoi", PROCESSED_AOI)),
         "places": [p for p in places if p["processed"]],
     }
     wx.write_json(WEB_DATA / "places.json", payload)

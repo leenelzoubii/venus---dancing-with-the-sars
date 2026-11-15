@@ -239,7 +239,11 @@ def main() -> int:
 
         layers = []
         by_day = {c["meta"]["acquisition_date"]: c for c in cards}
+        pol_token = "".join(sorted(pols))
+        this_series = (f"{meta0.get('track')}-{str(meta0.get('direction'))[:4].upper()}-"
+                       f"{meta0.get('crid')}-{pol_token}")
         base = {
+            "series": this_series,
             "product": "NISAR L2 GCOV", "crid": meta0.get("crid"), "maturity": meta0.get("maturity"),
             "track": meta0.get("track"), "frame": meta0.get("frame"), "direction": meta0.get("direction"),
             "native_crs": f"EPSG:{meta0['epsg']}" if meta0.get("epsg") else "recorded crs_wkt",
@@ -406,8 +410,19 @@ def main() -> int:
         verdict = ("No date-to-date change is larger than the measurement spread for this place."
                    if areas and (max(areas) - min(areas)) < 2.0 * BAND_DB * 10
                    else "Differences exist; check the band before calling any of them change.")
+        series_entry = {
+            "id": this_series,
+            "label": f"{meta0.get('maturity')} - track {meta0.get('track')} "
+                     f"{str(meta0.get('direction')).lower()}",
+            "maturity": meta0.get("maturity"), "crid": meta0.get("crid"),
+            "track": meta0.get("track"), "direction": meta0.get("direction"),
+            "polarizations": pols, "dates": dates,
+            "analysis": meta0.get("maturity") == "PROVISIONAL" and len(dates) >= 5,
+            "source": "ASF DAAC NISAR L2 GCOV; maturity rules from the NISAR Data User Guide",
+        }
         manifest = {
             "generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "series": [series_entry], "primary_series": this_series,
             "place": {"name": name, "title": area.title, "wkt": area.wkt},
             "study_area": {"name": name, "title": area.title, "wkt": area.wkt, "story": area.story},
             "product": "NISAR L2 GCOV", "crid": meta0.get("crid"), "maturity": meta0.get("maturity"),
@@ -428,6 +443,7 @@ def main() -> int:
         stats = {
             "generated_utc": manifest["generated_utc"], "primary_method": PRIMARY, "primary_polarization": "HV",
             "band_db": BAND_DB, "primary_verdict": verdict, "primary_caption": "",
+            "series": this_series,
             "dates": water_rows, "summary": {}, "change_detection": {},
         }
         wx.write_json(outdir / "water_stats.json", stats)

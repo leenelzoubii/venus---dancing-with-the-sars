@@ -27,6 +27,12 @@
   // (image/jpeg and image/png) on 2026-11-15.
   var DARK_URL = "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}";
   var DARK_LABELS_URL = "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}";
+  // NASA GIBS NISAR GCOV mosaic (context only). GetCapabilities on 2026-11-15 lists one layer id and
+  // a time extent of 2026-11-12..2026-11-14, so context is shown only for dates inside that window.
+  var GIBS_URL = "https://gibs.earthdata.nasa.gov/wms/epsg3857/best/wms.cgi";
+  var GIBS_LAYER = "NISAR_L2_Geocoded_Polarimetric_Covariance";
+  var GIBS_TIMES = ["2026-11-12", "2026-11-13", "2026-11-14"];
+
   var OPACITY = { rgb: 1, backscatter: 0.92, change: 0.9, water: 1, band: 1 };
   var PLAY_TOTAL_MS = 12000;           // the whole series plays in about 12 seconds
 
@@ -35,7 +41,8 @@
     place: "dead_sea_east", swipe: false, leftIndex: 0, leftLayer: "backscatter", split: 50,
     band: false, patches: false,
     playing: false, loop: false,
-    basemap: "dark", labels: true, aoiFrame: true, dim: true
+    basemap: "dark", labels: true, aoiFrame: true, dim: true,
+    seriesId: null, context: true, contextOpacity: 0.6
   };
   var map = null, bounds = null, overlays = null, patchLayer = null, selectedPatch = null;
   var slots = {
@@ -57,6 +64,7 @@
     for (var i = 0; i < M.layers.length; i++) {
       var layer = M.layers[i];
       if (layer.kind !== kind || layer.date !== date) continue;
+      if (state.seriesId && layer.series && layer.series !== state.seriesId) continue;
       if (kind === "water" || kind === "band" || kind === "rgb" || layer.polarization === pol) return layer;
     }
     return null;
@@ -99,6 +107,155 @@
     return debugOpacity !== null ? debugOpacity : OPACITY[def.kind];
   }
 
+  /* --------------------------------------------------------------- series */
+
+  function seriesList() {
+    if (M.series && M.series.length) return M.series;
+    return [{
+      id: M.primary_series || "series-1", label: M.maturity + " series", maturity: M.maturity,
+      crid: M.crid, track: M.track, direction: M.direction, dates: M.dates,
+      polarizations: M.polarizations, analysis: true
+    }];
+  }
+
+  function activeSeries() {
+    var list = seriesList();
+    for (var i = 0; i < list.length; i++) if (list[i].id === state.seriesId) return list[i];
+    return list[0];
+  }
+
+  function applySeriesDates() {
+    var series = activeSeries();
+    M.dates = series.dates.slice();
+    M.reference_date = series.dates[0];
+  }
+
+  function selectSeries(id, index) {
+    if (!id) return;
+    state.seriesId = id;
+    applySeriesDates();
+    state.index = index === undefined ? M.dates.length - 1 : Math.max(0, Math.min(M.dates.length - 1, index));
+    state.leftIndex = 0;
+    preload.generation += 1;
+    UI.initDates(M.dates, state.index, M.reference_date, UI.outageIndices(M.dates));
+    render();
+    renderSeriesChips();
+    renderTimeline();
+    updateBadge();
+    renderContext();
+    renderCharts();
+    updateSeriesNote();
+  }
+
+  function updateSeriesNote() {
+    var note = document.getElementById("series-dates-note");
+    if (!note) return;
+    var series = activeSeries();
+    note.textContent = UI.t("maturity_dates_so_far", { n: series.dates.length }) +
+      (series.analysis ? "" : " " + UI.t("browse_only_note"));
+  }
+
+  function updateBadge() {
+    var el = document.getElementById("maturity-badge");
+    if (!el) return;
+    var series = activeSeries();
+    var maturity = String(series.maturity || M.maturity || "PROVISIONAL").toUpperCase();
+    el.textContent = UI.t("badge_" + maturity.toLowerCase(), { n: series.dates.length });
+    el.className = "badge " + (maturity === "BETA" ? "badge-beta"
+      : maturity === "VALIDATED" ? "badge-validated" : "badge-provisional");
+  }
+
+  function renderSeriesChips() {
+    var host = document.getElementById("series-row");
+    if (!host) return;
+    host.innerHTML = "";
+    seriesList().forEach(function (series) {
+      var button = document.createElement("button");
+      button.type = "button";
+      button.className = "series-chip " + String(series.maturity).toLowerCase();
+      button.setAttribute("aria-pressed", String(series.id === state.seriesId));
+      var dot = document.createElement("span");
+      dot.className = "dot";
+      button.appendChild(dot);
+      button.appendChild(document.createTextNode(UI.t("series_chip", {
+        track: series.track, direction: String(series.direction).slice(0, 4).toLowerCase(),
+        maturity: series.maturity, n: series.dates.length
+      })));
+      button.addEventListener("click", function () { selectSeries(series.id); });
+      host.appendChild(button);
+    });
+  }
+
+  function renderTimeline() {
+    var host = document.getElementById("mission-timeline");
+    if (!host) return;
+    host.innerHTML = "";
+    var all = [];
+    seriesList().forEach(function (series) { all = all.concat(series.dates); });
+    if (!all.length) return;
+    var toTime = function (day) { return Date.parse(day + "T00:00:00Z"); };
+    var times = all.map(toTime);
+    var min = Math.min.apply(null, times);
+    var max = Math.max.apply(null, times.concat([Date.now()]));
+    var span = Math.max(max - min, 1);
+    var pos = function (day) { return (toTime(day) - min) / span * 100; };
+    var gapStart = "2026-07-27", gapEnd = "2026-08-10";
+
+    seriesList().forEach(function (series) {
+      var lane = document.createElement("div");
+      lane.className = "timeline-lane";
+      var label = document.createElement("span");
+      label.className = "lane-label";
+      label.textContent = series.track + " " + String(series.direction).slice(0, 4).toLowerCase() +
+        " " + String(series.maturity).slice(0, 4);
+      lane.appendChild(label);
+
+      function gap(a, b, title) {
+        var element = document.createElement("div");
+        element.className = "timeline-gap";
+        element.style.left = pos(a) + "%";
+        element.style.width = Math.max(0.3, pos(b) - pos(a)) + "%";
+        element.title = title;
+        lane.appendChild(element);
+      }
+      if (toTime(gapEnd) > min) gap(gapStart, gapEnd, UI.t("gap_instrument"));
+
+      series.dates.forEach(function (day, index) {
+        if (index > 0 && (toTime(day) - toTime(series.dates[index - 1])) / 86400000 >= 20) {
+          gap(series.dates[index - 1], day, UI.t("gap_computed"));
+        }
+        var dot = document.createElement("button");
+        dot.type = "button";
+        dot.className = "timeline-dot " + String(series.maturity).toLowerCase();
+        dot.style.left = pos(day) + "%";
+        dot.title = UI.fmtDate(day) + " - " + series.label;
+        dot.setAttribute("aria-label", UI.fmtDate(day) + ", " + series.label);
+        dot.setAttribute("aria-pressed",
+          String(series.id === state.seriesId && index === state.index));
+        dot.addEventListener("click", function () { selectSeries(series.id, index); });
+        lane.appendChild(dot);
+      });
+      host.appendChild(lane);
+    });
+
+    var months = document.createElement("div");
+    months.className = "timeline-months";
+    var cursor = new Date(min);
+    cursor.setUTCDate(1);
+    while (cursor.getTime() <= max) {
+      var mark = document.createElement("span");
+      mark.style.left = pos(cursor.toISOString().slice(0, 10)) + "%";
+      mark.textContent = cursor.toLocaleString("en", { month: "short", year: "2-digit", timeZone: "UTC" });
+      months.appendChild(mark);
+      cursor.setUTCMonth(cursor.getUTCMonth() + 3);
+    }
+    host.appendChild(months);
+    var legend = document.createElement("div");
+    legend.className = "timeline-legend";
+    legend.textContent = UI.t("timeline_legend");
+    host.appendChild(legend);
+  }
+
   /* ------------------------------------------------------------------ map */
 
   function placeInfo() {
@@ -133,7 +290,7 @@
       zoomControl: true
     });
     // Panes make the stacking explicit: radar images, then patches, then the label layer on top.
-    [["radarLeft", 401], ["radarMain", 402], ["radarBand", 403], ["venusPatches", 450], ["labels", 650]].forEach(function (p) {
+    [["nasaContext", 350], ["radarLeft", 401], ["radarMain", 402], ["radarBand", 403], ["venusPatches", 450], ["labels", 650]].forEach(function (p) {
       map.createPane(p[0]);
       map.getPane(p[0]).style.zIndex = String(p[1]);
     });
@@ -172,6 +329,31 @@
       return L.tileLayer(ESRI_LABELS_URL, { pane: "labels", maxZoom: 19, opacity: 1 });
     }
     return L.tileLayer(DARK_LABELS_URL, { pane: "labels", maxZoom: 19, opacity: 1, attribution: UI.t("basemap_attribution_carto") });
+  }
+
+  var contextLayer = null;
+
+  function renderContext() {
+    var note = document.getElementById("context-note");
+    if (!map) return;
+    if (contextLayer && map.hasLayer(contextLayer)) map.removeLayer(contextLayer);
+    contextLayer = null;
+    if (!state.context) {
+      if (note) note.hidden = true;
+      return;
+    }
+    var day = M.dates[state.index];
+    if (GIBS_TIMES.indexOf(day) >= 0) {
+      contextLayer = L.tileLayer.wms(GIBS_URL, {
+        layers: GIBS_LAYER, format: "image/png", transparent: true, version: "1.3.0",
+        time: day, opacity: state.contextOpacity, pane: "nasaContext",
+        attribution: UI.t("context_attribution"), maxZoom: 14
+      }).addTo(map);
+      if (note) note.hidden = true;
+    } else if (note) {
+      note.textContent = UI.t("context_unavailable", { from: GIBS_TIMES[0], to: GIBS_TIMES[GIBS_TIMES.length - 1] });
+      note.hidden = false;
+    }
   }
 
   function initBasemap() {
@@ -514,6 +696,30 @@
     if (openPanel) openPanel.addEventListener("click", function () {
       document.querySelector(".panel").classList.toggle("is-collapsed");
     });
+    var contextToggle = document.getElementById("context-toggle");
+    if (contextToggle) contextToggle.addEventListener("change", function () {
+      state.context = contextToggle.checked;
+      renderContext();
+    });
+    var contextOpacity = document.getElementById("context-opacity");
+    if (contextOpacity) contextOpacity.addEventListener("input", function () {
+      state.contextOpacity = Number(contextOpacity.value) / 100;
+      if (contextLayer) contextLayer.setOpacity(state.contextOpacity);
+    });
+    var motionToggle = document.getElementById("motion-toggle");
+    if (motionToggle) {
+      motionToggle.checked = state.reduceMotion;
+      motionToggle.addEventListener("change", function () {
+        state.reduceMotion = motionToggle.checked;
+        document.body.classList.toggle("reduce-motion", state.reduceMotion);
+        try { localStorage.setItem("venus-reduce-motion", state.reduceMotion ? "1" : "0"); } catch (e) {}
+      });
+      document.body.classList.toggle("reduce-motion", state.reduceMotion);
+    }
+    document.querySelectorAll("[data-theme-set]").forEach(function (button) {
+      button.setAttribute("aria-pressed", String(button.getAttribute("data-theme-set") === state.theme));
+      button.addEventListener("click", function () { applyTheme(button.getAttribute("data-theme-set")); });
+    });
     if (window.matchMedia("(max-width: 1100px)").matches) {
       document.querySelector(".controls").classList.add("is-collapsed");
       document.querySelector(".panel").classList.add("is-collapsed");
@@ -581,11 +787,11 @@
     },
     {
       key: "2", state: { layer: "backscatter", pol: "HV", swipe: false, band: false, patches: false },
-      index: 0, view: { center: [31.45, 35.56], zoom: 12 }
+      index: 0, view: { center: [31.55, 35.47], zoom: 11 }
     },
     {
       key: "3", state: { layer: "water", pol: "HV", swipe: false, band: false, patches: false },
-      index: "last", view: { center: [31.45, 35.55], zoom: 12 }
+      index: "last", view: { center: [31.55, 35.47], zoom: 11 }
     },
     {
       key: "4", state: { layer: "water", pol: "HV", swipe: true, band: true, patches: false },
@@ -603,6 +809,9 @@
   var storyIndex = -1;
 
   function startStory() {
+    // The story explains the analysed series; switch to it first so no step is empty.
+    var analysed = seriesList().filter(function (series) { return series.analysis; })[0];
+    if (analysed && analysed.id !== state.seriesId) selectSeries(analysed.id);
     document.getElementById("story-idle").hidden = true;
     document.getElementById("story-intro").hidden = true;
     document.getElementById("story-run").hidden = false;
@@ -669,6 +878,17 @@
     document.getElementById("story-exit").addEventListener("click", exitStory);
     document.addEventListener("keydown", function (event) {
       if (event.key === "Escape" && storyIndex >= 0) exitStory();
+      // Shift+arrows step between calibration series, never mixing their statistics.
+      if (event.shiftKey && (event.key === "ArrowLeft" || event.key === "ArrowRight")) {
+        var tag = (event.target && event.target.tagName) || "";
+        if (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA") return;
+        var list = seriesList();
+        if (list.length < 2) return;
+        var at = list.map(function (item) { return item.id; }).indexOf(state.seriesId);
+        var next = (at + (event.key === "ArrowRight" ? 1 : -1) + list.length) % list.length;
+        selectSeries(list[next].id);
+        event.preventDefault();
+      }
     });
   }
 
@@ -757,13 +977,27 @@
       rightLabel: r.def ? r.def.label + " " + UI.fmtDate(r.def.date) : ""
     };
     if (band) extra.bandText = bandCaption(band.date);
-    UI.renderLegend(r.def, M.scales.change_db_symmetric[state.pol], extra);
+    var changeScale = (M.scales && M.scales.change_db_symmetric) ? M.scales.change_db_symmetric[state.pol] : 1;
+    UI.renderLegend(r.def, changeScale, extra);
     UI.renderInfo(r.def, M, leftR ? leftR.def : null);
     setPatchesVisible(state.patches);
+    updateBadge();
+    renderTimeline();
+    renderContext();
+    updateSeriesNote();
 
     writeHash();
     preloadNeighbours();
     applyClip();
+  }
+
+  function renderCharts() {
+    var stats = V.place_water_stats;
+    if (!stats) return;
+    var chartManifest = Object.assign({}, M);
+    chartManifest.dates = (stats.dates || []).map(function (entry) { return entry.date; });
+    UI.renderAreaChart(stats, chartManifest, bandDb());
+    UI.renderOffsetChart(V.place_offsets, chartManifest);
   }
 
   // Caption for the detection-limit band on one date, built from water_stats numbers only.
@@ -857,6 +1091,7 @@
     params.set("date", M.dates[state.index]);
     params.set("layer", state.layer);
     params.set("pol", state.pol);
+    if (seriesList().length > 1) params.set("series", state.seriesId);
     if (state.swipe) {
       params.set("swipe", M.dates[state.leftIndex]);
       params.set("left", state.leftLayer);
@@ -873,6 +1108,11 @@
 
   function readHash() {
     var params = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+    var series = params.get("series");
+    if (series && seriesList().some(function (item) { return item.id === series; })) {
+      state.seriesId = series;
+      applySeriesDates();
+    }
     var date = params.get("date");
     if (date && M.dates.indexOf(date) >= 0) state.index = M.dates.indexOf(date);
     var layer = params.get("layer");
@@ -961,6 +1201,28 @@
     });
   }
 
+  function applyTheme(name) {
+    state.theme = name === "aurora" ? "aurora" : "void";
+    document.body.setAttribute("data-theme", state.theme);
+    try { localStorage.setItem("venus-theme", state.theme); } catch (e) {}
+    document.querySelectorAll("[data-theme-set]").forEach(function (button) {
+      button.setAttribute("aria-pressed", String(button.getAttribute("data-theme-set") === state.theme));
+    });
+  }
+
+  function showIntro() {
+    var intro = document.getElementById("intro");
+    if (!intro) return;
+    var seen = false;
+    try { seen = sessionStorage.getItem("venus-intro") === "1"; } catch (e) {}
+    if (seen || state.reduceMotion) { intro.parentNode.removeChild(intro); return; }
+    try { sessionStorage.setItem("venus-intro", "1"); } catch (e) {}
+    setTimeout(function () {
+      intro.classList.add("is-done");
+      setTimeout(function () { if (intro.parentNode) intro.parentNode.removeChild(intro); }, 700);
+    }, 1200);
+  }
+
   function boot() {
     UI.applyStrings();
     if (typeof L === "undefined") {
@@ -1003,14 +1265,25 @@
       if (slots.main.overlay) clearLoading();
     }, 120);
     var giveUp = setTimeout(clearLoading, 15000);
+    state.theme = (function () { try { return localStorage.getItem("venus-theme") || "void"; } catch (e) { return "void"; } })();
+    state.reduceMotion = (function () { try { return localStorage.getItem("venus-reduce-motion") === "1"; } catch (e) { return false; } })();
+    applyTheme(state.theme);
+    document.body.classList.toggle("reduce-motion", state.reduceMotion);
+    if (M.series && M.series.length) state.seriesId = M.primary_series || M.series[0].id;
+    applySeriesDates();
     state.index = M.dates.length - 1;
     state.layer = "rgb";
     readHash();
+    applySeriesDates();
+    state.index = Math.min(state.index, M.dates.length - 1);
     UI.initDates(M.dates, state.index, M.reference_date, UI.outageIndices(M.dates));
     applyStateToControls();
     UI.renderFooter(V.license);
-    UI.renderAreaChart(V.place_water_stats, M, bandDb());
-    UI.renderOffsetChart(V.place_offsets, M);
+    renderCharts();
+    renderSeriesChips();
+    renderTimeline();
+    updateBadge();
+    showIntro();
     UI.renderPatch(null, M);
     UI.renderFeatured(patchFeatures(), selectPatch);
     UI.initPlaces(V.places, selectPlace);
