@@ -140,7 +140,7 @@ To enable the live path on Vercel:
 
 ```text
 Project → Settings → Environment Variables → OPENAI_API_KEY = sk-...
-Optional: OPENAI_MODEL (default gpt-4o-mini), CHAT_ALLOWED_ORIGINS (comma-separated hosts)
+Optional: OPENAI_MODEL (default gpt-6.1-terra), CHAT_ALLOWED_ORIGINS (comma-separated hosts)
 ```
 
 Redeploy after adding it. `GET /api/chat` reports `{ ok, configured }`, so you can check whether the
