@@ -185,29 +185,26 @@
       : "badge-provisional");
   }
 
-  function updateSeriesDropdown() {
-    var host = document.getElementById("series-select");
+  function renderSeriesChips() {
+    var host = document.getElementById("series-row");
     if (!host) return;
     host.innerHTML = "";
     seriesList().forEach(function (series) {
-      var option = document.createElement("option");
-      option.value = series.id;
-      option.textContent = UI.t("series_chip", {
+      var button = document.createElement("button");
+      button.type = "button";
+      button.className = "series-chip " + String(series.maturity).toLowerCase();
+      button.setAttribute("aria-pressed", String(series.id === state.seriesId));
+      var dot = document.createElement("span");
+      dot.className = "dot";
+      button.appendChild(dot);
+      var polNote = series.polarization_note ? " - " + series.polarization_note : "";
+      button.appendChild(document.createTextNode(UI.t("series_chip", {
         track: series.track, direction: String(series.direction).slice(0, 4).toLowerCase(),
         maturity: series.maturity, n: series.dates.length
-      });
-      if (series.id === state.seriesId) option.selected = true;
-      option.setAttribute("aria-label", UI.t("series_chip", {
-        track: series.track, direction: String(series.direction).slice(0, 4).toLowerCase(),
-        maturity: series.maturity, n: series.dates.length
-      }));
-      host.appendChild(option);
+      }) + polNote));
+      button.addEventListener("click", function () { selectSeries(series.id); });
+      host.appendChild(button);
     });
-    // Trigger change to apply series
-    if (seriesList().length > 0) {
-      state.seriesId = seriesList()[0].id;
-      onChange();
-    }
   }
 
   function renderTimeline() {
@@ -709,6 +706,20 @@
       state.dim = dim.checked;
       applyBasemap();
     });
+    var collapse = document.getElementById("panel-toggle");
+    if (collapse) collapse.addEventListener("click", function () {
+      var controls = document.querySelector(".controls");
+      var collapsed = controls.classList.toggle("is-collapsed");
+      collapse.setAttribute("aria-expanded", String(!collapsed));
+    });
+    var openControls = document.getElementById("open-controls");
+    if (openControls) openControls.addEventListener("click", function () {
+      document.querySelector(".controls").classList.remove("is-collapsed");
+    });
+    var openPanel = document.getElementById("open-panel");
+    if (openPanel) openPanel.addEventListener("click", function () {
+      document.querySelector(".panel").classList.toggle("is-collapsed");
+    });
     var contextToggle = document.getElementById("context-toggle");
     if (contextToggle) contextToggle.addEventListener("change", function () {
       state.context = contextToggle.checked;
@@ -733,10 +744,9 @@
       button.setAttribute("aria-pressed", String(button.getAttribute("data-theme-set") === state.theme));
       button.addEventListener("click", function () { applyTheme(button.getAttribute("data-theme-set")); });
     });
-    // On mobile, controls start collapsed; on desktop they start open
     if (window.matchMedia("(max-width: 1100px)").matches) {
-      document.querySelector(".controls-panel").classList.add("is-collapsed");
-      document.querySelector(".info-panel").classList.add("is-collapsed");
+      document.querySelector(".controls").classList.add("is-collapsed");
+      document.querySelector(".panel").classList.add("is-collapsed");
     }
   }
 
@@ -1164,13 +1174,7 @@
   function onChange() {
     state.layer = UI.selectedLayer();
     state.pol = UI.selectedPol();
-    // Decade slider: value 0-5 maps to date index
-    var decadeSlider = document.getElementById("decade-slider");
-    if (decadeSlider) {
-      state.index = Math.min(M.dates.length - 1, Math.max(0, decadeSlider.value));
-    } else {
-      state.index = UI.selectedDateIndex();
-    }
+    state.index = UI.selectedDateIndex();
     state.swipe = UI.isChecked("swipe-toggle");
     state.leftIndex = UI.selectedLeftIndex();
     state.leftLayer = UI.selectedLeftLayer();
@@ -1315,7 +1319,7 @@
     UI.renderFooter(V.license);
     renderCharts();
     renderSeriesChips();
-    renderDecadeMarks();
+    renderTimeline();
     updateBadge();
     showIntro();
     UI.renderPatch(null, M);
@@ -1323,6 +1327,16 @@
     UI.initPlaces(V.places, selectPlace);
     var startPlace = placeByName(M.study_area.name);
     if (startPlace) { state.place = startPlace.name; UI.setPlaceStatus(startPlace); UI.setPlaceSelection(startPlace.name); }
+
+    // Move the date controls and the legend into their floating homes before the map is drawn.
+    var timebar = document.getElementById("timebar");
+    var dateField = document.getElementById("date-field");
+    if (timebar && dateField) timebar.appendChild(dateField);
+    var legendHome = document.getElementById("legend-inset");
+    var legendCard = document.getElementById("legend-card");
+    if (legendHome && legendCard) legendHome.appendChild(legendCard);
+    var contextNote = document.getElementById("context-note");
+    if (legendHome && contextNote) legendHome.appendChild(contextNote);
 
     initMap();
     initBasemap();
@@ -1349,36 +1363,6 @@
     });
     render();
     preloadSeries();
-  }
-
-  function renderDecadeMarks() {
-    var host = document.getElementById("decade-marks");
-    if (!host) return;
-    host.innerHTML = "";
-    if (!M || !M.dates || !M.dates.length) return;
-
-    // Define decade marks: 2016, 2018, 2020, 2022, 2024, 2026
-    var decades = ["2016", "2018", "2020", "2022", "2024", "2026"];
-
-    decades.forEach(function (decade) {
-      var d = new Date(decade + "-01-01T00:00:00Z");
-      // Find the closest date in the series to this decade
-      var bestIdx = 0;
-      var bestDiff = Infinity;
-      for (var i = 0; i < M.dates.length; i++) {
-        var diff = Math.abs(new Date(M.dates[i]).getTime() - d.getTime());
-        if (diff < bestDiff) {
-          bestDiff = diff;
-          bestIdx = i;
-        }
-      }
-      var mark = document.createElement("span");
-      mark.className = "decade-mark" + (M.dates[bestIdx] === M.dates[0] ? " current" : "");
-      mark.textContent = decade;
-      // Store the index for this decade for slider navigation
-      mark.dataset.index = bestIdx;
-      host.appendChild(mark);
-    });
   }
 
   try {

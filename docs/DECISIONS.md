@@ -5,7 +5,43 @@ Newest at the top. If a decision is reversed, add a new entry rather than editin
 
 ---
 
-## 2026-11-15 — Pivot to Sentinel-1 OPERA RTC-S1 for the challenge deadline
+## 2026-11-15 - "Echo" visual language: editorial ground, HUD frame
+
+**Decision.** Restyle the web app with one design language built from two references supplied by the
+team: an editorial, near-black layout (warm ivory serif italic display type, hairline rules, wide
+mono captions, almost no chrome) and a technical HUD (cool cyan structure, corner ticks, tabular
+readouts, amber signal colour, square/diamond motifs). Applied as CSS only: no chart, map, legend
+ramp or data logic changed. All numbers, layer names and colour ramps still come from the manifests.
+
+**Tokenizer.** `--bg-0 #06070a`, `--text #ece8df` (ivory), `--muted #8b929b` (cool grey),
+`--accent #d9a45e` (amber signal), `--accent-2 #7cd0e3` (cyan structure), Bodoni Moda italic for
+display, Inter for text, JetBrains Mono for labels. Aurora theme keeps the architecture, warmed
+toward sea-glass. `--gold` / `--blue` / `--down` / `--orange` aliases are preserved so the inline
+chart colours and legend ramps keep their meaning.
+
+**Reason.** The previous pass had accumulated 11+ fixed panels competing for the viewport, and the
+mission timeline's monthly labels were unreadable at real widths. A single visual language reduces
+the chrome to a frame around the radar: the imagery is the only saturated colour on screen, which is
+what the story needs. The corner-tick/HUD frame also gives the app the "instrument" feel the
+challenge brief asks for ("interactive application ... communicate to a broad audience").
+
+**Fixes folded in (visual only).** Leaflet bottom controls clear the timebar; the decade rail shows
+one label per year; the chart axis thins to every second tick so labels stop colliding; the right
+column keeps panel, legend inset and locator in a non-overlapping stack.
+
+**Alternatives.** Keep the navy/gold v3 theme (rejected: dense, generic dashboard); a light editorial
+theme (rejected: radar layers are dark and would invert the relationship); a heavier sci-fi treatment
+with glow/scanlines (rejected: competes with the imagery and hurts legibility).
+
+**Note on the reverted refactor.** Commit `8b718ea` ("ui-overhaul-phase-1") left `web/js/ui.js`
+unparseable, referenced a missing `web/js/echo.js`, and detached the markup from the JS that drives
+it. This commit restores `index.html`, `css/app.css`, `js/ui.js` and `js/app.js` from `3fdb6f7` (the
+last working state) and restyles on top. The phase-1 approach is preserved in history if the team
+wants to resume it deliberately.
+
+---
+
+## 2026-11-15 - Pivot to Sentinel-1 OPERA RTC-S1 for the challenge deadline
 
 **Decision.** Replace NISAR L-band with Sentinel-1 C-band OPERA RTC-S1 (CRID: OPERA, OPERATIONAL
 maturity) for two places: Dead Sea whole lake (`dead_sea_full`) and Potash City evaporation ponds

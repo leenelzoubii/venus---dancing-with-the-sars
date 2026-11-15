@@ -1,226 +1,81 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Venus Echo — Seeing the Dead Sea through the clouds</title>
-  <meta name="description" content="Sentinel-1 C-band radar change over the Dead Sea and Potash City, Jordan. OPERA RTC-S1 OPERATIONAL data.">
+  <title>Team Venus: Seeing the Dead Sea through the clouds</title>
+  <meta name="description" content="NISAR L-band radar change over the Dead Sea east shore, Jordan. PROVISIONAL data.">
+  <!-- Progressive enhancement only: everything works with the system fonts below, offline. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
-  <link rel="stylesheet" href="css/app.css?v=20261115f">
+  <link rel="stylesheet" href="css/app.css?v=20261115o">
 </head>
 <body>
   <a class="skip-link" href="#map">Skip to the map</a>
 
-  <!-- Header: brand, place, series, maturity, theme -->
-  <header class="site-header" role="banner">
+  <header class="site-header">
     <div class="brand">
       <svg class="venus-mark" viewBox="0 0 32 32" width="28" height="28" aria-hidden="true" focusable="false">
-        <circle cx="16" cy="16" r="10.5" fill="none" stroke="var(--accent)" stroke-width="1" opacity=".55"/>
-        <ellipse cx="16" cy="16" rx="14.5" ry="5.5" fill="none" stroke="var(--accent)" stroke-width=".8" opacity=".5" transform="rotate(-24 16 16)"/>
-        <circle cx="16" cy="16" r="3.2" fill="var(--accent)"/>
+        <circle cx="16" cy="16" r="10.5" fill="none" stroke="#E2B862" stroke-width="1" opacity=".55"/>
+        <ellipse cx="16" cy="16" rx="14.5" ry="5.5" fill="none" stroke="#E2B862" stroke-width=".8"
+                 opacity=".5" transform="rotate(-24 16 16)"/>
+        <circle cx="16" cy="16" r="3.2" fill="#E2B862"/>
       </svg>
-      <span class="mark" data-i18n="app_mark">Venus Echo</span>
+      <span class="mark" data-i18n="app_mark">Team Venus</span>
       <h1 class="title" data-i18n="app_title">Seeing the Dead Sea through the clouds</h1>
     </div>
     <div class="header-tools">
-      <select id="place-select" class="select header-select" aria-label="Study area"></select>
-      <select id="series-select" class="select header-select" aria-label="Calibration series"></select>
-      <span id="maturity-badge" class="badge badge-operational" data-i18n="badge_operational">OPERATIONAL DATA</span>
+      <span id="maturity-badge" class="badge badge-provisional" data-i18n="badge_provisional">PROVISIONAL DATA</span>
       <button type="button" class="theme-swatch" data-theme-set="void" aria-label="Void theme" title="Void"></button>
       <button type="button" class="theme-swatch theme-swatch-aurora" data-theme-set="aurora" aria-label="Aurora theme" title="Aurora"></button>
     </div>
   </header>
 
   <main class="layout" id="main">
-    <!-- Map region: full viewport -->
+
     <section class="map-region" aria-labelledby="map-heading">
-      <h2 id="map-heading" class="visually-hidden" data-i18n="map_label">Map showing radar layers</h2>
+      <h2 id="map-heading" class="visually-hidden" data-i18n="map_label">Map of the Dead Sea east shore showing radar layers</h2>
       <div id="map" class="map" role="region" aria-labelledby="map-heading" tabindex="0"></div>
 
-      <!-- Consolidated left controls: accordion groups -->
-      <aside class="controls-panel" id="controls-panel" aria-labelledby="controls-heading">
-        <button type="button" class="panel-handle" id="controls-handle" aria-expanded="true" aria-controls="controls-body">
-          <span class="handle-label" data-i18n="controls_label">Controls</span>
-          <span class="handle-icon" aria-hidden="true"></span>
-        </button>
-        <div id="controls-body" class="controls-body">
+      <section class="place-card" aria-labelledby="place-name">
+        <p class="place-kicker" data-i18n="place_card_kicker">Study area</p>
+        <h2 id="place-name" class="place-name"></h2>
+        <p id="place-country" class="place-country"></p>
+        <p id="place-story" class="place-story"></p>
+        <p id="place-meta" class="place-meta"></p>
+      </section>
 
-          <!-- Map style accordion -->
-          <fieldset class="field">
-            <legend class="field-label" data-i18n="map_style_group">Map style</legend>
-            <select id="basemap-select" class="select" aria-label="Basemap">
-              <option value="dark">Dark canvas</option>
-              <option value="satellite">Satellite</option>
-            </select>
-            <label class="choice choice-check"><input type="checkbox" id="labels-toggle" checked><span data-i18n="labels_toggle">Place labels</span></label>
-            <label class="choice choice-check"><input type="checkbox" id="dim-toggle" checked><span data-i18n="dim_toggle">Dim basemap under radar</span></label>
-            <label class="choice choice-check"><input type="checkbox" id="aoi-toggle" checked><span data-i18n="aoi_toggle">Analysis area outline</span></label>
-            <label class="choice choice-check"><input type="checkbox" id="context-toggle" checked><span data-i18n="context_toggle">NASA Worldview context</span></label>
-            <label class="field-label" for="context-opacity" data-i18n="context_opacity">Context opacity</label>
-            <input type="range" id="context-opacity" class="range" min="0" max="100" step="5" value="60">
-            <label class="choice choice-check"><input type="checkbox" id="motion-toggle"><span data-i18n="motion_toggle">Reduce motion</span></label>
-          </fieldset>
+      <p id="cursor-readout" class="cursor-readout" aria-live="off"></p>
 
-          <!-- Radar layer accordion (replaces separate layer + polarization) -->
-          <fieldset class="field">
-            <legend class="field-label" data-i18n="radar_layer_group">Radar layer</legend>
-            <div class="layer-grid" role="radiogroup" aria-label="Layer and polarization">
-              <label class="layer-option" data-layer="rgb" data-pol="HV">
-                <input type="radio" name="layer-pol" value="rgb-HV">
-                <span class="layer-name" data-i18n="layer_rgb">False colour</span>
-                <span class="layer-pol">VH</span>
-              </label>
-              <label class="layer-option" data-layer="backscatter" data-pol="VH">
-                <input type="radio" name="layer-pol" value="backscatter-VH">
-                <span class="layer-name" data-i18n="layer_backscatter">Backscatter</span>
-                <span class="layer-pol">VH</span>
-              </label>
-              <label class="layer-option" data-layer="backscatter" data-pol="VV">
-                <input type="radio" name="layer-pol" value="backscatter-VV">
-                <span class="layer-name" data-i18n="layer_backscatter">Backscatter</span>
-                <span class="layer-pol">VV</span>
-              </label>
-              <label class="layer-option" data-layer="change" data-pol="VH">
-                <input type="radio" name="layer-pol" value="change-VH">
-                <span class="layer-name" data-i18n="layer_change">Change map</span>
-                <span class="layer-pol">VH</span>
-              </label>
-              <label class="layer-option" data-layer="change" data-pol="VV">
-                <input type="radio" name="layer-pol" value="change-VV">
-                <span class="layer-name" data-i18n="layer_change">Change map</span>
-                <span class="layer-pol">VV</span>
-              </label>
-              <label class="layer-option" data-layer="water" data-pol="VH">
-                <input type="radio" name="layer-pol" value="water-VH">
-                <span class="layer-name" data-i18n="layer_water">Water mask</span>
-                <span class="layer-pol">VH</span>
-              </label>
-            </div>
-            <p class="hint" id="pol-hint"></p>
-          </fieldset>
+      <button type="button" id="open-controls" class="floating-btn" aria-controls="controls-body">Controls</button>
+      <button type="button" id="open-panel" class="floating-btn floating-btn-right" aria-controls="panel-heading">Panel</button>
 
-          <!-- Compare accordion (replaces swipe fieldset) -->
-          <fieldset class="field">
-            <legend class="field-label" data-i18n="compare_group">Compare</legend>
-            <label class="choice choice-check">
-              <input type="checkbox" id="swipe-toggle"><span data-i18n="swipe_toggle">Enable swipe</span>
-            </label>
-            <div id="swipe-controls" class="swipe-controls" hidden>
-              <label class="field-label" for="left-date" data-i18n="swipe_left_label">Left date</label>
-              <select id="left-date" class="select" aria-label="Left date"></select>
-              <label class="field-label" for="left-layer" data-i18n="swipe_left_layer">Left layer</label>
-              <select id="left-layer" class="select" aria-label="Left layer">
-                <option value="rgb">False colour</option>
-                <option value="backscatter">Backscatter</option>
-                <option value="change">Change map</option>
-                <option value="water">Water mask</option>
-              </select>
-            </div>
-          </fieldset>
+      <div id="legend-inset" class="legend-inset"><button type="button" id="legend-guide-button" class="legend-guide-btn" data-i18n="legend_guide_button">Guide</button><div id="legend-v4"></div></div>
+      <div id="series-row" class="series-row" role="group" aria-label="Calibration series"></div>
+      <div id="mission-timeline" class="mission-timeline" aria-label="Acquisition timeline"></div>
+      <p id="context-note" class="notice context-note" role="status" hidden></p>
+      <div id="timebar" class="timebar"></div>
 
-          <p id="layer-note" class="notice layer-note" role="status" hidden></p>
-          <p id="outage-note" class="notice outage-note" role="status" hidden data-i18n="outage_note">Instrument outage.</p>
-        </div>
-      </aside>
+      <div class="locator" id="locator">
+        <div id="locator-map" class="locator-map" role="img"
+             data-i18n-label="locator_label" aria-label="Locator map of processed places in Jordan"></div>
+      </div>
 
-      <!-- Right panel: 3 accordions only -->
-      <aside class="info-panel" id="info-panel" aria-labelledby="panel-heading">
-        <button type="button" class="panel-handle panel-handle-right" id="info-handle" aria-expanded="true" aria-controls="panel-body">
-          <span class="handle-label" data-i18n="panel_label">Legend & charts</span>
-          <span class="handle-icon" aria-hidden="true"></span>
-        </button>
-        <div id="panel-body" class="panel-body">
-
-          <!-- Legend (always visible) -->
-          <section class="card" id="legend-card" aria-labelledby="legend-heading">
-            <h3 id="legend-heading" class="card-title" data-i18n="legend_title">Legend</h3>
-            <p id="legend-text" class="legend-text"></p>
-            <div id="legend-bar" class="legend-bar" role="img" aria-label=""></div>
-            <div id="legend-ticks" class="legend-ticks"></div>
-            <p id="legend-caption" class="legend-caption"></p>
-            <p id="legend-extra" class="legend-caption"></p>
-            <p id="legend-pixel-note" class="legend-caption legend-pixel-note"></p>
-            <button type="button" id="legend-guide-button" class="legend-guide-btn" data-i18n="legend_guide_button">Guide</button>
-          </section>
-
-          <!-- Details + Charts combined into single accordion -->
-          <details class="card" id="details-card">
-            <summary class="card-title" data-i18n="details_title">Layer details</summary>
-            <p class="muted" data-i18n="details_intro">Read from the data manifest.</p>
-            <dl id="layer-info" class="info-list"></dl>
-            <h4 class="sub-title" data-i18n="info_steps">Processing steps</h4>
-            <ol id="layer-steps" class="steps"></ol>
-          </details>
-
-          <!-- Patches accordion -->
-          <details class="card" id="patches-card">
-            <summary class="card-title" data-i18n="patches_toggle">Candidate patches</summary>
-            <h4 class="sub-title" data-i18n="featured_title">Featured patches</h4>
-            <ul id="featured-list" class="featured-list"></ul>
-            <div id="patch-body"><p class="muted" data-i18n="patch_none_selected">Click a numbered patch on the map.</p></div>
-          </details>
-
-          <!-- Context & Limits single accordion -->
-          <details class="card" id="context-card">
-            <summary class="card-title" data-i18n="context_limits_title">Context & limits</summary>
-            <details class="card-inner">
-              <summary data-i18n="whatis_title">What am I looking at?</summary>
-              <p data-i18n="whatis_body"></p>
-            </details>
-            <details class="card-inner">
-              <summary data-i18n="limits_title">Honest limits</summary>
-              <p data-i18n="limits_body"></p>
-            </details>
-            <details class="card-inner">
-              <summary data-i18n="accordion_title">Radar in one minute</summary>
-              <ul class="explainer">
-                <li data-i18n="accordion_water_dark"></li>
-                <li data-i18n="accordion_rough_bright"></li>
-                <li data-i18n="accordion_vh"></li>
-                <li data-i18n="accordion_vv"></li>
-                <li data-i18n="accordion_pol"></li>
-                <li data-i18n="accordion_venus"></li>
-              </ul>
-            </details>
-            <details class="card-inner">
-              <summary data-i18n="series_explain_title">Calibration series</summary>
-              <p class="muted" data-i18n="series_rule">Series are never mixed: no change, offset or water number combines two of them.</p>
-              <dl class="info-list">
-                <dt>BETA</dt><dd data-i18n="maturity_beta_text"></dd>
-                <dt>PROVISIONAL</dt><dd data-i18n="maturity_provisional_text"></dd>
-                <dt>VALIDATED</dt><dd data-i18n="maturity_validated_text"></dd>
-                <dt>OPERATIONAL</dt><dd data-i18n="maturity_operational_text"></dd>
-              </dl>
-              <p class="muted" id="series-dates-note"></p>
-            </details>
-          </details>
-
-        </div>
-      </aside>
-
-      <!-- Map overlays: simplified overlays only (no separate swipe divider tags) -->
+      <!-- Swipe divider: a focusable slider over the map. Pointer, touch and arrow keys all move it. -->
       <div id="swipe-divider" class="swipe-divider" role="slider" tabindex="0" hidden
            aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50%"
            data-i18n-label="swipe_divider" aria-label="Swipe divider position">
         <span class="swipe-grip" aria-hidden="true"></span>
       </div>
+      <p id="swipe-tag-left" class="date-tag date-tag-left" hidden></p>
+      <p id="swipe-tag-right" class="date-tag date-tag-right" hidden></p>
 
-      <!-- Decade slider (bottom) - replaces timebar, date select, time ticks, story strip -->
-      <div class="decade-bar" id="decade-bar" role="group" aria-label="Acquisition decade">
-        <label class="visually-hidden" for="decade-slider" data-i18n="time_label">Step through the series</label>
-        <input type="range" id="decade-slider" class="decade-slider" min="0" max="5" step="1" value="0" aria-label="Acquisition decade">
-        <div class="decade-marks" id="decade-marks" aria-hidden="true"></div>
-        <div class="decade-play">
-          <button type="button" id="play-btn" class="btn" aria-pressed="false" data-i18n="play">Play</button>
-          <label class="choice choice-check"><input type="checkbox" id="loop-toggle"><span data-i18n="loop_label">Loop</span></label>
-        </div>
-        <p class="hint" id="play-hint" data-i18n="play_hint"></p>
-      </div>
+      <p id="basemap-notice" class="notice" role="status" hidden></p>
+      <p id="layer-note" class="notice layer-note" role="status" hidden></p>
+      <p id="outage-note" class="notice outage-note" role="status" hidden data-i18n="outage_note">Instrument outage.</p>
 
-      <!-- Debug (hidden by default) -->
       <div id="debug-panel" class="debug-panel" hidden>
         <p class="debug-title" data-i18n="debug_on">Debug mode is on.</p>
         <label class="debug-row">
@@ -238,65 +93,220 @@
         </label>
       </div>
     </section>
+
+    <section class="controls" aria-labelledby="controls-heading">
+      <h2 id="controls-heading" class="section-title" data-i18n="controls_label">Layer, date and comparison controls</h2>
+      <button type="button" id="panel-toggle" class="panel-toggle" aria-expanded="true"
+              aria-controls="controls-body" data-i18n-label="panel_toggle" aria-label="Show or hide the controls">
+        <span aria-hidden="true"></span>
+      </button>
+      <div id="controls-body" class="controls-body">
+
+      <fieldset class="field">
+        <legend class="field-label" data-i18n="place_group">Place</legend>
+        <label class="visually-hidden" for="place-select" data-i18n="place_group">Place</label>
+        <select id="place-select" class="select"></select>
+        <p class="hint" id="place-status" role="status"></p>
+      </fieldset>
+
+      <fieldset class="field">
+        <legend class="field-label" data-i18n="basemap_group">Basemap</legend>
+        <select id="basemap-select" class="select" data-i18n-label="basemap_group" aria-label="Basemap">
+          <option value="dark">Dark, with labels</option>
+          <option value="satellite">Satellite</option>
+        </select>
+        <label class="choice choice-check"><input type="checkbox" id="labels-toggle" checked><span data-i18n="labels_toggle">Place labels</span></label>
+        <label class="choice choice-check"><input type="checkbox" id="dim-toggle" checked><span data-i18n="dim_toggle">Dim satellite under the radar</span></label>
+        <label class="choice choice-check"><input type="checkbox" id="aoi-toggle" checked><span data-i18n="aoi_toggle">NISAR analysis area</span></label>
+        <label class="choice choice-check"><input type="checkbox" id="context-toggle" checked><span data-i18n="context_toggle">NASA Worldview context</span></label>
+        <label class="field-label" for="context-opacity" data-i18n="context_opacity">Context opacity</label>
+        <input type="range" id="context-opacity" class="range" min="0" max="100" step="5" value="60">
+        <label class="choice choice-check"><input type="checkbox" id="motion-toggle"><span data-i18n="motion_toggle">Reduce motion</span></label>
+      </fieldset>
+
+      <fieldset class="field">
+        <legend class="field-label" data-i18n="layer_group">Layer</legend>
+        <div class="choice-group">
+          <label class="choice"><input type="radio" name="layer" value="rgb" checked><span data-i18n="layer_rgb">False colour composite</span></label>
+          <label class="choice"><input type="radio" name="layer" value="backscatter"><span data-i18n="layer_backscatter">Radar backscatter</span></label>
+          <label class="choice"><input type="radio" name="layer" value="change"><span data-i18n="layer_change">Change map</span></label>
+          <label class="choice"><input type="radio" name="layer" value="water"><span data-i18n="layer_water">Water mask</span></label>
+        </div>
+        <label class="choice choice-check" id="band-toggle-wrap" hidden>
+          <input type="checkbox" id="band-toggle"><span data-i18n="band_toggle">Show detection limit (amber band)</span>
+        </label>
+        <label class="choice choice-check">
+          <input type="checkbox" id="patches-toggle"><span data-i18n="patches_toggle">Show candidate patches</span>
+        </label>
+      </fieldset>
+
+      <fieldset class="field">
+        <legend class="field-label" data-i18n="pol_group">Polarization</legend>
+        <div class="seg" id="pol-options">
+          <label class="choice"><input type="radio" name="pol" value="VH"><span data-i18n="pol_vh">VH</span></label>
+          <label class="choice"><input type="radio" name="pol" value="VV"><span data-i18n="pol_vv">VV</span></label>
+          <label class="choice"><input type="radio" name="pol" value="HV"><span data-i18n="pol_hv">HV</span></label>
+          <label class="choice"><input type="radio" name="pol" value="HH"><span data-i18n="pol_hh">HH</span></label>
+        </div>
+        <p class="hint" id="pol-hint"></p>
+      </fieldset>
+
+      <div class="field" id="date-field">
+        <label class="field-label" for="date-select" data-i18n="date_label">Acquisition date</label>
+        <select id="date-select" class="select" aria-label="Acquisition date"></select>
+        <label class="field-label" for="time-range" data-i18n="time_label">Step through the series</label>
+        <input type="range" id="time-range" class="range" min="0" max="0" step="1" value="0" aria-label="Step through the series">
+        <ol id="time-ticks" class="time-ticks" aria-hidden="true"></ol>
+        <div class="play-row">
+          <button type="button" id="play-btn" class="btn" aria-pressed="false" data-i18n="play">Play</button>
+          <label class="choice choice-check"><input type="checkbox" id="loop-toggle"><span data-i18n="loop_label">Loop</span></label>
+        </div>
+        <p class="hint" id="play-hint" data-i18n="play_hint"></p>
+      </div>
+
+      <fieldset class="field">
+        <legend class="field-label" data-i18n="swipe_toggle">Compare two states (swipe)</legend>
+        <label class="choice choice-check">
+          <input type="checkbox" id="swipe-toggle"><span data-i18n="swipe_toggle">Compare two states (swipe)</span>
+        </label>
+        <p class="hint" id="swipe-hint" data-i18n="swipe_hint" hidden></p>
+        <div id="swipe-controls" class="swipe-controls" hidden>
+          <label class="field-label" for="left-date" data-i18n="swipe_left_label">Left (before): date</label>
+          <select id="left-date" class="select" aria-label="Left (before) date"></select>
+          <label class="field-label" for="left-layer" data-i18n="swipe_left_layer">Left (before): layer</label>
+          <select id="left-layer" class="select" aria-label="Left (before) layer">
+            <option value="rgb">False colour composite</option>
+            <option value="backscatter">Radar backscatter</option>
+            <option value="change">Change map</option>
+            <option value="water">Water mask</option>
+          </select>
+          <label class="field-label" for="swipe-range" data-i18n="swipe_divider">Swipe divider position</label>
+          <input type="range" id="swipe-range" class="range" min="0" max="100" step="1" value="50">
+        </div>
+      </fieldset>
+      </div>
+    </section>
+
+    <aside class="panel" aria-labelledby="panel-heading">
+      <h2 id="panel-heading" class="visually-hidden" data-i18n="panel_label">Legend, charts, explanations and limits</h2>
+
+      <section class="card" id="legend-card" aria-labelledby="legend-heading">
+        <h3 id="legend-heading" class="card-title" data-i18n="legend_title">Legend</h3>
+        <p id="legend-text" class="legend-text"></p>
+        <div id="legend-bar" class="legend-bar" role="img" aria-label=""></div>
+        <div id="legend-ticks" class="legend-ticks"></div>
+        <p id="legend-caption" class="legend-caption"></p>
+        <p id="legend-extra" class="legend-caption"></p>
+        <p id="legend-pixel-note" class="legend-caption legend-pixel-note"></p>
+      </section>
+
+      <details class="card" open>
+        <summary data-i18n="info_title">Layer information</summary>
+        <p class="muted" data-i18n="info_intro">Everything below is read from the data manifest.</p>
+        <dl id="layer-info" class="info-list"></dl>
+        <h3 class="sub-title" data-i18n="info_steps">Processing steps</h3>
+        <ol id="layer-steps" class="steps"></ol>
+      </details>
+
+      <details class="card" id="patch-panel">
+        <summary data-i18n="patches_toggle">Candidate patches</summary>
+        <h3 class="sub-title" data-i18n="featured_title">Featured patches</h3>
+        <ul id="featured-list" class="featured-list"></ul>
+        <div id="patch-body"><p class="muted" data-i18n="patch_none_selected">Click a numbered patch on the map.</p></div>
+      </details>
+
+      <details class="card" id="area-panel" open>
+        <summary data-i18n="chart_area_title">Water area per date</summary>
+        <div id="area-chart" class="chart-wrap"></div>
+        <p id="area-axis-note" class="muted"></p>
+        <p id="area-legend" class="muted"></p>
+        <p id="detection-text" class="verdict" data-i18n="detection_fallback">The summary appears once the statistics load.</p>
+        <details class="card-inner">
+          <summary data-i18n="chart_table_caption">Values behind the chart</summary>
+          <table class="data-table" id="area-table">
+            <caption data-i18n="chart_table_caption">Water area values behind the chart</caption>
+            <thead><tr><th scope="col" data-i18n="chart_th_date">Date</th><th scope="col" data-i18n="chart_th_hv">VH km2 (low to high)</th><th scope="col" data-i18n="chart_th_vv">VV km2 (not reliable)</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </details>
+      </details>
+
+      <details class="card" id="offset-panel">
+        <summary data-i18n="offset_title">Scene offset between dates</summary>
+        <div id="offset-chart" class="chart-wrap"></div>
+        <p class="muted" id="offset-legend"></p>
+        <p data-i18n="offset_text">The offset is the land median of each date minus the reference date.</p>
+        <p class="muted" id="offset-mad"></p>
+      </details>
+
+      <details class="card">
+        <summary data-i18n="accordion_title">Radar in one minute</summary>
+        <ul class="explainer">
+          <li data-i18n="accordion_water_dark"></li>
+          <li data-i18n="accordion_rough_bright"></li>
+          <li data-i18n="accordion_hv"></li>
+          <li data-i18n="accordion_hh"></li>
+          <li data-i18n="accordion_pol"></li>
+          <li data-i18n="accordion_venus"></li>
+        </ul>
+      </details>
+
+      <details class="card" id="series-panel">
+        <summary data-i18n="series_explain_title">Calibration series</summary>
+        <p class="muted" data-i18n="series_rule">Series are never mixed: no change, offset or water number combines two of them.</p>
+        <dl class="info-list">
+          <dt>BETA</dt><dd data-i18n="maturity_beta_text"></dd>
+          <dt>PROVISIONAL</dt><dd data-i18n="maturity_provisional_text"></dd>
+          <dt>VALIDATED</dt><dd data-i18n="maturity_validated_text"></dd>
+        </dl>
+        <p class="muted" id="series-dates-note"></p>
+      </details>
+
+      <details class="card">
+        <summary data-i18n="whatis_title">What am I looking at?</summary>
+        <p data-i18n="whatis_body"></p>
+      </details>
+
+      <details class="card">
+        <summary data-i18n="limits_title">Honest limits</summary>
+        <p data-i18n="limits_body"></p>
+      </details>
+    </aside>
+
   </main>
 
-  <!-- Echo chatbot panel (slide-over from right) -->
-  <aside class="echo-panel" id="echo-panel" aria-labelledby="echo-heading" hidden>
-    <div class="echo-header">
-      <h2 id="echo-heading" class="echo-title">
-        <svg class="echo-mark" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
-        <span data-i18n="echo_title">Echo</span>
-      </h2>
-      <button type="button" class="echo-close" id="echo-close" aria-label="Close Echo" data-i18n-label="echo_close">✕</button>
+  <section class="story-strip" aria-labelledby="story-heading">
+    <h2 id="story-heading" class="section-title" data-i18n="story_title">Story mode</h2>
+    <p id="story-intro" class="story-intro" data-i18n="story_intro">Six steps through what NISAR shows.</p>
+    <div class="story-idle" id="story-idle">
+      <button type="button" class="btn" id="story-start" data-i18n="story_start">Start the story</button>
+      <p class="muted story-hint" data-i18n="story_exit_hint">Press Escape to leave the story at any time.</p>
     </div>
-    <div class="echo-body" id="echo-body">
-      <div class="echo-welcome" id="echo-welcome">
-        <p data-i18n="echo_welcome">Ask me about the current radar view — what the colours mean, why the shoreline shifted, how the polarization changes the picture, or anything else you see.</p>
-        <button type="button" class="btn echo-quick" id="echo-analyze" data-i18n="echo_analyze">Analyze this image</button>
-      </div>
-      <div class="echo-messages" id="echo-messages" hidden></div>
-      <form class="echo-input-wrap" id="echo-form">
-        <input type="text" id="echo-input" placeholder="Ask Echo…" aria-label="Your question" autocomplete="off">
-        <button type="submit" class="btn echo-send" aria-label="Send" data-i18n-label="echo_send">↑</button>
-      </form>
-    </div>
-  </aside>
-
-  <!-- Story modal (replaces fixed strip, now as dialog) -->
-  <dialog id="story-modal" class="story-modal" aria-labelledby="story-modal-title">
-    <div class="story-modal-header">
-      <h2 id="story-modal-title" data-i18n="story_title">Story mode</h2>
-      <button type="button" class="story-close" id="story-close" data-i18n="story_exit">Exit</button>
-    </div>
-    <div class="story-modal-body">
+    <div id="story-run" hidden>
       <p id="story-progress" class="story-progress" aria-live="polite"></p>
+      <div class="story-nav">
+        <button type="button" class="btn btn-quiet" id="story-prev" data-i18n="story_prev">Previous</button>
+        <button type="button" class="btn btn-quiet" id="story-exit" data-i18n="story_exit">Exit story</button>
+        <button type="button" class="btn" id="story-next" data-i18n="story_next">Next</button>
+      </div>
       <h3 id="story-step-title" class="story-step-title"></h3>
       <p id="story-step-body" class="story-step-body"></p>
       <ol id="story-dots" class="story-dots" aria-hidden="true"></ol>
-      <div class="story-nav">
-        <button type="button" class="btn btn-quiet" id="story-prev" data-i18n="story_prev">Previous</button>
-        <button type="button" class="btn" id="story-next" data-i18n="story_next">Next</button>
-      </div>
     </div>
-  </dialog>
-
-  <!-- Legend guide dialog -->
-  <dialog id="legend-guide" class="legend-guide" aria-labelledby="legend-guide-title">
-    <h2 id="legend-guide-title" data-i18n="legend_guide_title">Legend guide</h2>
-    <dl id="legend-guide-body"></dl>
-    <button type="button" id="legend-guide-close" class="btn" data-i18n="legend_guide_close">Close</button>
-  </dialog>
+  </section>
 
   <footer class="site-footer">
     <p id="footer-credit" class="credit"></p>
     <p data-i18n="footer_licence">Code licence: see the LICENSE file in the repository.</p>
     <p data-i18n="footer_nonendorsement">NASA does not endorse any non-U.S. Government entity or this project.</p>
+    <p class="credit" data-i18n="basemap_attribution">Basemap attribution.</p>
   </footer>
 
   <div id="intro" class="intro" aria-hidden="true">
     <svg viewBox="0 0 120 120" width="120" height="120" focusable="false">
       <circle class="intro-orbit" cx="60" cy="60" r="34" fill="none" stroke="var(--accent)" stroke-width="1"/>
-      <ellipse class="intro-orbit intro-orbit-2" cx="60" cy="60" rx="52" ry="16" fill="none" stroke="var(--accent)" stroke-width=".8" transform="rotate(-24 60 60)"/>
+      <ellipse class="intro-orbit intro-orbit-2" cx="60" cy="60" rx="52" ry="16" fill="none"
+               stroke="var(--accent)" stroke-width=".8" transform="rotate(-24 60 60)"/>
       <circle class="intro-dot" cx="60" cy="60" r="7" fill="var(--accent)"/>
     </svg>
   </div>
@@ -306,16 +316,21 @@
   </noscript>
 
   <!-- Classic scripts only, in dependency order. No modules, no fetch(): works from file://. -->
-  <script src="js/strings.js?v=20261116b"></script>
+  <script src="js/strings.js?v=20261116a"></script>
   <script src="data/ramps.js"></script>
   <script src="data/patches.js"></script>
   <script src="data/places.js"></script>
   <script src="data/license_and_attribution.js"></script>
   <script src="vendor/leaflet/leaflet.js"></script>
   <script src="js/charts.js?v=20261115e"></script>
-  <script src="js/ui.js?v=20261116a"></script>
+  <script src="js/ui.js?v=20261115e"></script>
   <script src="js/legend.js?v=20261116a"></script>
-  <script src="js/app.js?v=20261116b"></script>
-  <script src="js/echo.js?v=20261116a"></script>
+  <script src="js/app.js?v=20261116a"></script>
+  <dialog id="legend-guide" class="legend-guide" aria-labelledby="legend-guide-title">
+    <h2 id="legend-guide-title" data-i18n="legend_guide_title">Legend guide</h2>
+    <dl id="legend-guide-body"></dl>
+    <button type="button" id="legend-guide-close" class="btn" data-i18n="legend_guide_close">Close</button>
+  </dialog>
+
 </body>
 </html>

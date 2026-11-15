@@ -58,24 +58,41 @@ window.VENUS_UI = (function () {
 
   /* ------------------------------------------------------------- controls */
 
-  // The decade slider always shows the current acquisition decade.
-function initDates(dates, index, reference, outage) {
-    // No date-select or time-range to initialize;
-    // decade marks are rendered by app.js renderDecadeMarks()
-    // but we still need to set the slider value and reflect the reference date.
-    var decadeSlider = document.getElementById("decade-slider");
-    if (decadeSlider) {
-      decadeSlider.value = String(Math.max(0, Math.min(dates.length - 1, index)));
-    }
+  // The date select, the time slider and the tick labels always show the same index.
+  function initDates(dates, index, reference, outage) {
+    var select = document.getElementById("date-select");
+    var left = document.getElementById("left-date");
+    var range = document.getElementById("time-range");
+    var ticks = document.getElementById("time-ticks");
+    select.innerHTML = "";
+    left.innerHTML = "";
+    ticks.innerHTML = "";
+    dates.forEach(function (day, i) {
+      [select, left].forEach(function (sel) {
+        var option = document.createElement("option");
+        option.value = String(i);
+        option.textContent = fmtDate(day) + (day === reference ? " (" + t("date_reference") + ")" : "");
+        sel.appendChild(option);
+      });
+      var li = document.createElement("li");
+      li.textContent = fmtShort(day);
+      if (outage && day > outage.end && i > 0 && dates[i - 1] < outage.start) li.className = "after-gap";
+      ticks.appendChild(li);
+    });
+    range.max = String(dates.length - 1);
+    range.value = String(index);
+    select.value = String(index);
+    left.value = "0";
   }
+
+  function setDateIndex(i) {
+    document.getElementById("date-select").value = String(i);
+    document.getElementById("time-range").value = String(i);
   }
 
   function setLeftIndex(i) {
     document.getElementById("left-date").value = String(i);
   }
-
-
-function selectedLayer() {
 
   function selectedLayer() {
     var checked = document.querySelector('input[name="layer"]:checked');
@@ -88,27 +105,32 @@ function selectedLayer() {
   }
 
   function selectedDateIndex() {
-    var decadeSlider = document.getElementById("decade-slider");
-    if (decadeSlider) {
-      return Number(decadeSlider.value);
-    }
-    return 0;
+    return Number(document.getElementById("date-select").value);
   }
 
-  function setDateIndex(i) {
-    var decadeSlider = document.getElementById("decade-slider");
-    if (decadeSlider) {
-      decadeSlider.value = String(Math.max(0, Math.min(i, M.dates.length - 1)));
-    }
+  function selectedLeftIndex() {
+    return Number(document.getElementById("left-date").value);
   }
 
-  function selectedDateIndex() {
-    var decadeSlider = document.getElementById("decade-slider");
-    if (decadeSlider) {
-      return Number(decadeSlider.value);
-    }
-    return 0;
+  function selectedLeftLayer() {
+    return document.getElementById("left-layer").value;
   }
+
+  function isChecked(id) {
+    return document.getElementById(id).checked;
+  }
+
+  function setPol(pol) {
+    var input = document.querySelector('input[name="pol"][value="' + pol + '"]');
+    if (input) input.checked = true;
+  }
+
+  function setLayer(kind) {
+    var input = document.querySelector('input[name="layer"][value="' + kind + '"]');
+    if (input) input.checked = true;
+  }
+
+  function setPolHint(pol) {
     var hintKey = "pol_hv_hint";
     if (pol === "HH") hintKey = "pol_hh_hint";
     else if (pol === "VH") hintKey = "pol_vh_hint";
@@ -138,10 +160,10 @@ function selectedLayer() {
     document.querySelectorAll('input[name="layer"], input[name="pol"]').forEach(function (input) {
       input.addEventListener("change", fire);
     });
-    ["left-date", "left-layer", "band-toggle", "patches-toggle", "swipe-toggle"].forEach(function (id) {
+    ["date-select", "left-date", "left-layer", "band-toggle", "patches-toggle", "swipe-toggle"].forEach(function (id) {
       document.getElementById(id).addEventListener("change", fire);
     });
-    document.getElementById("decade-slider").addEventListener("input", function (event) {
+    document.getElementById("time-range").addEventListener("input", function (event) {
       if (handlers.onTime) handlers.onTime(Number(event.target.value));
     });
     document.getElementById("play-btn").addEventListener("click", function () {
