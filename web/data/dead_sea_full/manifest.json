@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-15T03:54:36Z",
+ "generated_utc": "2026-11-15T07:36:56Z",
  "place": {
   "name": "dead_sea_full",
   "title": "Dead Sea - whole lake",
@@ -58,7 +58,18 @@
     "2026-10-10"
    ],
    "analysis": true,
-   "source": "ASF DAAC NISAR L2 GCOV; maturity rules from the NISAR Data User Guide"
+   "source": "ASF DAAC NISAR L2 GCOV; maturity rules from the NISAR Data User Guide",
+   "coverage": {
+    "2026-06-24": "full",
+    "2026-07-06": "full",
+    "2026-07-18": "full",
+    "2026-08-11": "full",
+    "2026-08-23": "full",
+    "2026-09-04": "full",
+    "2026-09-16": "full",
+    "2026-09-28": "full",
+    "2026-10-10": "full"
+   }
   },
   {
    "id": "151-DESC-X05009-HHHV",
@@ -72,13 +83,17 @@
     "HV"
    ],
    "dates": [
+    "2025-10-27",
     "2025-11-08",
     "2025-11-20",
     "2025-12-26",
     "2026-01-07"
    ],
    "analysis": false,
-   "source": "ASF DAAC NISAR L2 GCOV; maturity rules from the NISAR Data User Guide"
+   "source": "ASF DAAC NISAR L2 GCOV; maturity rules from the NISAR Data User Guide",
+   "coverage": {
+    "2025-10-27": "partial"
+   }
   },
   {
    "id": "151-DESC-P05036-HHHV",
@@ -96,7 +111,31 @@
     "2026-11-03"
    ],
    "analysis": false,
-   "source": "ASF DAAC NISAR L2 GCOV; maturity rules from the NISAR Data User Guide"
+   "source": "ASF DAAC NISAR L2 GCOV; maturity rules from the NISAR Data User Guide",
+   "coverage": {
+    "2026-10-22": "full",
+    "2026-11-03": "full"
+   }
+  },
+  {
+   "id": "151-DESC-X05010-HV",
+   "label": "BETA - track 151 descending",
+   "maturity": "BETA",
+   "crid": "X05010",
+   "track": 151,
+   "direction": "DESCENDING",
+   "polarizations": [
+    "HV"
+   ],
+   "dates": [
+    "2026-01-19"
+   ],
+   "analysis": false,
+   "coverage": {
+    "2026-01-19": "full"
+   },
+   "polarization_note": "HV only",
+   "source": "ASF DAAC NISAR L2 GCOV; browse-only series, no statistics"
   }
  ],
  "primary_series": "151-DESC-P05023-HHHV",
@@ -167,7 +206,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HV_2026-06-24.webp",
@@ -229,7 +269,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HH_2026-07-06.webp",
@@ -291,7 +332,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HV_2026-07-06.webp",
@@ -353,7 +395,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HH_2026-07-18.webp",
@@ -415,7 +458,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HV_2026-07-18.webp",
@@ -477,7 +521,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HH_2026-08-11.webp",
@@ -539,7 +584,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HV_2026-08-11.webp",
@@ -601,7 +647,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HH_2026-08-23.webp",
@@ -663,7 +710,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HV_2026-08-23.webp",
@@ -725,7 +773,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HH_2026-09-04.webp",
@@ -787,7 +836,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HV_2026-09-04.webp",
@@ -849,7 +899,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HH_2026-09-16.webp",
@@ -911,7 +962,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HV_2026-09-16.webp",
@@ -973,7 +1025,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HH_2026-09-28.webp",
@@ -1035,7 +1088,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HV_2026-09-28.webp",
@@ -1097,7 +1151,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HH_2026-10-10.webp",
@@ -1159,7 +1214,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HV_2026-10-10.webp",
@@ -1221,7 +1277,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HHHV_2026-06-24.webp",
@@ -1284,7 +1341,8 @@
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha",
     "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HHHV_2026-07-06.webp",
@@ -1347,7 +1405,8 @@
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha",
     "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HHHV_2026-07-18.webp",
@@ -1410,7 +1469,8 @@
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha",
     "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HHHV_2026-08-11.webp",
@@ -1473,7 +1533,8 @@
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha",
     "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HHHV_2026-08-23.webp",
@@ -1536,7 +1597,8 @@
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha",
     "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HHHV_2026-09-04.webp",
@@ -1599,7 +1661,8 @@
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha",
     "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HHHV_2026-09-16.webp",
@@ -1662,7 +1725,8 @@
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha",
     "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HHHV_2026-09-28.webp",
@@ -1725,7 +1789,8 @@
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha",
     "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HHHV_2026-10-10.webp",
@@ -1788,7 +1853,8 @@
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha",
     "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/change_HH_2026-07-06.webp",
@@ -1849,7 +1915,8 @@
     "median 5x5",
     "scene offset removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/change_HH_2026-07-18.webp",
@@ -1910,7 +1977,8 @@
     "median 5x5",
     "scene offset removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/change_HH_2026-08-11.webp",
@@ -1971,7 +2039,8 @@
     "median 5x5",
     "scene offset removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/change_HH_2026-08-23.webp",
@@ -2032,7 +2101,8 @@
     "median 5x5",
     "scene offset removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/change_HH_2026-09-04.webp",
@@ -2093,7 +2163,8 @@
     "median 5x5",
     "scene offset removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/change_HH_2026-09-16.webp",
@@ -2154,7 +2225,8 @@
     "median 5x5",
     "scene offset removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/change_HH_2026-09-28.webp",
@@ -2215,7 +2287,8 @@
     "median 5x5",
     "scene offset removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/change_HH_2026-10-10.webp",
@@ -2276,7 +2349,8 @@
     "median 5x5",
     "scene offset removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/change_HV_2026-07-06.webp",
@@ -2337,7 +2411,8 @@
     "median 5x5",
     "scene offset removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/change_HV_2026-07-18.webp",
@@ -2398,7 +2473,8 @@
     "median 5x5",
     "scene offset removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/change_HV_2026-08-11.webp",
@@ -2459,7 +2535,8 @@
     "median 5x5",
     "scene offset removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/change_HV_2026-08-23.webp",
@@ -2520,7 +2597,8 @@
     "median 5x5",
     "scene offset removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/change_HV_2026-09-04.webp",
@@ -2581,7 +2659,8 @@
     "median 5x5",
     "scene offset removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/change_HV_2026-09-16.webp",
@@ -2642,7 +2721,8 @@
     "median 5x5",
     "scene offset removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/change_HV_2026-09-28.webp",
@@ -2703,7 +2783,8 @@
     "median 5x5",
     "scene offset removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/change_HV_2026-10-10.webp",
@@ -2764,7 +2845,8 @@
     "median 5x5",
     "scene offset removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/water_HV_2026-06-24.webp",
@@ -2827,7 +2909,8 @@
     "method B threshold",
     "blobs < 10 px removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/water_band_2026-06-24.webp",
@@ -2884,7 +2967,8 @@
    "processing": [
     "as water",
     "band = threshold +/-1.5 dB"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/water_HV_2026-07-06.webp",
@@ -2947,7 +3031,8 @@
     "method B threshold",
     "blobs < 10 px removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/water_band_2026-07-06.webp",
@@ -3004,7 +3089,8 @@
    "processing": [
     "as water",
     "band = threshold +/-1.5 dB"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/water_HV_2026-07-18.webp",
@@ -3067,7 +3153,8 @@
     "method B threshold",
     "blobs < 10 px removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/water_band_2026-07-18.webp",
@@ -3124,7 +3211,8 @@
    "processing": [
     "as water",
     "band = threshold +/-1.5 dB"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/water_HV_2026-08-11.webp",
@@ -3187,7 +3275,8 @@
     "method B threshold",
     "blobs < 10 px removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/water_band_2026-08-11.webp",
@@ -3244,7 +3333,8 @@
    "processing": [
     "as water",
     "band = threshold +/-1.5 dB"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/water_HV_2026-08-23.webp",
@@ -3307,7 +3397,8 @@
     "method B threshold",
     "blobs < 10 px removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/water_band_2026-08-23.webp",
@@ -3364,7 +3455,8 @@
    "processing": [
     "as water",
     "band = threshold +/-1.5 dB"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/water_HV_2026-09-04.webp",
@@ -3427,7 +3519,8 @@
     "method B threshold",
     "blobs < 10 px removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/water_band_2026-09-04.webp",
@@ -3484,7 +3577,8 @@
    "processing": [
     "as water",
     "band = threshold +/-1.5 dB"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/water_HV_2026-09-16.webp",
@@ -3547,7 +3641,8 @@
     "method B threshold",
     "blobs < 10 px removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/water_band_2026-09-16.webp",
@@ -3604,7 +3699,8 @@
    "processing": [
     "as water",
     "band = threshold +/-1.5 dB"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/water_HV_2026-09-28.webp",
@@ -3667,7 +3763,8 @@
     "method B threshold",
     "blobs < 10 px removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/water_band_2026-09-28.webp",
@@ -3724,7 +3821,8 @@
    "processing": [
     "as water",
     "band = threshold +/-1.5 dB"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/water_HV_2026-10-10.webp",
@@ -3787,7 +3885,8 @@
     "method B threshold",
     "blobs < 10 px removed",
     "reprojected to EPSG:3857 nearest neighbour"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/water_band_2026-10-10.webp",
@@ -3844,7 +3943,8 @@
    "processing": [
     "as water",
     "band = threshold +/-1.5 dB"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HH_2025-11-08.webp",
@@ -3906,7 +4006,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HV_2025-11-08.webp",
@@ -3968,7 +4069,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HH_2025-11-20.webp",
@@ -4030,7 +4132,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HV_2025-11-20.webp",
@@ -4092,7 +4195,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HH_2025-12-26.webp",
@@ -4154,7 +4258,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HV_2025-12-26.webp",
@@ -4216,7 +4321,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HH_2026-01-07.webp",
@@ -4278,7 +4384,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HV_2026-01-07.webp",
@@ -4340,7 +4447,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HHHV_2025-11-08.webp",
@@ -4403,7 +4511,8 @@
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha",
     "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HHHV_2025-11-20.webp",
@@ -4466,7 +4575,8 @@
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha",
     "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HHHV_2025-12-26.webp",
@@ -4529,7 +4639,8 @@
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha",
     "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HHHV_2026-01-07.webp",
@@ -4592,7 +4703,8 @@
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha",
     "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HH_2026-10-22.webp",
@@ -4654,7 +4766,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HV_2026-10-22.webp",
@@ -4716,7 +4829,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HH_2026-11-03.webp",
@@ -4778,7 +4892,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/backscatter_HV_2026-11-03.webp",
@@ -4840,7 +4955,8 @@
     "dB stretch clipped at the series' pooled 2nd/98th percentile over all its dates",
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HHHV_2026-10-22.webp",
@@ -4903,7 +5019,8 @@
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha",
     "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)"
-   ]
+   ],
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HHHV_2026-11-03.webp",
@@ -4966,6 +5083,193 @@
     "8 px inward edge feather (display only)",
     "WebP lossy with alpha",
     "NISAR GCOV RGB decomposition (as ASF nisar-py gcov_rgb / hyp3-lib rtc2color)"
+   ],
+   "coverage": "full"
+  },
+  {
+   "file": "layers/rgb_HH_2025-10-27.webp",
+   "format": "webp",
+   "preview": "layers/rgb_HH_2025-10-27_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 28.27,
+   "bounds": [
+    [
+     31.294976,
+     35.301446
+    ],
+    [
+     31.883875,
+     35.631329
+    ]
+   ],
+   "crop_bounds_3857": [
+    3929738.9,
+    3671117.0,
+    3966461.4,
+    3748077.1
+   ],
+   "display_chain": [
+    "20 m native power (HH only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 28.27 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ],
+   "series": "151-DESC-X05009-HHHV",
+   "coverage": "partial",
+   "product": "NISAR L2 GCOV",
+   "crid": "X05009",
+   "maturity": "BETA",
+   "track": 151,
+   "frame": 72,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857",
+   "offset_applied_db": 0.0,
+   "display_multilook": 1,
+   "id": "151-DESC-X05009-HHHV_rgb_HH_2025-10-27",
+   "kind": "rgb",
+   "label": "False colour HH 2025-10-27",
+   "polarization": "HH",
+   "date": "2025-10-27",
+   "vmin": -13.08,
+   "vmax": 2.3,
+   "colormap": "single-polarization ramp: blue (low) to green to orange to yellow (high)",
+   "description": "Single-polarization false colour on 2025-10-27 (BETA series).",
+   "processing": [
+    "20 m native power (HH only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 28.27 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ]
+  },
+  {
+   "file": "layers/backscatter_HV_2025-10-27.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HV_2025-10-27_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 28.27,
+   "bounds": [
+    [
+     31.294976,
+     35.301446
+    ],
+    [
+     31.883875,
+     35.631329
+    ]
+   ],
+   "crop_bounds_3857": [
+    3929738.9,
+    3671117.0,
+    3966461.4,
+    3748077.1
+   ],
+   "display_chain": [
+    "20 m native power (HH/HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 28.27 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ],
+   "series": "151-DESC-X05009-HHHV",
+   "coverage": "partial",
+   "product": "NISAR L2 GCOV",
+   "crid": "X05009",
+   "maturity": "BETA",
+   "track": 151,
+   "frame": 73,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857",
+   "offset_applied_db": 0.0,
+   "display_multilook": 1,
+   "id": "151-DESC-X05009-HHHV_backscatter_HV_2025-10-27",
+   "kind": "backscatter",
+   "label": "Backscatter HV 2025-10-27",
+   "polarization": "HV",
+   "date": "2025-10-27",
+   "vmin": -22.26,
+   "vmax": -2.47,
+   "colormap": "grey: dark = smooth (water), bright = rough",
+   "description": "Gamma-0 backscatter HV on 2025-10-27 (BETA series).",
+   "processing": [
+    "20 m native power (HH/HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 28.27 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ]
+  },
+  {
+   "file": "layers/backscatter_HV_2026-01-19.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HV_2026-01-19_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 28.27,
+   "bounds": [
+    [
+     31.294976,
+     35.301446
+    ],
+    [
+     31.883875,
+     35.631329
+    ]
+   ],
+   "crop_bounds_3857": [
+    3929738.9,
+    3671117.0,
+    3966461.4,
+    3748077.1
+   ],
+   "display_chain": [
+    "20 m native power (HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 28.27 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ],
+   "series": "151-DESC-X05010-HV",
+   "coverage": "full",
+   "product": "NISAR L2 GCOV",
+   "crid": "X05010",
+   "maturity": "BETA",
+   "track": 151,
+   "frame": 72,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32636",
+   "display_crs": "EPSG:3857",
+   "offset_applied_db": 0.0,
+   "display_multilook": 1,
+   "id": "151-DESC-X05010-HV_backscatter_HV_2026-01-19",
+   "kind": "backscatter",
+   "label": "Backscatter HV 2026-01-19",
+   "polarization": "HV",
+   "date": "2026-01-19",
+   "vmin": -22.36,
+   "vmax": -0.55,
+   "colormap": "grey: dark = smooth (water), bright = rough",
+   "description": "Gamma-0 backscatter HV on 2026-01-19 (BETA series).",
+   "processing": [
+    "20 m native power (HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 28.27 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
    ]
   }
  ],

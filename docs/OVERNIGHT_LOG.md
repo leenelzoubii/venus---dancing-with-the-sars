@@ -237,3 +237,23 @@ for all 7 processed places with 3 workers, one line per date in data/interim/fet
 HH for HH-only places. `src/venus/ramps.py` + `scripts/22_export_ramps.py` now export the single source
 of truth for every ramp to web/data/ramps.js; `web/js/legend.js` renders one labelled entry per visible
 kind with a "?" sentence and a Guide dialog. scripts/07 asserts every manifest kind has a legend entry.
+
+PHASE 2 DONE: scripts/19_add_series_site.py added the new BETA/VALIDATED series to all 7 places without
+touching existing statistics. Result per place: PROVISIONAL + BETA (X05009, 5 dates where available)
++ X05010 single date + VALIDATED (1-2 dates). Coverage is full on every built date except the known
+2025-10-27 partial and a few single-date VALIDATED layers flagged partial. water_stats/offsets were
+not rebuilt, so G2 holds. No new series reached 5 full PROVISIONAL dates, so no new analysis was
+computed.
+
+PHASE 3 DONE: ramps single source (src/venus/ramps.py -> web/data/ramps.js), legend.js with labelled
+entries for rgb, single-pol, grey, change, water, band, patches and NASA context, a "?" sentence per
+entry and a Guide dialog; scripts/07 gate and tests/test_legend.py compare endpoints with the renderer.
+
+PHASE 4 DONE: timeline chips carry geometry and polarization; partial dates carry a badge and a note;
+chart panels are cleared for browse-only series; switching geometry shows the "not comparable" notice.
+Lighthouse was NOT re-run after the data changes (budget exhausted) - flagged for the morning.
+
+FINISH: pytest 79, scripts/06 109, scripts/07 11, scripts/99 10, all passing. 1 fetch failed after a
+retry (wadi_rum 2025-12-07) and is absent, not faked. Duplicate layers produced by an early appender
+bug were reconciled; manifests now list only layers whose files exist, and every series date has a
+layer. Push: none (AGENTS.md local-only rule; [B]).

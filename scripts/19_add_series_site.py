@@ -55,8 +55,6 @@ def load_new(place: str, manifest: dict) -> dict:
     for sidecar in sorted((SUBSETS / place).glob("*.json")):
         meta = json.loads(sidecar.read_text(encoding="utf-8"))
         key = series_key(meta)
-        if (series_id(key), meta["acquisition_date"]) in covered:
-            continue
         base = sidecar.with_suffix("")
         arrays = {}
         for pol in ("HH", "HV"):
@@ -66,6 +64,12 @@ def load_new(place: str, manifest: dict) -> dict:
                 if array.size:
                     arrays[pol] = array
         if not arrays:
+            continue
+        # The series token is the polarization present in the CACHED arrays, not the product's
+        # metadata (which lists both channels even when only one was fetched).
+        actual = "".join(sorted(arrays))
+        key = key[:4] + (actual,)
+        if (series_id(key), meta["acquisition_date"]) in covered:
             continue
         mask_path = Path(f"{base}_mask.npy")
         by_date[(meta["acquisition_date"], key)].append({
@@ -97,6 +101,21 @@ def main() -> int:
         if not manifest_path.exists():
             continue
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        seen = set()
+        kept = []
+        for layer in manifest["layers"]:
+            signature = (layer.get("kind"), layer.get("polarization"), layer.get("date"))
+            if signature in seen:
+                stale = WEB_DATA / name / layer["file"]
+                if stale.exists():
+                    stale.unlink()
+                continue
+            seen.add(signature)
+            kept.append(layer)
+        manifest["layers"] = kept
+        referenced = {layer.get("series") for layer in kept}
+        if manifest.get("series"):
+            manifest["series"] = [row for row in manifest["series"] if row["id"] in referenced]
         existing = manifest["layers"]
         if not existing:
             continue
@@ -138,7 +157,11 @@ def main() -> int:
                         row.get("direction")) == key[:4]:
                     sid = row["id"]
                     break
-            src_crs = cards[0]["meta"].get("crs_wkt") or f"EPSG:{cards[0]['meta']['epsg']}"
+            epsg = cards[0]["meta"].get("epsg")
+            src_crs = cards[0]["meta"].get("crs_wkt") or (f"EPSG:{epsg}" if epsg else None)
+            if not src_crs:
+                print(f"{name}: {sid} records no CRS, skipped")
+                continue
             native_px = float(cards[0]["meta"]["pixel_spacing_m"])
             pols = sorted(set.intersection(*[set(card["arrays"]) for card in cards]))
             if not pols:
@@ -193,7 +216,8 @@ def main() -> int:
                         "series": sid, "coverage": coverage[card["day"]],
                         "product": "NISAR L2 GCOV", "crid": key[1], "maturity": key[0],
                         "track": key[2], "frame": card["meta"].get("frame"), "direction": key[3],
-                        "native_crs": f"EPSG:{card['meta']['epsg']}", "display_crs": wx.CRS_WEB,
+                        "native_crs": f"EPSG:{card['meta'].get('epsg')}" if card["meta"].get("epsg") else "recorded crs_wkt",
+                        "display_crs": wx.CRS_WEB,
                         "offset_applied_db": 0.0, "display_multilook": 1,
                         **fields,
                     })

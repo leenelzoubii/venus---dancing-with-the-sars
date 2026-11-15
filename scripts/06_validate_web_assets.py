@@ -111,7 +111,7 @@ def validate_place(report: Report, name: str) -> None:
             if not (1 <= width <= 6000 and 1 <= height <= 6000 and has_alpha):
                 bad_image.append(layer["id"])
             shapes.setdefault(layer["kind"], set()).add((height, width))
-        if layer["kind"] in DISPLAY_KINDS:
+        if layer["kind"] in DISPLAY_KINDS and layer.get("coverage", "full") == "full":
             fraction = alpha_fraction(path)
             if fraction < MIN_VALID_FRACTION:
                 low_valid.append(f"{layer['id']} {fraction:.3f}")

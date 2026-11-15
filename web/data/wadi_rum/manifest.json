@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-14T20:58:42Z",
+ "generated_utc": "2026-11-15T07:44:51Z",
  "place": {
   "name": "wadi_rum",
   "title": "Wadi Rum",
@@ -109,547 +109,9 @@
     "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
     "6 px inward edge feather (display only)",
     "WebP q82 with alpha"
-   ]
-  },
-  {
-   "file": "layers/backscatter_HH_2026-06-29.webp",
-   "format": "webp",
-   "preview": "layers/backscatter_HH_2026-06-29_preview.webp",
-   "native_px_m": 20.0,
-   "px_size_m_3857": 17.24,
-   "bounds": [
-    [
-     29.407919,
-     35.348466
-    ],
-    [
-     29.646708,
-     35.551328
-    ]
    ],
-   "crop_bounds_3857": [
-    3934973.2,
-    3427668.2,
-    3957555.7,
-    3458217.9
-   ],
-   "display_chain": [
-    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
-    "invalid -> NaN (product mask 0/255 or non-finite)",
-    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
-    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
-    "6 px inward edge feather (display only)",
-    "WebP q82 with alpha"
-   ],
-   "webp_quality": 75,
-   "product": "NISAR L2 GCOV",
-   "crid": "P05023",
-   "maturity": "PROVISIONAL",
-   "track": 50,
-   "frame": 74,
-   "direction": "DESCENDING",
-   "native_crs": "EPSG:32637",
-   "display_crs": "EPSG:3857",
-   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
-   "id": "backscatter_HH_2026-06-29",
-   "kind": "backscatter",
-   "label": "Backscatter HH 2026-06-29",
-   "polarization": "HH",
-   "date": "2026-06-29",
-   "vmin": -19.15,
-   "vmax": -0.8,
-   "colormap": "grey: dark = smooth (water), bright = rough",
-   "description": "Gamma-0 backscatter HH on 2026-06-29.",
-   "offset_applied_db": 0.0,
-   "display_multilook": 1,
-   "processing": [
-    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
-    "invalid -> NaN (product mask 0/255 or non-finite)",
-    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
-    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
-    "6 px inward edge feather (display only)",
-    "WebP q82 with alpha"
-   ]
-  },
-  {
-   "file": "layers/backscatter_HH_2026-07-11.webp",
-   "format": "webp",
-   "preview": "layers/backscatter_HH_2026-07-11_preview.webp",
-   "native_px_m": 20.0,
-   "px_size_m_3857": 17.24,
-   "bounds": [
-    [
-     29.407919,
-     35.348466
-    ],
-    [
-     29.646708,
-     35.551328
-    ]
-   ],
-   "crop_bounds_3857": [
-    3934973.2,
-    3427668.2,
-    3957555.7,
-    3458217.9
-   ],
-   "display_chain": [
-    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
-    "invalid -> NaN (product mask 0/255 or non-finite)",
-    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
-    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
-    "6 px inward edge feather (display only)",
-    "WebP q82 with alpha"
-   ],
-   "webp_quality": 75,
-   "product": "NISAR L2 GCOV",
-   "crid": "P05023",
-   "maturity": "PROVISIONAL",
-   "track": 50,
-   "frame": 74,
-   "direction": "DESCENDING",
-   "native_crs": "EPSG:32637",
-   "display_crs": "EPSG:3857",
-   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
-   "id": "backscatter_HH_2026-07-11",
-   "kind": "backscatter",
-   "label": "Backscatter HH 2026-07-11",
-   "polarization": "HH",
-   "date": "2026-07-11",
-   "vmin": -19.15,
-   "vmax": -0.8,
-   "colormap": "grey: dark = smooth (water), bright = rough",
-   "description": "Gamma-0 backscatter HH on 2026-07-11.",
-   "offset_applied_db": 0.0,
-   "display_multilook": 1,
-   "processing": [
-    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
-    "invalid -> NaN (product mask 0/255 or non-finite)",
-    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
-    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
-    "6 px inward edge feather (display only)",
-    "WebP q82 with alpha"
-   ]
-  },
-  {
-   "file": "layers/backscatter_HH_2026-07-23.webp",
-   "format": "webp",
-   "preview": "layers/backscatter_HH_2026-07-23_preview.webp",
-   "native_px_m": 20.0,
-   "px_size_m_3857": 17.24,
-   "bounds": [
-    [
-     29.407919,
-     35.348466
-    ],
-    [
-     29.646708,
-     35.551328
-    ]
-   ],
-   "crop_bounds_3857": [
-    3934973.2,
-    3427668.2,
-    3957555.7,
-    3458217.9
-   ],
-   "display_chain": [
-    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
-    "invalid -> NaN (product mask 0/255 or non-finite)",
-    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
-    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
-    "6 px inward edge feather (display only)",
-    "WebP q82 with alpha"
-   ],
-   "webp_quality": 75,
-   "product": "NISAR L2 GCOV",
-   "crid": "P05023",
-   "maturity": "PROVISIONAL",
-   "track": 50,
-   "frame": 74,
-   "direction": "DESCENDING",
-   "native_crs": "EPSG:32637",
-   "display_crs": "EPSG:3857",
-   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
-   "id": "backscatter_HH_2026-07-23",
-   "kind": "backscatter",
-   "label": "Backscatter HH 2026-07-23",
-   "polarization": "HH",
-   "date": "2026-07-23",
-   "vmin": -19.15,
-   "vmax": -0.8,
-   "colormap": "grey: dark = smooth (water), bright = rough",
-   "description": "Gamma-0 backscatter HH on 2026-07-23.",
-   "offset_applied_db": 0.0,
-   "display_multilook": 1,
-   "processing": [
-    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
-    "invalid -> NaN (product mask 0/255 or non-finite)",
-    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
-    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
-    "6 px inward edge feather (display only)",
-    "WebP q82 with alpha"
-   ]
-  },
-  {
-   "file": "layers/backscatter_HH_2026-08-16.webp",
-   "format": "webp",
-   "preview": "layers/backscatter_HH_2026-08-16_preview.webp",
-   "native_px_m": 20.0,
-   "px_size_m_3857": 17.24,
-   "bounds": [
-    [
-     29.407919,
-     35.348466
-    ],
-    [
-     29.646708,
-     35.551328
-    ]
-   ],
-   "crop_bounds_3857": [
-    3934973.2,
-    3427668.2,
-    3957555.7,
-    3458217.9
-   ],
-   "display_chain": [
-    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
-    "invalid -> NaN (product mask 0/255 or non-finite)",
-    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
-    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
-    "6 px inward edge feather (display only)",
-    "WebP q82 with alpha"
-   ],
-   "webp_quality": 75,
-   "product": "NISAR L2 GCOV",
-   "crid": "P05023",
-   "maturity": "PROVISIONAL",
-   "track": 50,
-   "frame": 74,
-   "direction": "DESCENDING",
-   "native_crs": "EPSG:32637",
-   "display_crs": "EPSG:3857",
-   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
-   "id": "backscatter_HH_2026-08-16",
-   "kind": "backscatter",
-   "label": "Backscatter HH 2026-08-16",
-   "polarization": "HH",
-   "date": "2026-08-16",
-   "vmin": -19.15,
-   "vmax": -0.8,
-   "colormap": "grey: dark = smooth (water), bright = rough",
-   "description": "Gamma-0 backscatter HH on 2026-08-16.",
-   "offset_applied_db": 0.0,
-   "display_multilook": 1,
-   "processing": [
-    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
-    "invalid -> NaN (product mask 0/255 or non-finite)",
-    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
-    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
-    "6 px inward edge feather (display only)",
-    "WebP q82 with alpha"
-   ]
-  },
-  {
-   "file": "layers/backscatter_HH_2026-08-28.webp",
-   "format": "webp",
-   "preview": "layers/backscatter_HH_2026-08-28_preview.webp",
-   "native_px_m": 20.0,
-   "px_size_m_3857": 17.24,
-   "bounds": [
-    [
-     29.407919,
-     35.348466
-    ],
-    [
-     29.646708,
-     35.551328
-    ]
-   ],
-   "crop_bounds_3857": [
-    3934973.2,
-    3427668.2,
-    3957555.7,
-    3458217.9
-   ],
-   "display_chain": [
-    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
-    "invalid -> NaN (product mask 0/255 or non-finite)",
-    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
-    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
-    "6 px inward edge feather (display only)",
-    "WebP q82 with alpha"
-   ],
-   "webp_quality": 75,
-   "product": "NISAR L2 GCOV",
-   "crid": "P05023",
-   "maturity": "PROVISIONAL",
-   "track": 50,
-   "frame": 74,
-   "direction": "DESCENDING",
-   "native_crs": "EPSG:32637",
-   "display_crs": "EPSG:3857",
-   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
-   "id": "backscatter_HH_2026-08-28",
-   "kind": "backscatter",
-   "label": "Backscatter HH 2026-08-28",
-   "polarization": "HH",
-   "date": "2026-08-28",
-   "vmin": -19.15,
-   "vmax": -0.8,
-   "colormap": "grey: dark = smooth (water), bright = rough",
-   "description": "Gamma-0 backscatter HH on 2026-08-28.",
-   "offset_applied_db": 0.0,
-   "display_multilook": 1,
-   "processing": [
-    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
-    "invalid -> NaN (product mask 0/255 or non-finite)",
-    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
-    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
-    "6 px inward edge feather (display only)",
-    "WebP q82 with alpha"
-   ]
-  },
-  {
-   "file": "layers/backscatter_HH_2026-09-09.webp",
-   "format": "webp",
-   "preview": "layers/backscatter_HH_2026-09-09_preview.webp",
-   "native_px_m": 20.0,
-   "px_size_m_3857": 17.24,
-   "bounds": [
-    [
-     29.407919,
-     35.348466
-    ],
-    [
-     29.646708,
-     35.551328
-    ]
-   ],
-   "crop_bounds_3857": [
-    3934973.2,
-    3427668.2,
-    3957555.7,
-    3458217.9
-   ],
-   "display_chain": [
-    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
-    "invalid -> NaN (product mask 0/255 or non-finite)",
-    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
-    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
-    "6 px inward edge feather (display only)",
-    "WebP q82 with alpha"
-   ],
-   "webp_quality": 75,
-   "product": "NISAR L2 GCOV",
-   "crid": "P05023",
-   "maturity": "PROVISIONAL",
-   "track": 50,
-   "frame": 74,
-   "direction": "DESCENDING",
-   "native_crs": "EPSG:32637",
-   "display_crs": "EPSG:3857",
-   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
-   "id": "backscatter_HH_2026-09-09",
-   "kind": "backscatter",
-   "label": "Backscatter HH 2026-09-09",
-   "polarization": "HH",
-   "date": "2026-09-09",
-   "vmin": -19.15,
-   "vmax": -0.8,
-   "colormap": "grey: dark = smooth (water), bright = rough",
-   "description": "Gamma-0 backscatter HH on 2026-09-09.",
-   "offset_applied_db": 0.0,
-   "display_multilook": 1,
-   "processing": [
-    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
-    "invalid -> NaN (product mask 0/255 or non-finite)",
-    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
-    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
-    "6 px inward edge feather (display only)",
-    "WebP q82 with alpha"
-   ]
-  },
-  {
-   "file": "layers/backscatter_HH_2026-09-21.webp",
-   "format": "webp",
-   "preview": "layers/backscatter_HH_2026-09-21_preview.webp",
-   "native_px_m": 20.0,
-   "px_size_m_3857": 17.24,
-   "bounds": [
-    [
-     29.407919,
-     35.348466
-    ],
-    [
-     29.646708,
-     35.551328
-    ]
-   ],
-   "crop_bounds_3857": [
-    3934973.2,
-    3427668.2,
-    3957555.7,
-    3458217.9
-   ],
-   "display_chain": [
-    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
-    "invalid -> NaN (product mask 0/255 or non-finite)",
-    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
-    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
-    "6 px inward edge feather (display only)",
-    "WebP q82 with alpha"
-   ],
-   "webp_quality": 75,
-   "product": "NISAR L2 GCOV",
-   "crid": "P05023",
-   "maturity": "PROVISIONAL",
-   "track": 50,
-   "frame": 74,
-   "direction": "DESCENDING",
-   "native_crs": "EPSG:32637",
-   "display_crs": "EPSG:3857",
-   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
-   "id": "backscatter_HH_2026-09-21",
-   "kind": "backscatter",
-   "label": "Backscatter HH 2026-09-21",
-   "polarization": "HH",
-   "date": "2026-09-21",
-   "vmin": -19.15,
-   "vmax": -0.8,
-   "colormap": "grey: dark = smooth (water), bright = rough",
-   "description": "Gamma-0 backscatter HH on 2026-09-21.",
-   "offset_applied_db": 0.0,
-   "display_multilook": 1,
-   "processing": [
-    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
-    "invalid -> NaN (product mask 0/255 or non-finite)",
-    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
-    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
-    "6 px inward edge feather (display only)",
-    "WebP q82 with alpha"
-   ]
-  },
-  {
-   "file": "layers/backscatter_HH_2026-10-03.webp",
-   "format": "webp",
-   "preview": "layers/backscatter_HH_2026-10-03_preview.webp",
-   "native_px_m": 20.0,
-   "px_size_m_3857": 17.24,
-   "bounds": [
-    [
-     29.407919,
-     35.348466
-    ],
-    [
-     29.646708,
-     35.551328
-    ]
-   ],
-   "crop_bounds_3857": [
-    3934973.2,
-    3427668.2,
-    3957555.7,
-    3458217.9
-   ],
-   "display_chain": [
-    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
-    "invalid -> NaN (product mask 0/255 or non-finite)",
-    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
-    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
-    "6 px inward edge feather (display only)",
-    "WebP q82 with alpha"
-   ],
-   "webp_quality": 75,
-   "product": "NISAR L2 GCOV",
-   "crid": "P05023",
-   "maturity": "PROVISIONAL",
-   "track": 50,
-   "frame": 74,
-   "direction": "DESCENDING",
-   "native_crs": "EPSG:32637",
-   "display_crs": "EPSG:3857",
-   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
-   "id": "backscatter_HH_2026-10-03",
-   "kind": "backscatter",
-   "label": "Backscatter HH 2026-10-03",
-   "polarization": "HH",
-   "date": "2026-10-03",
-   "vmin": -19.15,
-   "vmax": -0.8,
-   "colormap": "grey: dark = smooth (water), bright = rough",
-   "description": "Gamma-0 backscatter HH on 2026-10-03.",
-   "offset_applied_db": 0.0,
-   "display_multilook": 1,
-   "processing": [
-    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
-    "invalid -> NaN (product mask 0/255 or non-finite)",
-    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
-    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
-    "6 px inward edge feather (display only)",
-    "WebP q82 with alpha"
-   ]
-  },
-  {
-   "file": "layers/backscatter_HH_2026-10-15.webp",
-   "format": "webp",
-   "preview": "layers/backscatter_HH_2026-10-15_preview.webp",
-   "native_px_m": 20.0,
-   "px_size_m_3857": 17.24,
-   "bounds": [
-    [
-     29.407919,
-     35.348466
-    ],
-    [
-     29.646708,
-     35.551328
-    ]
-   ],
-   "crop_bounds_3857": [
-    3934973.2,
-    3427668.2,
-    3957555.7,
-    3458217.9
-   ],
-   "display_chain": [
-    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
-    "invalid -> NaN (product mask 0/255 or non-finite)",
-    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
-    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
-    "6 px inward edge feather (display only)",
-    "WebP q82 with alpha"
-   ],
-   "webp_quality": 75,
-   "product": "NISAR L2 GCOV",
-   "crid": "P05023",
-   "maturity": "PROVISIONAL",
-   "track": 50,
-   "frame": 74,
-   "direction": "DESCENDING",
-   "native_crs": "EPSG:32637",
-   "display_crs": "EPSG:3857",
-   "resolution_fallback": "1.5x native instead of 2x, for the per-layer size budget",
-   "id": "backscatter_HH_2026-10-15",
-   "kind": "backscatter",
-   "label": "Backscatter HH 2026-10-15",
-   "polarization": "HH",
-   "date": "2026-10-15",
-   "vmin": -19.15,
-   "vmax": -0.8,
-   "colormap": "grey: dark = smooth (water), bright = rough",
-   "description": "Gamma-0 backscatter HH on 2026-10-15.",
-   "offset_applied_db": 0.0,
-   "display_multilook": 1,
-   "processing": [
-    "native 20 m linear gamma-0 power (GCOV, no extra multilook, no speckle filter)",
-    "invalid -> NaN (product mask 0/255 or non-finite)",
-    "reprojected once to EPSG:3857, bilinear on linear power, at 17.2 m",
-    "dB stretch clipped at the pooled 2nd/98th percentile of all dates",
-    "6 px inward edge feather (display only)",
-    "WebP q82 with alpha"
-   ]
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full"
   },
   {
    "file": "layers/change_HH_2026-06-29.webp",
@@ -707,7 +169,9 @@
     "median 5x5",
     "reprojected to EPSG:3857",
     "scene offset removed (land median)"
-   ]
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full"
   },
   {
    "file": "layers/change_HH_2026-07-11.webp",
@@ -765,7 +229,9 @@
     "median 5x5",
     "reprojected to EPSG:3857",
     "scene offset removed (land median)"
-   ]
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full"
   },
   {
    "file": "layers/change_HH_2026-07-23.webp",
@@ -823,7 +289,9 @@
     "median 5x5",
     "reprojected to EPSG:3857",
     "scene offset removed (land median)"
-   ]
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full"
   },
   {
    "file": "layers/change_HH_2026-08-16.webp",
@@ -881,7 +349,9 @@
     "median 5x5",
     "reprojected to EPSG:3857",
     "scene offset removed (land median)"
-   ]
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full"
   },
   {
    "file": "layers/change_HH_2026-08-28.webp",
@@ -939,7 +409,9 @@
     "median 5x5",
     "reprojected to EPSG:3857",
     "scene offset removed (land median)"
-   ]
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full"
   },
   {
    "file": "layers/change_HH_2026-09-09.webp",
@@ -997,7 +469,9 @@
     "median 5x5",
     "reprojected to EPSG:3857",
     "scene offset removed (land median)"
-   ]
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full"
   },
   {
    "file": "layers/change_HH_2026-09-21.webp",
@@ -1055,7 +529,9 @@
     "median 5x5",
     "reprojected to EPSG:3857",
     "scene offset removed (land median)"
-   ]
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full"
   },
   {
    "file": "layers/change_HH_2026-10-03.webp",
@@ -1113,7 +589,9 @@
     "median 5x5",
     "reprojected to EPSG:3857",
     "scene offset removed (land median)"
-   ]
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full"
   },
   {
    "file": "layers/change_HH_2026-10-15.webp",
@@ -1171,7 +649,9 @@
     "median 5x5",
     "reprojected to EPSG:3857",
     "scene offset removed (land median)"
-   ]
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HH_2026-06-17.webp",
@@ -1232,7 +712,9 @@
     "6 px inward edge feather (display only)",
     "WebP q82 with alpha",
     "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)"
-   ]
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HH_2026-06-29.webp",
@@ -1293,7 +775,9 @@
     "6 px inward edge feather (display only)",
     "WebP q82 with alpha",
     "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)"
-   ]
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HH_2026-07-11.webp",
@@ -1354,7 +838,9 @@
     "6 px inward edge feather (display only)",
     "WebP q82 with alpha",
     "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)"
-   ]
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HH_2026-07-23.webp",
@@ -1415,7 +901,9 @@
     "6 px inward edge feather (display only)",
     "WebP q82 with alpha",
     "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)"
-   ]
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HH_2026-08-16.webp",
@@ -1476,7 +964,9 @@
     "6 px inward edge feather (display only)",
     "WebP q82 with alpha",
     "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)"
-   ]
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HH_2026-08-28.webp",
@@ -1537,7 +1027,9 @@
     "6 px inward edge feather (display only)",
     "WebP q82 with alpha",
     "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)"
-   ]
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HH_2026-09-09.webp",
@@ -1598,7 +1090,9 @@
     "6 px inward edge feather (display only)",
     "WebP q82 with alpha",
     "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)"
-   ]
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HH_2026-09-21.webp",
@@ -1659,7 +1153,9 @@
     "6 px inward edge feather (display only)",
     "WebP q82 with alpha",
     "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)"
-   ]
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HH_2026-10-03.webp",
@@ -1720,7 +1216,9 @@
     "6 px inward edge feather (display only)",
     "WebP q82 with alpha",
     "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)"
-   ]
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full"
   },
   {
    "file": "layers/rgb_HH_2026-10-15.webp",
@@ -1781,6 +1279,876 @@
     "6 px inward edge feather (display only)",
     "WebP q82 with alpha",
     "fixed blue-green-orange-yellow ramp (approximation of NASA single-pol)"
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full"
+  },
+  {
+   "file": "layers/backscatter_HV_2025-11-01.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HV_2025-11-01_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "20 m native power (HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ],
+   "series": "50-DESC-X05009-HV",
+   "coverage": "full",
+   "product": "NISAR L2 GCOV",
+   "crid": "X05009",
+   "maturity": "BETA",
+   "track": 50,
+   "frame": 74,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "offset_applied_db": 0.0,
+   "display_multilook": 1,
+   "id": "50-DESC-X05009-HV_backscatter_HV_2025-11-01",
+   "kind": "backscatter",
+   "label": "Backscatter HV 2025-11-01",
+   "polarization": "HV",
+   "date": "2025-11-01",
+   "vmin": -28.52,
+   "vmax": -11.96,
+   "colormap": "grey: dark = smooth (water), bright = rough",
+   "description": "Gamma-0 backscatter HV on 2025-11-01 (BETA series).",
+   "processing": [
+    "20 m native power (HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ]
+  },
+  {
+   "file": "layers/backscatter_HV_2025-12-19.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HV_2025-12-19_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "20 m native power (HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ],
+   "series": "50-DESC-X05009-HV",
+   "coverage": "full",
+   "product": "NISAR L2 GCOV",
+   "crid": "X05009",
+   "maturity": "BETA",
+   "track": 50,
+   "frame": 74,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "offset_applied_db": 0.0,
+   "display_multilook": 1,
+   "id": "50-DESC-X05009-HV_backscatter_HV_2025-12-19",
+   "kind": "backscatter",
+   "label": "Backscatter HV 2025-12-19",
+   "polarization": "HV",
+   "date": "2025-12-19",
+   "vmin": -28.52,
+   "vmax": -11.96,
+   "colormap": "grey: dark = smooth (water), bright = rough",
+   "description": "Gamma-0 backscatter HV on 2025-12-19 (BETA series).",
+   "processing": [
+    "20 m native power (HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ]
+  },
+  {
+   "file": "layers/backscatter_HV_2025-12-31.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HV_2025-12-31_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "20 m native power (HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ],
+   "series": "50-DESC-X05009-HV",
+   "coverage": "full",
+   "product": "NISAR L2 GCOV",
+   "crid": "X05009",
+   "maturity": "BETA",
+   "track": 50,
+   "frame": 74,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "offset_applied_db": 0.0,
+   "display_multilook": 1,
+   "id": "50-DESC-X05009-HV_backscatter_HV_2025-12-31",
+   "kind": "backscatter",
+   "label": "Backscatter HV 2025-12-31",
+   "polarization": "HV",
+   "date": "2025-12-31",
+   "vmin": -28.52,
+   "vmax": -11.96,
+   "colormap": "grey: dark = smooth (water), bright = rough",
+   "description": "Gamma-0 backscatter HV on 2025-12-31 (BETA series).",
+   "processing": [
+    "20 m native power (HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ]
+  },
+  {
+   "file": "layers/backscatter_HV_2026-01-12.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HV_2026-01-12_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "20 m native power (HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ],
+   "series": "50-DESC-X05010-HV",
+   "coverage": "full",
+   "product": "NISAR L2 GCOV",
+   "crid": "X05010",
+   "maturity": "BETA",
+   "track": 50,
+   "frame": 74,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "offset_applied_db": 0.0,
+   "display_multilook": 1,
+   "id": "50-DESC-X05010-HV_backscatter_HV_2026-01-12",
+   "kind": "backscatter",
+   "label": "Backscatter HV 2026-01-12",
+   "polarization": "HV",
+   "date": "2026-01-12",
+   "vmin": -28.47,
+   "vmax": -12.11,
+   "colormap": "grey: dark = smooth (water), bright = rough",
+   "description": "Gamma-0 backscatter HV on 2026-01-12 (BETA series).",
+   "processing": [
+    "20 m native power (HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ]
+  },
+  {
+   "file": "layers/backscatter_HV_2026-10-27.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HV_2026-10-27_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "20 m native power (HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ],
+   "series": "50-DESC-P05036-HV",
+   "coverage": "full",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05036",
+   "maturity": "VALIDATED",
+   "track": 50,
+   "frame": 74,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "offset_applied_db": 0.0,
+   "display_multilook": 1,
+   "id": "50-DESC-P05036-HV_backscatter_HV_2026-10-27",
+   "kind": "backscatter",
+   "label": "Backscatter HV 2026-10-27",
+   "polarization": "HV",
+   "date": "2026-10-27",
+   "vmin": -26.16,
+   "vmax": -10.1,
+   "colormap": "grey: dark = smooth (water), bright = rough",
+   "description": "Gamma-0 backscatter HV on 2026-10-27 (VALIDATED series).",
+   "processing": [
+    "20 m native power (HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ]
+  },
+  {
+   "file": "layers/backscatter_HH_2026-06-29.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HH_2026-06-29_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "20 m native power (HH/HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 50,
+   "frame": 74,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "offset_applied_db": 0.0,
+   "display_multilook": 1,
+   "id": "50-DESC-P05023-HH_backscatter_HH_2026-06-29",
+   "kind": "backscatter",
+   "label": "Backscatter HH 2026-06-29",
+   "polarization": "HH",
+   "date": "2026-06-29",
+   "vmin": -18.94,
+   "vmax": -0.74,
+   "colormap": "grey: dark = smooth (water), bright = rough",
+   "description": "Gamma-0 backscatter HH on 2026-06-29 (PROVISIONAL series).",
+   "processing": [
+    "20 m native power (HH/HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ]
+  },
+  {
+   "file": "layers/backscatter_HH_2026-07-11.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HH_2026-07-11_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "20 m native power (HH/HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 50,
+   "frame": 74,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "offset_applied_db": 0.0,
+   "display_multilook": 1,
+   "id": "50-DESC-P05023-HH_backscatter_HH_2026-07-11",
+   "kind": "backscatter",
+   "label": "Backscatter HH 2026-07-11",
+   "polarization": "HH",
+   "date": "2026-07-11",
+   "vmin": -18.94,
+   "vmax": -0.74,
+   "colormap": "grey: dark = smooth (water), bright = rough",
+   "description": "Gamma-0 backscatter HH on 2026-07-11 (PROVISIONAL series).",
+   "processing": [
+    "20 m native power (HH/HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ]
+  },
+  {
+   "file": "layers/backscatter_HH_2026-07-23.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HH_2026-07-23_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "20 m native power (HH/HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 50,
+   "frame": 74,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "offset_applied_db": 0.0,
+   "display_multilook": 1,
+   "id": "50-DESC-P05023-HH_backscatter_HH_2026-07-23",
+   "kind": "backscatter",
+   "label": "Backscatter HH 2026-07-23",
+   "polarization": "HH",
+   "date": "2026-07-23",
+   "vmin": -18.94,
+   "vmax": -0.74,
+   "colormap": "grey: dark = smooth (water), bright = rough",
+   "description": "Gamma-0 backscatter HH on 2026-07-23 (PROVISIONAL series).",
+   "processing": [
+    "20 m native power (HH/HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ]
+  },
+  {
+   "file": "layers/backscatter_HH_2026-08-16.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HH_2026-08-16_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "20 m native power (HH/HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 50,
+   "frame": 74,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "offset_applied_db": 0.0,
+   "display_multilook": 1,
+   "id": "50-DESC-P05023-HH_backscatter_HH_2026-08-16",
+   "kind": "backscatter",
+   "label": "Backscatter HH 2026-08-16",
+   "polarization": "HH",
+   "date": "2026-08-16",
+   "vmin": -18.94,
+   "vmax": -0.74,
+   "colormap": "grey: dark = smooth (water), bright = rough",
+   "description": "Gamma-0 backscatter HH on 2026-08-16 (PROVISIONAL series).",
+   "processing": [
+    "20 m native power (HH/HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ]
+  },
+  {
+   "file": "layers/backscatter_HH_2026-08-28.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HH_2026-08-28_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "20 m native power (HH/HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 50,
+   "frame": 74,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "offset_applied_db": 0.0,
+   "display_multilook": 1,
+   "id": "50-DESC-P05023-HH_backscatter_HH_2026-08-28",
+   "kind": "backscatter",
+   "label": "Backscatter HH 2026-08-28",
+   "polarization": "HH",
+   "date": "2026-08-28",
+   "vmin": -18.94,
+   "vmax": -0.74,
+   "colormap": "grey: dark = smooth (water), bright = rough",
+   "description": "Gamma-0 backscatter HH on 2026-08-28 (PROVISIONAL series).",
+   "processing": [
+    "20 m native power (HH/HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ]
+  },
+  {
+   "file": "layers/backscatter_HH_2026-09-09.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HH_2026-09-09_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "20 m native power (HH/HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 50,
+   "frame": 74,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "offset_applied_db": 0.0,
+   "display_multilook": 1,
+   "id": "50-DESC-P05023-HH_backscatter_HH_2026-09-09",
+   "kind": "backscatter",
+   "label": "Backscatter HH 2026-09-09",
+   "polarization": "HH",
+   "date": "2026-09-09",
+   "vmin": -18.94,
+   "vmax": -0.74,
+   "colormap": "grey: dark = smooth (water), bright = rough",
+   "description": "Gamma-0 backscatter HH on 2026-09-09 (PROVISIONAL series).",
+   "processing": [
+    "20 m native power (HH/HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ]
+  },
+  {
+   "file": "layers/backscatter_HH_2026-09-21.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HH_2026-09-21_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "20 m native power (HH/HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 50,
+   "frame": 74,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "offset_applied_db": 0.0,
+   "display_multilook": 1,
+   "id": "50-DESC-P05023-HH_backscatter_HH_2026-09-21",
+   "kind": "backscatter",
+   "label": "Backscatter HH 2026-09-21",
+   "polarization": "HH",
+   "date": "2026-09-21",
+   "vmin": -18.94,
+   "vmax": -0.74,
+   "colormap": "grey: dark = smooth (water), bright = rough",
+   "description": "Gamma-0 backscatter HH on 2026-09-21 (PROVISIONAL series).",
+   "processing": [
+    "20 m native power (HH/HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ]
+  },
+  {
+   "file": "layers/backscatter_HH_2026-10-03.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HH_2026-10-03_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "20 m native power (HH/HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 50,
+   "frame": 74,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "offset_applied_db": 0.0,
+   "display_multilook": 1,
+   "id": "50-DESC-P05023-HH_backscatter_HH_2026-10-03",
+   "kind": "backscatter",
+   "label": "Backscatter HH 2026-10-03",
+   "polarization": "HH",
+   "date": "2026-10-03",
+   "vmin": -18.94,
+   "vmax": -0.74,
+   "colormap": "grey: dark = smooth (water), bright = rough",
+   "description": "Gamma-0 backscatter HH on 2026-10-03 (PROVISIONAL series).",
+   "processing": [
+    "20 m native power (HH/HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ]
+  },
+  {
+   "file": "layers/backscatter_HH_2026-10-15.webp",
+   "format": "webp",
+   "preview": "layers/backscatter_HH_2026-10-15_preview.webp",
+   "native_px_m": 20.0,
+   "px_size_m_3857": 17.24,
+   "bounds": [
+    [
+     29.407919,
+     35.348466
+    ],
+    [
+     29.646708,
+     35.551328
+    ]
+   ],
+   "crop_bounds_3857": [
+    3934973.2,
+    3427668.2,
+    3957555.7,
+    3458217.9
+   ],
+   "display_chain": [
+    "20 m native power (HH/HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
+   ],
+   "series": "50-DESC-P05023-HH",
+   "coverage": "full",
+   "product": "NISAR L2 GCOV",
+   "crid": "P05023",
+   "maturity": "PROVISIONAL",
+   "track": 50,
+   "frame": 74,
+   "direction": "DESCENDING",
+   "native_crs": "EPSG:32637",
+   "display_crs": "EPSG:3857",
+   "offset_applied_db": 0.0,
+   "display_multilook": 1,
+   "id": "50-DESC-P05023-HH_backscatter_HH_2026-10-15",
+   "kind": "backscatter",
+   "label": "Backscatter HH 2026-10-15",
+   "polarization": "HH",
+   "date": "2026-10-15",
+   "vmin": -18.94,
+   "vmax": -0.74,
+   "colormap": "grey: dark = smooth (water), bright = rough",
+   "description": "Gamma-0 backscatter HH on 2026-10-15 (PROVISIONAL series).",
+   "processing": [
+    "20 m native power (HH/HV only for this series)",
+    "invalid -> NaN (mask 0/255 or non-finite)",
+    "mosaic of the frames present for this date (native UTM, mean where both valid)",
+    "reprojected once to EPSG:3857 at 17.24 m, bilinear on linear power",
+    "dB stretch clipped at this series' pooled 2nd/98th percentile",
+    "8 px inward edge feather (display only)",
+    "WebP lossy with alpha; NO statistics are computed from this series"
    ]
   }
  ],
@@ -1796,5 +2164,109 @@
  ],
  "notes": [
   "10 PROVISIONAL dates on track 50 frame 74."
- ]
+ ],
+ "series": [
+  {
+   "id": "50-DESC-P05023-HH",
+   "label": "PROVISIONAL - track 50",
+   "maturity": "PROVISIONAL",
+   "crid": "P05023",
+   "track": 50,
+   "direction": "DESCENDING",
+   "polarizations": [
+    "HH"
+   ],
+   "dates": [
+    "2026-06-17",
+    "2026-06-29",
+    "2026-07-11",
+    "2026-07-23",
+    "2026-08-16",
+    "2026-08-28",
+    "2026-09-09",
+    "2026-09-21",
+    "2026-10-03",
+    "2026-10-15"
+   ],
+   "analysis": true,
+   "coverage": {
+    "2026-06-17": "full",
+    "2026-06-29": "full",
+    "2026-07-11": "full",
+    "2026-07-23": "full",
+    "2026-08-16": "full",
+    "2026-08-28": "full",
+    "2026-09-09": "full",
+    "2026-09-21": "full",
+    "2026-10-03": "full",
+    "2026-10-15": "full"
+   },
+   "source": "built before the series model; treated as one PROVISIONAL series"
+  },
+  {
+   "id": "50-DESC-X05009-HV",
+   "label": "BETA - track 50 descending",
+   "maturity": "BETA",
+   "crid": "X05009",
+   "track": 50,
+   "direction": "DESCENDING",
+   "polarizations": [
+    "HV"
+   ],
+   "dates": [
+    "2025-11-01",
+    "2025-12-19",
+    "2025-12-31"
+   ],
+   "analysis": false,
+   "coverage": {
+    "2025-11-01": "full",
+    "2025-12-19": "full",
+    "2025-12-31": "full"
+   },
+   "polarization_note": "HV only",
+   "source": "ASF DAAC NISAR L2 GCOV; browse-only series, no statistics"
+  },
+  {
+   "id": "50-DESC-X05010-HV",
+   "label": "BETA - track 50 descending",
+   "maturity": "BETA",
+   "crid": "X05010",
+   "track": 50,
+   "direction": "DESCENDING",
+   "polarizations": [
+    "HV"
+   ],
+   "dates": [
+    "2026-01-12"
+   ],
+   "analysis": false,
+   "coverage": {
+    "2026-01-12": "full"
+   },
+   "polarization_note": "HV only",
+   "source": "ASF DAAC NISAR L2 GCOV; browse-only series, no statistics"
+  },
+  {
+   "id": "50-DESC-P05036-HV",
+   "label": "VALIDATED - track 50 descending",
+   "maturity": "VALIDATED",
+   "crid": "P05036",
+   "track": 50,
+   "direction": "DESCENDING",
+   "polarizations": [
+    "HV"
+   ],
+   "dates": [
+    "2026-10-27"
+   ],
+   "analysis": false,
+   "coverage": {
+    "2026-10-27": "full"
+   },
+   "polarization_note": "HV only",
+   "source": "ASF DAAC NISAR L2 GCOV; browse-only series, no statistics"
+  }
+ ],
+ "primary_series": "50-DESC-P05023-HH"
 }
